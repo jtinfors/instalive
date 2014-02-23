@@ -15,7 +15,7 @@ var data = querystring.stringify({
   lat: '59,32536',
   lng: '18,071197',
   radius: 4000,
-  callback_url: process.env.DOMAINNAME + '/subscriptions/callback/'
+  callback_url: 'http://' + process.env.DOMAINNAME + '/subscriptions/callback/'
 });
 
 var options = {
