@@ -42,7 +42,7 @@ app.get('/subscriptions/callback/', function(req, res) {
 });
 
 app.post('/subscriptions/:id/delete', function(req, res) {
-  instagram.delete_subscription(id, function(data) {
+  instagram.delete_subscription(req.params.id, function(data) {
     res.send(data);
   });
 });
