@@ -1,0 +1,16 @@
+{
+  "name": "instalive",
+  "version": "0.0.1",
+  "description": "instalive.se",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jens Tinfors",
+  "license": "ISC",
+  "dependencies": {
+    "express": "~3.4.8",
+    "redis": "^0.10.1"
+  }
+}
