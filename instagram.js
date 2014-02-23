@@ -49,6 +49,7 @@ var subscriptions = function(callback) {
   }, function(res) {
     res.setEncoding('utf8');
     res.on('data', function(data) {
+      console.log("[subscriptions] Recieved data => ", data, " sending it to callback");
       callback(data);
     })
   });
