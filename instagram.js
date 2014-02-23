@@ -60,7 +60,8 @@ var subscriptions = function(callback) {
 
 // https://api.instagram.com/v1/subscriptions?client_secret=CLIENT-SECRET&id=1&client_id=CLIENT-ID
 var delete_subscription = function(id, callback) {
-  var data = querystring.stringify({ id: id, client_id: client_id, client_secret: client_secret, });
+  var data = querystring.stringify({ id: id, client_id: client_id, client_secret: client_secret });
+  console.log('delete_subscription() data => ', data);
   var request = https.request({
     hostname: 'api.instagram.com',
     path: '/v1/subscriptions/',
