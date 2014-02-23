@@ -8,6 +8,8 @@ var express = require('express'),
 app = express();
 app.set('port', process.env.PORT || 3000);
 
+app.use(express.json());
+app.use(express.urlencoded());
 
 app.get('/', function(req, res) {
   instagram.subscriptions(function(data) {
