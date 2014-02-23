@@ -12,8 +12,8 @@ var data = querystring.stringify({
   client_secret: client_secret,
   object: 'geography',
   aspect: 'media',
-  lat: '59,32536',
-  lng: '18,071197',
+  lat: '59.32536',
+  lng: '18.071197',
   radius: 4000,
   callback_url: 'http://' + process.env.DOMAINNAME + '/subscriptions/callback/'
 });
