@@ -23,6 +23,7 @@ app.get('/subscriptions/', function(req, res) {
 });
 
 app.get('/subscriptions/callback/', function(req, res) {
+  console.log("IN CALLBACK! => ", req);
   var hub_challange = req.query['hub.challange'];
   var hub_token = req.query['hub.token'];
   if(hub_challange != null) {
@@ -33,12 +34,12 @@ app.get('/subscriptions/callback/', function(req, res) {
   }
 });
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+app.post('/subscriptions/callback/', function(req, res) {
+  console.log("RECIEVED UPDATE! => ", req);
+  res.send("ok");
 });
 
-process.on('SIGTERM', function() {
-  console.log('closing..');
-  app.close();
+http.createServer(app).listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
 });
 

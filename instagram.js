@@ -31,6 +31,7 @@ var options = {
 
 var subscribe = function(callback) {
   subscriptions(function(data) {
+    console.log("subscribe(). data => ", data);
     if(data.meta.code == 200 && data.data.length > 0) {
       callback(data);
     } else {
@@ -56,9 +57,11 @@ var subscriptions = function(callback) {
       callback(data);
     })
   });
+  console.log("No subscription yet, creating one!");
+  console.log("req => ", req);
   req.end();
   req.on('error', function(e) {
-    console.error(e);
+    console.error("error when signing up for subscription => ", e);
   });
 }
 
