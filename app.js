@@ -41,16 +41,16 @@ app.get('/subscriptions/callback/', function(req, res) {
   }
 });
 
-app.post('/subscriptions/all/delete', function(req, res) {
-  console.log("POST /subscriptions/all/delete => ", req.params);
-  instagram.delete_subscription(function(data) {
+app.post('/subscriptions/:id/delete', function(req, res) {
+  console.log("POST /subscriptions/:id/delete => ", req.params);
+  instagram.delete_subscription(req.params.id, function(data) {
     res.send(data);
   });
 });
 
-app.post('/subscriptions/:id/delete', function(req, res) {
-  console.log("POST /subscriptions/:id/delete => ", req.params);
-  instagram.delete_subscription(req.params.id, function(data) {
+app.post('/subscriptions/all/delete', function(req, res) {
+  console.log("POST /subscriptions/all/delete => ", req.params);
+  instagram.delete_all_subscription(function(data) {
     res.send(data);
   });
 });
