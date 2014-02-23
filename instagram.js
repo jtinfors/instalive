@@ -58,6 +58,29 @@ var subscriptions = function(callback) {
   });
 }
 
+// https://api.instagram.com/v1/subscriptions?client_secret=CLIENT-SECRET&id=1&client_id=CLIENT-ID
+var delete_subscription = function(id, callback) {
+  var data = querystring.stringify({ id: id, client_id: client_id, client_secret: client_secret, });
+  var request = https.request({
+    hostname: 'api.instagram.com',
+    path: '/v1/subscriptions/',
+    port: 443,
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': Buffer.byteLength(data)
+    },
+  }, function(res) {
+    res.setEncoding('utf8');
+    res.on('data', function(chunk) {
+      callback(chunk);
+    });
+  });
+  request.write(data);
+  request.end();
+}
+
 module.exports.subscriptions = subscriptions;
 module.exports.subscribe = subscribe;
+module.exports.delete_subscription = delete_subscription;
 
