@@ -42,6 +42,7 @@ app.get('/subscriptions/callback/', function(req, res) {
 });
 
 app.post('/subscriptions/:id/delete', function(req, res) {
+  console.log("POST /subscriptions/:id/delete => ", req.body);
   instagram.delete_subscription(req.params.id, function(data) {
     res.send(data);
   });
