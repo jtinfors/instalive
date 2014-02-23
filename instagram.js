@@ -60,8 +60,8 @@ var subscriptions = function(callback) {
 
 // https://api.instagram.com/v1/subscriptions?client_secret=CLIENT-SECRET&id=1&client_id=CLIENT-ID
 var delete_subscription = function(id, callback) {
-  var data = querystring.stringify({ id: id, client_id: client_id, client_secret: client_secret });
-  console.log('delete_subscription() data => ', data);
+  var _data = querystring.stringify({ client_id: client_id, client_secret: client_secret, id: id });
+  console.log('delete_subscription() _data => ', _data);
   var request = https.request({
     hostname: 'api.instagram.com',
     path: '/v1/subscriptions/',
@@ -69,7 +69,7 @@ var delete_subscription = function(id, callback) {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(data)
+      'Content-Length': Buffer.byteLength(_data)
     },
   }, function(res) {
     res.setEncoding('utf8');
@@ -77,7 +77,7 @@ var delete_subscription = function(id, callback) {
       callback(chunk);
     });
   });
-  request.write(data);
+  request.write(_data);
   request.end();
 }
 
