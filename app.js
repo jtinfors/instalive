@@ -31,8 +31,8 @@ app.get('/subscriptions/callback/', function(req, res) {
   console.log("GET /subscriptions/callback/ => ", req.query);
   var parsedRequest = url.parse(req.url, true);
   if('subscribe' === parsedRequest['query']['hub.mode'] && parsedRequest['query']['hub.challenge'] != null) {
-    console.log("sending back hub_challange => ", hub_challange);
-    res.send(hub_challange);
+    console.log("sending back hub_challange => ", parsedRequest['query']['hub.challenge']);
+    res.send(parsedRequest['query']['hub.challenge']);
   } else {
     console.log("sending back nok => ");
     res.send(400, "nok");
