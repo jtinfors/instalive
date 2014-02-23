@@ -27,15 +27,16 @@ app.get('/subscriptions/', function(req, res) {
 });
 
 app.get('/subscriptions/callback/', function(req, res) {
-  console.log("IN CALLBACK! => ", req);
+  console.log("IN CALLBACK! => ", req.query);
   var hub_challange = req.query['hub.challange'];
   var hub_token = req.query['hub.token'];
+  console.log(hub_challange);
   if(hub_challange != null) {
     console.log("sending back hub_challange => ", hub_challange);
     res.send(hub_challange);
   } else {
-    res.writeHead(400);
-    res.send(req.query)
+    console.log("sending back ok => ");
+    res.send(400, "nok");
   }
 });
 

@@ -38,7 +38,6 @@ var subscribe = function(callback) {
     });
   });
   request.write(data);
-  console.log("req => ", request);
   request.end();
 };
 
