@@ -30,21 +30,16 @@ var options = {
 };
 
 var subscribe = function(callback) {
-  subscriptions(function(data) {
-    console.log("subscribe(). data => ", data);
-    if(data.meta.code == 200 && data.data.length > 0) {
-      callback(data);
-    } else {
-      var request = https.request(options, function(res) {
-        res.setEncoding('utf8');
-        res.on('data', function(chunk) {
-          callback(chunk);
-        });
-      });
-      request.write(data);
-      request.end();
-    }
+  console.log("Creating new subscription!");
+  var request = https.request(options, function(res) {
+    res.setEncoding('utf8');
+    res.on('data', function(chunk) {
+      callback(chunk);
+    });
   });
+  request.write(data);
+  console.log("req => ", req);
+  request.end();
 };
 
 var subscriptions = function(callback) {
@@ -57,11 +52,9 @@ var subscriptions = function(callback) {
       callback(data);
     })
   });
-  console.log("No subscription yet, creating one!");
-  console.log("req => ", req);
   req.end();
   req.on('error', function(e) {
-    console.error("error when signing up for subscription => ", e);
+    console.error("error when fetching subscription => ", e);
   });
 }
 

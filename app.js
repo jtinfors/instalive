@@ -9,9 +9,13 @@ app.set('port', process.env.PORT || 3000);
 
 
 app.get('/', function(req, res) {
-  instagram.subscribe(function(data) {
-    if(data.data.length > 0) {
-      res.send(data.data);
+  instagram.subscriptions(function(data) {
+    if(data.data.length != null) {
+      res.send(data);
+    } else {
+      instagram.subscribe(function(data) {
+        res.send(data);
+      });
     }
   });
 });
@@ -27,6 +31,7 @@ app.get('/subscriptions/callback/', function(req, res) {
   var hub_challange = req.query['hub.challange'];
   var hub_token = req.query['hub.token'];
   if(hub_challange != null) {
+    console.log("sending back hub_challange => ", hub_challange);
     res.send(hub_challange);
   } else {
     res.writeHead(400);
