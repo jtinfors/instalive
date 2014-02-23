@@ -92,5 +92,5 @@ var delete_all_subscription = function(callback) {
 module.exports.subscriptions = subscriptions;
 module.exports.subscribe = subscribe;
 module.exports.delete_subscription = delete_subscription;
-module.exports.delete_subscription = delete_all_subscription;
+module.exports.delete_all_subscription = delete_all_subscription;
 
