@@ -10,7 +10,7 @@ app.set('port', process.env.PORT || 3000);
 
 app.get('/', function(req, res) {
   instagram.subscriptions(function(data) {
-    if(data.data.length != null) {
+    if(JSON.parse(data).data.length > 0) {
       res.send(data);
     } else {
       instagram.subscribe(function(data) {
