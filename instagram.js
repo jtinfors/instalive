@@ -60,47 +60,32 @@ var subscriptions = function(callback) {
 
 // https://api.instagram.com/v1/subscriptions?client_secret=CLIENT-SECRET&id=1&client_id=CLIENT-ID
 var delete_subscription = function(id, callback) {
-  var _data = querystring.stringify({ client_id: client_id, client_secret: client_secret, id: id });
-  console.log('delete_subscription() _data => ', _data);
   var request = https.request({
     hostname: 'api.instagram.com',
     path: '/v1/subscriptions/',
-    port: 443,
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(_data)
-    },
+    path: util.format('/v1/subscriptions?client_secret=%s&client_id=%s&id=%s', client_secret, client_id, id),
+    method: 'DELETE'
   }, function(res) {
     res.setEncoding('utf8');
     res.on('data', function(chunk) {
       callback(chunk);
     });
   });
-  request.write(_data);
   request.end();
 }
 
 //https://api.instagram.com/v1/subscriptions?client_secret=CLIENT-SECRET&object=all&client_id=CLIENT-ID
 var delete_all_subscription = function(callback) {
-  var _data = querystring.stringify({ client_id: client_id, client_secret: client_secret, object: 'all' });
-  console.log('delete_subscription() _data => ', _data);
   var request = https.request({
     hostname: 'api.instagram.com',
-    path: '/v1/subscriptions/',
-    port: 443,
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(_data)
-    },
+    path: util.format('/v1/subscriptions?client_secret=%s&client_id=%s&object=all', client_secret, client_id),
+    method: 'DELETE'
   }, function(res) {
     res.setEncoding('utf8');
     res.on('data', function(chunk) {
       callback(chunk);
     });
   });
-  request.write(_data);
   request.end();
 }
 
