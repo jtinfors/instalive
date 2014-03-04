@@ -1,23 +1,32 @@
 var express = require('express'),
     url = require('url'),
     instagram = require('./instagram'),
-    // redis = require("redis"),
-    // client = redis.createClient(), // TODO: handle error on create?
-    http = require('http');
+    path = require('path'),
+    engine = require('ejs-locals'),
+    WebSocketServer = require('ws').Server,
+    http = require('http'),
+    shortId = require('shortid'),
+    clients = [];
 
 app = express();
 app.set('port', process.env.PORT || 3000);
+app.engine('ejs', engine);
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
   instagram.subscriptions(function(data) {
     if(JSON.parse(data).data.length > 0) {
-      res.send(data);
+      // res.send(data);
+      res.render('index', {data: data});
     } else {
       instagram.subscribe(function(data) {
-        res.send(data);
+        //res.send(data);
+        res.render('index', {data: data});
       });
     }
   });
@@ -57,10 +66,25 @@ app.post('/subscriptions/all/delete', function(req, res) {
 
 app.post('/subscriptions/callback/', function(req, res) {
   console.log("POST /subscriptions/callback/ => ", req.body);
+  for(var i in clients) {
+    clients[i].send(req.body);
+  }
   res.send("ok");
 });
 
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app);
+server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
+});
+
+var wss = new WebSocketServer({server: server});
+wss.on('connection', function(ws) {
+  ws.id = shortId.generate();
+  clients[ws.id] = ws;
+  console.log(Object.keys(clients).length);
+  ws.on('close', function() {
+    delete clients[ws.id];
+    console.log(Object.keys(clients).length);
+  });
 });
 

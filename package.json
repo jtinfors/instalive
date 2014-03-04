@@ -10,10 +10,17 @@
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@heroku.com:instalive.git"
+  },
   "author": "Jens Tinfors",
   "license": "ISC",
   "dependencies": {
     "express": "~3.4.8",
-    "redis": "^0.10.1"
+    "ejs-locals": "^1.0.2",
+    "ejs": "^0.8.5",
+    "ws": "^0.4.31",
+    "shortid": "^2.0.0"
   }
 }
