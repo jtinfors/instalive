@@ -1,12 +1,54 @@
 var https = require('https'),
     util = require('util'),
+    _ = require('underscore'),
     querystring = require('querystring');
 
 var instagram_client_id = process.env.INSTAGRAM_CLIENT_ID;
 var instagram_client_secret = process.env.INSTAGRAM_CLIENT_SECRET;
 
+var locations = {
+  sthlm: {
+    lat: '59.32536',
+    lng: '18.071197',
+  },
+  gbg: { }
+};
+
+var generate_post_data = function(location, radius) {
+  var lat_lng = locations[location];
+  if(!lat_lng || !location) {
+    return -1;
+  } else {
+    return _.extend({
+      client_id: instagram_client_id,
+      client_secret: instagram_client_secret,
+      object: 'geography',
+      aspect: 'media',
+      radius: (radius != null ? radius : 4000),
+      callback_url: 'http://' + process.env.INSTALIVE_DOMAINNAME + '/subscriptions/callback/'
+    }, lat_lng);
+  }
+};
+
+var urlencode = function(data) {
+  return querystring.stringify(data);
+}
+
+var generate_subscriptions_options = function(content_length) {
+  return {
+    hostname: 'api.instagram.com',
+    path: '/v1/subscriptions/',
+    port: 443,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': content_length
+    }
+  }
+};
+
 // TODO: the lat and lng needs to be parameterized, perhaps using that init pattern?
-var data = querystring.stringify({
+var sthlm_data = querystring.stringify({
   client_id: instagram_client_id,
   client_secret: instagram_client_secret,
   object: 'geography',
@@ -24,23 +66,27 @@ var options = {
   method: 'POST',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
-    'Content-Length': Buffer.byteLength(data)
+    'Content-Length': Buffer.byteLength(sthlm_data)
   },
 };
 
 var subscribe = function(callback) {
   console.log("Creating new subscription!");
+  var data = generate_post_data('sthlm');
+  var content_length = Buffer.byteLength(querystring.stringify(data));
+  var options = generate_subscriptions_options(content_length);
   var request = https.request(options, function(res) {
     res.setEncoding('utf8');
     res.on('data', function(chunk) {
       callback(chunk);
     });
   });
-  request.write(data);
+  request.write(querystring.stringify(data));
   request.end();
 };
 
 var subscriptions = function(callback) {
+  // TODO: this is a stupid hack, make smarter
   if ('development' == process.env.NODE_ENV) {
     data = { data: [ { key: "key", value: "value"}]};
     return callback(JSON.stringify(data));
@@ -92,6 +138,9 @@ var delete_all_subscription = function(callback) {
   request.end();
 }
 
+module.exports.generate_post_data = generate_post_data;
+module.exports.generate_subscriptions_options = generate_subscriptions_options;
+module.exports.urlencode = urlencode;
 module.exports.subscriptions = subscriptions;
 module.exports.subscribe = subscribe;
 module.exports.delete_subscription = delete_subscription;

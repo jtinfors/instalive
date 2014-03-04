@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', function(req, res) {
+app.get('/sthlm', function(req, res) {
   instagram.subscriptions(function(data) {
     if(JSON.parse(data).data.length > 0) {
       // res.send(data);
@@ -52,14 +52,13 @@ app.get('/subscriptions/callback/', function(req, res) {
 
 app.post('/subscriptions/callback/', function(req, res) {
   console.log("POST /subscriptions/callback/ => ", req.body);
-  console.log("req.body typeof => ", typeof(req.body));
   for(var i in clients) {
     clients[i].send(JSON.stringify(req.body));
   }
   res.send("ok");
 });
 
-app.post('/subscriptions/:id/delete', function(req, res) {
+app.post('/subscriptions/:id(\\d+)/delete', function(req, res) {
   console.log("POST /subscriptions/:id/delete => ", req.params);
   instagram.delete_subscription(req.params.id, function(data) {
     res.send(data);
