@@ -41,7 +41,7 @@ var subscribe = function(callback) {
 };
 
 var subscriptions = function(callback) {
-  if ('development' == app.get('env')) {
+  if ('development' == process.env.NODE_ENV) {
     data = { data: [ { key: "key", value: "value"}]};
     return callback(JSON.stringify(data));
   }
