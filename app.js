@@ -32,7 +32,7 @@ app.get('/sthlm', function(req, res) {
   });
 });
 
-app.get('/subscriptions/', function(req, res) {
+app.get('/subscriptions/?', function(req, res) {
   instagram.subscriptions(function(data) {
     res.send(data);
   });

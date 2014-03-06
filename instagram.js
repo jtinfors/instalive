@@ -15,8 +15,13 @@ var locations = {
   gbg: { }
 };
 
-var generate_post_data = function(location, radius, callback_path) {
+var generate_post_data = function(options) {
+  var location = options['location'];
+  var radius = options['radius'] != null ? options['radius'] : 4000;
+  var path = options['path'] != null ? options['path'] : '/subscriptions/callback/';
+
   var lat_lng = locations[location];
+
   if(!lat_lng || !location) {
     return -1;
   } else {
@@ -26,7 +31,7 @@ var generate_post_data = function(location, radius, callback_path) {
       object: 'geography',
       aspect: 'media',
       radius: (radius != null ? radius : 4000),
-      callback_url: 'http://' + process.env.INSTALIVE_DOMAINNAME + callback_path
+      callback_url: 'http://' + process.env.INSTALIVE_DOMAINNAME + path
     }, lat_lng);
   }
 };
@@ -52,7 +57,7 @@ var generate_subscriptions_options = function(content_length) {
 // http://instagram.com/developer/realtime/#geography-subscriptions
 var subscribe = function(location, callback) {
   console.log("Creating new subscription!");
-  var data = generate_post_data(location, '/subscriptions/callback/');
+  var data = generate_post_data({location: location, path: '/subscriptions/callback/'});
   var content_length = Buffer.byteLength(querystring.stringify(data));
   var options = generate_subscriptions_options(content_length);
   var request = https.request(options, function(res) {
