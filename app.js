@@ -61,7 +61,7 @@ app.post('/subscriptions/callback/', function(req, res) {
                 process.env.INSTAGRAM_CLIENT_ID +
                 '?count=1', function(res) {
       res.on('data', function(data) {
-        console.log("data => " JSON.parse(data));
+        console.log("data => " + JSON.parse(data));
         // for(var i in clients) {
         //   clients[i].send(JSON.stringify(req.body));
         // }
