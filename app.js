@@ -5,6 +5,7 @@ var express = require('express'),
     engine = require('ejs-locals'),
     WebSocketServer = require('ws').Server,
     http = require('http'),
+    _ = require('underscore'),
     shortId = require('shortid'),
     clients = [];
 
