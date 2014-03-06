@@ -18,14 +18,14 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// TODO: This should be the last catch-all named/parameterized route
+// TODO: check if we support the location before creating a new subscription.
 app.get('/sthlm', function(req, res) {
   instagram.subscriptions(function(data) {
     if(JSON.parse(data).data.length > 0) {
-      // res.send(data);
       res.render('index', {data: data});
     } else {
-      instagram.subscribe(function(data) {
-        //res.send(data);
+      instagram.subscribe('sthlm', function(data) {
         res.render('index', {data: data});
       });
     }
@@ -50,10 +50,23 @@ app.get('/subscriptions/callback/', function(req, res) {
   }
 });
 
+// Recieves updates to the subscription we've setup
 app.post('/subscriptions/callback/', function(req, res) {
   console.log("POST /subscriptions/callback/ => ", req.body);
-  for(var i in clients) {
-    clients[i].send(JSON.stringify(req.body));
+  var updates =_.where(JSON.parse(req.body), { changed_aspect: "media", object: 'geography'});
+  if(updates != null && updates.length > 0) {
+    var object_id = updates[0].object_id;
+    https.get('https://api.instagram.com/v1/geographies/' +
+              object_id + '/media/recent?client_id=' +
+                process.env.INSTAGRAM_CLIENT_ID +
+                '?count=1', function(res) {
+      res.on('data', function(data) {
+        console.log("data => " JSON.parse(data));
+        // for(var i in clients) {
+        //   clients[i].send(JSON.stringify(req.body));
+        // }
+      });
+    });
   }
   res.send("ok");
 });

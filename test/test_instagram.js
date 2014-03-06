@@ -1,4 +1,6 @@
 var assert = require("assert"),
+    fs = require('fs'),
+    _ = require('underscore'),
     instagram = require('../instagram');
 
 describe('instagram', function() {
@@ -30,4 +32,14 @@ describe('instagram', function() {
       assert.ok(options.headers['Content-Length'] > 0);
     });
   });
+
+  describe('#subscriptions', function() {
+    it('should return data', function(done) {
+      instagram.subscriptions(function(data) {
+        assert.ok(JSON.parse(data).data != null);
+        done();
+      });
+    });
+  });
+
 });
