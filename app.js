@@ -7,9 +7,12 @@ var express = require('express'),
     http = require('http'),
     _ = require('underscore'),
     shortId = require('shortid'),
+    routes = require('./routes'),
     clients = [];
 
 app = express();
+module.exports = app; // To make it available to tests
+
 app.set('port', process.env.PORT || 3000);
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
@@ -19,19 +22,9 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// TODO: This should be the last catch-all named/parameterized route
+// TODO: Refactor this to be the last catch-all named/parameterized route for all supported named locations
 // TODO: check if we support the location before creating a new subscription.
-app.get('/sthlm', function(req, res) {
-  instagram.subscriptions(function(data) {
-    if(JSON.parse(data).data.length > 0) {
-      res.render('index', {data: data});
-    } else {
-      instagram.subscribe('sthlm', function(data) {
-        res.render('index', {data: data});
-      });
-    }
-  });
-});
+app.get('/sthlm', routes.sthlm);
 
 app.get('/subscriptions/?', function(req, res) {
   instagram.subscriptions(function(data) {
@@ -54,18 +47,19 @@ app.get('/subscriptions/callback/', function(req, res) {
 // Recieves updates to the subscription we've setup
 app.post('/subscriptions/callback/', function(req, res) {
   console.log("POST /subscriptions/callback/ => ", req.body);
-  var updates =_.where(JSON.parse(req.body), { changed_aspect: "media", object: 'geography'});
-  if(updates != null && updates.length > 0) {
+  var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
+  if(updates != null && updates.length > 0 && 'development' != process.env.NODE_ENV) {
     var object_id = updates[0].object_id;
+    // TODO: refactor/move to its own layer of abstraction and remove check for env above when can has mock
     https.get('https://api.instagram.com/v1/geographies/' +
               object_id + '/media/recent?client_id=' +
                 process.env.INSTAGRAM_CLIENT_ID +
                 '?count=1', function(res) {
       res.on('data', function(data) {
-        console.log("data => " + JSON.parse(data));
-        // for(var i in clients) {
-        //   clients[i].send(JSON.stringify(req.body));
-        // }
+        console.log("new medias! => " + JSON.parse(data));
+        for(var i in clients) {
+          clients[i].send(JSON.stringify(req.body));
+        }
       });
     });
   }

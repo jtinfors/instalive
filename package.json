@@ -8,13 +8,16 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=development mocha"
   },
   "repository": {
     "type": "git",
     "url": "git@heroku.com:instalive.git"
   },
   "author": "Jens Tinfors",
+  "devDependencies": {
+    "supertest": "^0.9.0"
+  },
   "license": "ISC",
   "dependencies": {
     "express": "~3.4.8",
