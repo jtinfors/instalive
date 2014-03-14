@@ -50,17 +50,11 @@ app.post('/subscriptions/callback/', function(req, res) {
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
   if(updates != null && updates.length > 0 && 'development' != process.env.NODE_ENV) {
     var object_id = updates[0].object_id;
-    // TODO: refactor/move to its own layer of abstraction and remove check for env above when can has mock
-    https.get('https://api.instagram.com/v1/geographies/' +
-              object_id + '/media/recent?client_id=' +
-                process.env.INSTAGRAM_CLIENT_ID +
-                '?count=1', function(res) {
-      res.on('data', function(data) {
+    instagram.fetch_new_geo_media(object_id, 1, function(data) {
         console.log("new medias! => " + JSON.parse(data));
         for(var i in clients) {
           clients[i].send(JSON.stringify(req.body));
         }
-      });
     });
   }
   res.send("ok");

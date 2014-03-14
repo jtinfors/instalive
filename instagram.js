@@ -125,11 +125,29 @@ var delete_all_subscription = function(callback) {
   request.end();
 }
 
+var fetch_new_geo_media = function(object_id, count, callback) {
+  if('development' == process.env.NODE_ENV) {
+    fs.readFile('./data/subscription_update.json', 'utf-8', function(err, data) {
+      if (err) throw err;
+      return callback(data);
+    });
+  } else {
+    https.get('https://api.instagram.com/v1/geographies/' +
+              object_id + '/media/recent?client_id=' + instagram_client_id  +
+                '?count=' + count, function(res) {
+                res.on('data', function(data) {
+                  callback(data);
+                });
+              });
+  }
+}
+
 module.exports.generate_post_data = generate_post_data;
 module.exports.generate_subscriptions_options = generate_subscriptions_options;
 module.exports.urlencode = urlencode;
 module.exports.subscriptions = subscriptions;
 module.exports.subscribe = subscribe;
+module.exports.fetch_new_geo_media = fetch_new_geo_media;
 module.exports.delete_subscription = delete_subscription;
 module.exports.delete_all_subscription = delete_all_subscription;
 

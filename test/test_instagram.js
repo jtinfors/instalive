@@ -42,4 +42,14 @@ describe('instagram', function() {
       });
     });
   });
+
+  describe('#fetch_new_geo_media', function() {
+    it('should return proper data', function(done) {
+      instagram.fetch_new_geo_media(123, 1, function(data) {
+        var result = JSON.parse(data);
+        assert.ok(result.length == 2);
+        done();
+      })
+    });
+  });
 });
