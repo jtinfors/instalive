@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Instalive</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
@@ -12,7 +12,9 @@
     <![endif]-->
   </head>
   <body>
-    <%- body %>
+    <div class="container">
+      <%- body %>
+    </div>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="/js/main.js"></script>
