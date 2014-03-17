@@ -70,6 +70,30 @@ var subscribe = function(location, callback) {
   request.end();
 };
 
+var fetch_new_geo_media = function(object_id, count, callback) {
+  if('development' == process.env.NODE_ENV) {
+    fs.readFile('./data/subscription_update.json', 'utf-8', function(err, data) {
+      if (err) throw err;
+      return callback(data);
+    });
+  } else {
+    var path = util.format('/v1/geographies/%s/media/recent?client_id=%s&count=', object_id, instagram_client_id, count);
+    var req = https.request({
+      hostname: 'api.instagram.com',
+      path: path
+    }, function(res) {
+      res.setEncoding('utf8');
+      res.on('data', function(data) {
+        console.log("[subscriptions] Recieved data => ", data, " sending it to callback");
+        callback(data);
+      });
+    });
+    req.end();
+    req.on('error', function(e) {
+      console.error("error when fetching new media => ", e);
+    });
+}
+
 var subscriptions = function(callback) {
   if ('development' == process.env.NODE_ENV) {
     fs.readFile('./data/list_subscriptions.json', 'utf-8', function(err, data) {
@@ -123,23 +147,6 @@ var delete_all_subscription = function(callback) {
     });
   });
   request.end();
-}
-
-var fetch_new_geo_media = function(object_id, count, callback) {
-  if('development' == process.env.NODE_ENV) {
-    fs.readFile('./data/subscription_update.json', 'utf-8', function(err, data) {
-      if (err) throw err;
-      return callback(data);
-    });
-  } else {
-    https.get('https://api.instagram.com/v1/geographies/' +
-              object_id + '/media/recent?client_id=' + instagram_client_id  +
-                '?count=' + count, function(res) {
-                res.on('data', function(data) {
-                  callback(data);
-                });
-              });
-  }
 }
 
 module.exports.generate_post_data = generate_post_data;
