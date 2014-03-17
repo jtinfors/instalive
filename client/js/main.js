@@ -22,7 +22,7 @@ $(function() {
                             {{/tags}}\
                           </div>\
                         </div></li>", media.data[i]);
-        $(item).appendTo("#pings");
+        $(item).prependTo("#pings");
       }
     } else {
       console.log("fail", event);
