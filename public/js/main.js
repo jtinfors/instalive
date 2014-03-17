@@ -21,7 +21,7 @@ $(function() {
 
         $('<span>' + "hej" + "</span>", {"class": "badge"}).appendTo(div);
         $('<img/>', {
-          "class": "img-responsive img-rounded"
+          "class": "img-responsive img-rounded",
           "title": text,
           "src": media.data[0].images.low_resolution.url
         }).appendTo(div).appendTo(line_item).appendTo("#pings");
