@@ -78,6 +78,7 @@ var fetch_new_geo_media = function(object_id, count, callback) {
     });
   } else {
     var path = util.format('/v1/geographies/%s/media/recent?client_id=%s&count=', object_id, instagram_client_id, count);
+    console.log('path => ', path);
     var req = https.request({
       hostname: 'api.instagram.com',
       path: path
@@ -92,6 +93,7 @@ var fetch_new_geo_media = function(object_id, count, callback) {
     req.on('error', function(e) {
       console.error("error when fetching new media => ", e);
     });
+  }
 }
 
 var subscriptions = function(callback) {
@@ -109,7 +111,7 @@ var subscriptions = function(callback) {
       res.on('data', function(data) {
         console.log("[subscriptions] Recieved data => ", data, " sending it to callback");
         callback(data);
-      })
+      });
     });
     req.end();
     req.on('error', function(e) {
