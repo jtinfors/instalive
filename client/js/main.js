@@ -14,7 +14,7 @@ $(function() {
       for(var i=0; i < media.data.length;i++) {
         mustache.render("<li><div>\
                         <a href=\"{{{link}}}\" class=\"thumbnail\">\
-                          <img title=\"{{text}}\" src=\"{{{images.thumbnail}}}\" class=\"img-responsive img-rounded\"/>\
+                          <img title=\"{{caption.text}}\" src=\"{{{images.thumbnail.url}}}\" class=\"img-responsive img-rounded\"/>\
                           <div class=\"caption\">\
                           <p>{{caption.text}}</p>\
                             {{#tags}}\
