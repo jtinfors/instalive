@@ -21,7 +21,7 @@ $(function() {
                         </a>\
                         </div></li>", media.data[i]);
         console.log(item);
-        item.appendTo("#pings");
+        $(item).appendTo("#pings");
       }
     } else {
       console.log("fail", event);
