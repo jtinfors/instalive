@@ -3,7 +3,7 @@ $(function() {
   var host = location.origin.replace(/^http/, 'ws')
   var ws = new WebSocket(host);
   ws.onmessage = function (event) {
-    if(event.data.meta == 200) {
+    if(event.data.meta.code == 200) {
       var media = JSON.parse(event.data);
       console.log(media);
       var text = "";
