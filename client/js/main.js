@@ -12,7 +12,7 @@ $(function() {
       for(var i=0; i < media.data.length;i++) {
         var item = mustache.render("<li><div class=\"row\">\
                    <div class=\"col-md-6 col-lg-6\">\
-                     <a href=\"{{link}}\">\
+                     <a href=\"{{link}}\" target=\"_blank\">\
                      <img title=\"{{{caption.text}}}\"\
                           src=\"{{{images.standard_resolution.url}}}\"\
                           class=\"img-responsive img-rounded\"\
