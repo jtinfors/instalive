@@ -1,14 +1,14 @@
 var mustache = require('mustache');
 
 $(function() {
-  console.log("loaded");
   var host = location.origin.replace(/^http/, 'ws');
   var ws = new WebSocket(host);
+
+  // Assumes data in form of instagram media updates
   ws.onmessage = function (event) {
     var media = JSON.parse(event.data);
     if(media.meta.code == 200 && media.data.length > 0) {
       for(var i=0; i < media.data.length;i++) {
-        console.log(media.data[i]);
         var item = mustache.render("<li><div>\
                           <img title=\"{{{caption.text}}}\"\
                                    src=\"{{{images.standard_resolution.url}}}\"\
@@ -24,9 +24,14 @@ $(function() {
                         </div></li>", media.data[i]);
         $(item).prependTo("#pings");
       }
-    } else {
-      console.log("fail", event);
     }
   };
+
+  setInterval(fetch_nr_sockets, 10000);
 });
 
+function fetch_nr_sockets() {
+  $.getJSON('/sockets', function(data) {
+    $('.glyphicon-cloud-download').attr('title', data);
+  });
+}

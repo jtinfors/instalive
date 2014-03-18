@@ -78,14 +78,12 @@ var fetch_new_geo_media = function(object_id, count, callback) {
     });
   } else {
     var path = util.format('/v1/geographies/%s/media/recent?client_id=%s&count=%d', object_id, instagram_client_id, count);
-    console.log('[fetch_new_geo_media] path => ', path);
     var req = https.request({
       hostname: 'api.instagram.com',
       path: path
     }, function(res) {
       res.setEncoding('utf8');
       res.on('data', function(data) {
-        console.log("[fetch_new_geo_media] Recieved data => ", data, " sending it back to app");
         callback(data);
       });
     });

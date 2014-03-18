@@ -24,7 +24,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // TODO: Refactor this to be the last catch-all named/parameterized route for all supported named locations
 // TODO: check if we support the location before creating a new subscription.
+app.get('/', routes.index);
+
 app.get('/sthlm', routes.sthlm);
+
+app.get('/sockets', function(req, res) {
+  res.json(clients.length);
+});
 
 app.get('/subscriptions/?', function(req, res) {
   instagram.subscriptions(function(data) {
