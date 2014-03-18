@@ -1,18 +1,29 @@
 # Instalive
 
+Displays a constant flow of instagram images from a given geographic location.
+Images are pushed to connected browsers over websockets.
+
+Uses browserify to utilize npm modules in the browser.
+
+Se tout.
+
+
 ## Setup
 
-Set these shell environment variables:
+These shell environment variables are mandatory:
 
     INSTALIVE_DOMAINNAME=<fqdn>
     INSTAGRAM_CLIENT_ID=<INSTAGRAM_CLIENT_ID>
     INSTAGRAM_CLIENT_SECRET=<INSTAGRAM_CLIENT_SECRET>
 
-For a heroku deployment that would be:
+
+## Deploy to heroku
 
     heroku config:set INSTALIVE_DOMAINNAME=<fqdn>
     heroku config:set INSTAGRAM_CLIENT_ID=<INSTAGRAM_CLIENT_ID>
     heroku config:set INSTAGRAM_CLIENT_SECRET=<INSTAGRAM_CLIENT_SECRET>
+
+    gulp scripts
 
 
 ## Test
@@ -20,5 +31,5 @@ For a heroku deployment that would be:
 Tests are located under test(!). Run them using mocha.
 
     npm install -g mocha
-    NODE_ENV=development mocha [--no-colors]
+    NODE_ENV=development mocha
 
