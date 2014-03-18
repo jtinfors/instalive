@@ -2,6 +2,7 @@
 
 - Display user(?)
 - Make sure not to load same item twice (probably caused by calling instagram/recent too frequently)
+  - Use min_id param when fetching recent media
 - Check for WebSocket support on page load
 - Animate pics as they arrive
 - abstract away all interactions with instagram
@@ -12,3 +13,4 @@
 - Reafctor mustache template to something sane
 - Starting popping off images at end of list at about ~100
 - Fix DNS using CNAME or whatever is needed
+- parsea date

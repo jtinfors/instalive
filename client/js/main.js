@@ -37,6 +37,9 @@ $(function() {
                          <span title=\"Location\" class=\"label label-success\"><span class=\"glyphicon glyphicon-cloud-upload\"></span> {{.}}</span>\
                        {{/name}}\
                      {{/location}}\
+                     {{#datetime}}\
+                       <span class=\"label label-primary\"><date datetime=\"{{datetime}}\">{{relative_time}}</date></span>\
+                     {{/datetime}}\
                    </div>\
                  </div></li>", util.strip_tags(media.data[i]));
         $(item).prependTo("#pings");
