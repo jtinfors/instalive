@@ -29,7 +29,7 @@ app.get('/', routes.index);
 app.get('/sthlm', routes.sthlm);
 
 app.get('/sockets', function(req, res) {
-  res.json(clients.length);
+  res.json(Object.keys(clients).length);
 });
 
 app.get('/subscriptions/?', function(req, res) {
