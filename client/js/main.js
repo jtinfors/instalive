@@ -27,7 +27,7 @@ $(function() {
     }
   };
 
-  setInterval(fetch_nr_sockets, 10000);
+  setInterval(fetch_nr_sockets, 60000);
 });
 
 function fetch_nr_sockets() {
