@@ -21,7 +21,11 @@ $(function() {
                      </a>\
                    </div>\
                    <div class=\"col-md-6 col-lg-6\">\
-                     <div class=\"well well-sm\">{{caption.text}}</div>\
+                     {{#caption}}\
+                       {{#text}}\
+                         <div class=\"well well-sm\">{{caption.text}}</div>\
+                       {{/text}}\
+                     {{/caption}}\
                      {{#tags}}\
                        <span title=\"Tag\" class=\"label label-default\">{{.}}</span>\
                      {{/tags}}\
@@ -40,8 +44,8 @@ $(function() {
     }
   };
 
-  ws.onclose = function() { console.log("ws closed for some reason..");}
-  ws.onerror = function() { console.log("ws errored for some reason..");}
+  ws.onclose = function() { alert("ws closed for some reason..");}
+  ws.onerror = function() { alert("ws errored for some reason..");}
   ws.onopen = function() { console.log("ws opened!");}
 
   setInterval(fetch_nr_sockets, 60000);

@@ -22,8 +22,6 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// TODO: Refactor this to be the last catch-all named/parameterized route for all supported named locations
-// TODO: check if we support the location before creating a new subscription.
 app.get('/', routes.index);
 
 app.get('/sthlm', routes.sthlm);
