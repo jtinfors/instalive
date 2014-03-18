@@ -38,7 +38,7 @@ $(function() {
                        {{/name}}\
                      {{/location}}\
                      {{#datetime}}\
-                       <span class=\"label label-primary\"><date datetime=\"{{datetime}}\">{{relative_time}}</date></span>\
+                       <span class=\"label label-primary\"><span class=\"glyphicon glyphicon-time\"></span> <date datetime=\"{{datetime}}\">{{relative_time}}</date></span>\
                      {{/datetime}}\
                    </div>\
                  </div></li>", util.parse_date(util.strip_tags(media.data[i])));
