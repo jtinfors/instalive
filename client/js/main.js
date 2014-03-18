@@ -12,17 +12,30 @@ $(function() {
       for(var i=0; i < media.data.length;i++) {
         var item = mustache.render("<li><div class=\"row\">\
                    <div class=\"col-md-6 col-lg-6\">\
+                     <a href=\"{{link}}\">\
                      <img title=\"{{{caption.text}}}\"\
                           src=\"{{{images.standard_resolution.url}}}\"\
                           class=\"img-responsive img-rounded\"\
                           height=\"{{images.standard_resolution.height}}\"\
                           width=\"{{images.standard_resolution.width}}\"/>\
+                     </a>\
                    </div>\
                    <div class=\"col-md-6 col-lg-6\">\
                      <div class=\"well well-sm\">{{caption.text}}</div>\
                      {{#tags}}\
+                       <span class=\"glyphicon glyphicon-tag\"></span>\
                        <span class=\"label label-default\">{{.}}</span>\
                      {{/tags}}\
+                     {{#filter}}\
+                       <span class=\"glyphicon glyphicon-tint\"></span>\
+                       <span class=\"label label-info\">{{.}}</span>\
+                     {{/filter}}\
+                     {{#location}}\
+                       {{#name}}\
+                         <span class=\"glyphicon glyphicon-cloud-upload\"></span>\
+                         <span class=\"label label-info\">{{.}}</span>\
+                       {{/name}}\
+                     {{/location}}\
                    </div>\
                  </div></li>", util.strip_tags(media.data[i]));
         $(item).prependTo("#pings");
