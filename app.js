@@ -37,25 +37,25 @@ app.get('/subscriptions/?', function(req, res) {
 });
 
 app.get('/subscriptions/callback/', function(req, res) {
-  console.log("GET /subscriptions/callback/ => ", req.query);
+  //console.log("GET /subscriptions/callback/ => ", req.query);
   var parsedRequest = url.parse(req.url, true);
   if('subscribe' === parsedRequest['query']['hub.mode'] && parsedRequest['query']['hub.challenge'] != null) {
-    console.log("sending back hub_challange => ", parsedRequest['query']['hub.challenge']);
+    //console.log("sending back hub_challange => ", parsedRequest['query']['hub.challenge']);
     res.send(parsedRequest['query']['hub.challenge']);
   } else {
-    console.log("sending back nok => ");
+    //console.log("sending back nok => ");
     res.send(400, "nok");
   }
 });
 
 // Recieves updates to the subscription we've setup
 app.post('/subscriptions/callback/', function(req, res) {
-  console.log("POST /subscriptions/callback/ => ", req.body);
+  //console.log("POST /subscriptions/callback/ => ", req.body);
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
   if(updates != null && updates.length > 0 && 'development' != process.env.NODE_ENV) {
     var object_id = updates[0].object_id;
     instagram.fetch_new_geo_media(object_id, 1, function(data) {
-        console.log("new medias! => " + data);
+        //console.log("new medias! => " + data);
         for(var i in clients) {
           clients[i].send(data);
         }
@@ -65,14 +65,14 @@ app.post('/subscriptions/callback/', function(req, res) {
 });
 
 app.post('/subscriptions/:id(\\d+)/delete', function(req, res) {
-  console.log("POST /subscriptions/:id/delete => ", req.params);
+  //console.log("POST /subscriptions/:id/delete => ", req.params);
   instagram.delete_subscription(req.params.id, function(data) {
     res.send(data);
   });
 });
 
 app.post('/subscriptions/all/delete', function(req, res) {
-  console.log("POST /subscriptions/all/delete => ", req.params);
+  //console.log("POST /subscriptions/all/delete => ", req.params);
   instagram.delete_all_subscription(function(data) {
     res.send(data);
   });
@@ -80,17 +80,17 @@ app.post('/subscriptions/all/delete', function(req, res) {
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+  //console.log('Express server listening on port ' + app.get('port'));
 });
 
 var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
   ws.id = shortId.generate();
   clients[ws.id] = ws;
-  console.log(Object.keys(clients).length);
+  //console.log(Object.keys(clients).length);
   ws.on('close', function() {
     delete clients[ws.id];
-    console.log(Object.keys(clients).length);
+    //console.log(Object.keys(clients).length);
   });
 });
 

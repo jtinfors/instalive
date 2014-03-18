@@ -56,7 +56,7 @@ var generate_subscriptions_options = function(content_length) {
 // Create a subscription to a geographical location as per =>
 // http://instagram.com/developer/realtime/#geography-subscriptions
 var subscribe = function(location, callback) {
-  console.log("Creating new subscription!");
+  //console.log("Creating new subscription!");
   var data = generate_post_data({location: location, path: '/subscriptions/callback/'});
   var content_length = Buffer.byteLength(querystring.stringify(data));
   var options = generate_subscriptions_options(content_length);
@@ -89,7 +89,7 @@ var fetch_new_geo_media = function(object_id, count, callback) {
     });
     req.end();
     req.on('error', function(e) {
-      console.error("error when fetching new media => ", e);
+      //console.error("error when fetching new media => ", e);
     });
   }
 }
@@ -107,13 +107,13 @@ var subscriptions = function(callback) {
     }, function(res) {
       res.setEncoding('utf8');
       res.on('data', function(data) {
-        console.log("[subscriptions] Recieved data => ", data, " sending it to callback");
+        //console.log("[subscriptions] Recieved data => ", data, " sending it to callback");
         callback(data);
       });
     });
     req.end();
     req.on('error', function(e) {
-      console.error("error when fetching subscription => ", e);
+      //console.error("error when fetching subscription => ", e);
     });
   }
 }
