@@ -23,14 +23,14 @@ $(function() {
                    <div class=\"col-md-6 col-lg-6\">\
                      <div class=\"well well-sm\">{{caption.text}}</div>\
                      {{#tags}}\
-                       <span class=\"label label-default\">{{.}}</span>\
+                       <span title=\"Tag\" class=\"label label-default\">{{.}}</span>\
                      {{/tags}}\
                      {{#filter}}\
-                       <span class=\"label label-info\"><span class=\"glyphicon glyphicon-tint\"></span> {{.}}</span>\
+                       <span title=\"Filter\" class=\"label label-info\"><span class=\"glyphicon glyphicon-tint\"></span> {{.}}</span>\
                      {{/filter}}\
                      {{#location}}\
                        {{#name}}\
-                         <span class=\"label label-success\"><span class=\"glyphicon glyphicon-cloud-upload\"></span> {{.}}</span>\
+                         <span title=\"Location\" class=\"label label-success\"><span class=\"glyphicon glyphicon-cloud-upload\"></span> {{.}}</span>\
                        {{/name}}\
                      {{/location}}\
                    </div>\
@@ -40,9 +40,15 @@ $(function() {
     }
   };
 
+  ws.onclose = function() { console.log("ws closed for some reason..");}
+  ws.onerror = function() { console.log("ws errored for some reason..");}
+  ws.onopen = function() { console.log("ws opened!");}
+
   setInterval(fetch_nr_sockets, 60000);
 });
 
+// Here for debug reasons mainly.
+// Sets a title attr on the site logo to easily see the number of connected sockets
 function fetch_nr_sockets() {
   $.getJSON('/sockets', function(data) {
     $('.glyphicon-cloud-download').attr('title', data);
