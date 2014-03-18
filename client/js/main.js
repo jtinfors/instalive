@@ -23,17 +23,14 @@ $(function() {
                    <div class=\"col-md-6 col-lg-6\">\
                      <div class=\"well well-sm\">{{caption.text}}</div>\
                      {{#tags}}\
-                       <span class=\"glyphicon glyphicon-tag\"></span>\
                        <span class=\"label label-default\">{{.}}</span>\
                      {{/tags}}\
                      {{#filter}}\
-                       <span class=\"glyphicon glyphicon-tint\"></span>\
-                       <span class=\"label label-info\">{{.}}</span>\
+                       <span class=\"label label-info\"><span class=\"glyphicon glyphicon-tint\"></span> {{.}}</span>\
                      {{/filter}}\
                      {{#location}}\
                        {{#name}}\
-                         <span class=\"glyphicon glyphicon-cloud-upload\"></span>\
-                         <span class=\"label label-info\">{{.}}</span>\
+                         <span class=\"label label-success\"><span class=\"glyphicon glyphicon-cloud-upload\"></span> {{.}}</span>\
                        {{/name}}\
                      {{/location}}\
                    </div>\
