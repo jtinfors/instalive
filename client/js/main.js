@@ -11,14 +11,14 @@ $(function() {
     if(media.meta.code == 200 && media.data.length > 0) {
       for(var i=0; i < media.data.length;i++) {
         var item = mustache.render("<li><div class=\"row\">\
-                   <div class=\"col-xs-6 col-md-6 col-lg-6\">\
+                   <div class=\"col-md-6 col-lg-6\">\
                      <img title=\"{{{caption.text}}}\"\
                           src=\"{{{images.standard_resolution.url}}}\"\
                           class=\"img-responsive img-rounded\"\
                           height=\"{{images.standard_resolution.height}}\"\
                           width=\"{{images.standard_resolution.width}}\"/>\
                    </div>\
-                   <div class=\"col-xs-6 col-md-6 col-lg-6\">\
+                   <div class=\"col-md-6 col-lg-6\">\
                      <div class=\"well well-sm\">{{caption.text}}</div>\
                      {{#tags}}\
                        <span class=\"label label-default\">{{.}}</span>\
