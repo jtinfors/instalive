@@ -19,7 +19,7 @@ $(function() {
                           width=\"{{images.standard_resolution.width}}\"/>\
                    </div>\
                    <div class=\"col-xs-6 col-md-6 col-lg-6\">\
-                     <p>{{caption.text}}</p>\
+                     <div class=\"well well-sm\">{{caption.text}}</div>\
                      {{#tags}}\
                        <span class=\"label label-default\">{{.}}</span>\
                      {{/tags}}\
