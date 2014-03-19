@@ -3,8 +3,7 @@ var express = require('express'),
     instagram = require('./instagram'),
     path = require('path'),
     engine = require('ejs-locals'),
-    // WebSocketServer = require('ws').Server,
-    WebSocketServer = require('websocket').server,
+    WebSocketServer = require('ws').Server,
     http = require('http'),
     _ = require('underscore'),
     shortId = require('shortid'),
@@ -85,25 +84,14 @@ server.listen(app.get('port'), function(){
   //console.log('Express server listening on port ' + app.get('port'));
 });
 
-wsServer = new WebSocketServer({httpServer: server, autoAcceptConnections: true});
-wsServer.on('connect', function(ws) {
-   ws.id = shortId.generate();
-   clients[ws.id] = ws;
-   //console.log(Object.keys(clients).length);
-   ws.on('close', function() {
-     delete clients[ws.id];
-     //console.log(Object.keys(clients).length);
-   });
+var wss = new WebSocketServer({server: server});
+wss.on('connection', function(ws) {
+  ws.id = shortId.generate();
+  clients[ws.id] = ws;
+  //console.log(Object.keys(clients).length);
+  ws.on('close', function() {
+    delete clients[ws.id];
+    //console.log(Object.keys(clients).length);
+  });
 });
-// einaros/ws
-// var wss = new WebSocketServer({server: server});
-// wss.on('connection', function(ws) {
-//   ws.id = shortId.generate();
-//   clients[ws.id] = ws;
-//   //console.log(Object.keys(clients).length);
-//   ws.on('close', function() {
-//     delete clients[ws.id];
-//     //console.log(Object.keys(clients).length);
-//   });
-// });
 
