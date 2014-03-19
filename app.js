@@ -55,9 +55,9 @@ app.post('/subscriptions/callback/', function(req, res) {
   if(updates != null && updates.length > 0 && 'development' != process.env.NODE_ENV) {
     var object_id = updates[0].object_id;
     instagram.fetch_new_geo_media(object_id, 1, function(data) {
-        console.log("new medias JSON! => " + JSON.parse(data));
+        console.log("new medias JSON! => " + JSON.stringify(data));
         for(var i in clients) {
-          clients[i].send(JSON.stringify(JSON.parse(data)));
+          clients[i].send(JSON.stringify(data));
         }
     });
   }
