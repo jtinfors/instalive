@@ -4,14 +4,10 @@ var mustache = require('mustache'),
 $(function() {
   var host = location.origin.replace(/^http/, 'ws');
   var ws = new WebSocket(host);
-  var locked = false;
 
   // Assumes data in form of instagram media updates
   ws.onmessage = function (event) {
-    if(locked) {
-      return;
-    } else {
-      locked = true;
+    if(!event.data) {return;}
     var media = JSON.parse(event.data);
     if(media.meta.code == 200 && media.data.length > 0) {
       for(var i=0; i < media.data.length;i++) {
@@ -49,8 +45,6 @@ $(function() {
                  </div></li>", util.parse_date(util.strip_tags(media.data[i])));
         $(item).prependTo("#pings");
       }
-    }
-    locked = false;
     }
   };
 
