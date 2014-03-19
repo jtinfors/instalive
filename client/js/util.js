@@ -10,7 +10,7 @@ module.exports.strip_tags = function(item) {
 }
 
 module.exports.parse_date = function(item) {
-  if(item.created_time) {
+  if(item['created_time']) {
     var date = new Date(item.created_time);
     item.datetime = moment(item.created_time * 1000).toISOString();
     item.relative_time = moment(item.created_time * 1000).fromNow();

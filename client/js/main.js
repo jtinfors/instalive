@@ -8,10 +8,9 @@ $(function() {
 
   // Assumes data in form of instagram media updates
   ws.onmessage = function (event) {
-    console.log("event.data => ", event.data);
+    locked = true;
     var media = JSON.parse(event.data);
     if(!locked && media.meta.code == 200 && media.data.length > 0) {
-      locked = true;
       for(var i=0; i < media.data.length;i++) {
         var item = mustache.render("<li><div class=\"row\">\
                    <div class=\"col-md-6 col-lg-6\">\
@@ -47,8 +46,8 @@ $(function() {
                  </div></li>", util.parse_date(util.strip_tags(media.data[i])));
         $(item).prependTo("#pings");
       }
-      locked = false;
     }
+    locked = false;
   };
 
   ws.onclose = function() { alert("ws closed for some reason..");}
