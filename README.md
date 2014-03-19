@@ -11,7 +11,9 @@ Se tout.
 Download and Install [Heroku toolbelt](https://toolbelt.heroku.com/)
 
 Install basic dependecies:
+
 Use [homebrew](http://brew.sh/) for Mac OS X: `brew install node git`
+
 For archlinux do: `pacman -S nodejs git`
 
 Install project dependecies:
