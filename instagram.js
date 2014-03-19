@@ -77,7 +77,7 @@ var fetch_new_geo_media = function(object_id, count, callback) {
       return callback(data);
     });
   } else {
-    var path = util.format('/v1/geographies/%s/media/recent?client_id=%s', object_id, instagram_client_id);
+    var path = util.format('/v1/geographies/%s/media/recent?client_id=%s&count=%d', object_id, instagram_client_id, count);
     var req = https.request({
       hostname: 'api.instagram.com',
       path: path
