@@ -1,5 +1,7 @@
 # TODO
 
+- Solve problem with messages split in half
+- Add support for emoji
 - Display user(?)
 - Make sure not to load same item twice (probably caused by calling instagram/recent too frequently)
   - Use min_id param when fetching recent media
@@ -13,4 +15,6 @@
 - Reafctor mustache template to something sane
 - Starting popping off images at end of list at about ~100
 - Fix DNS using CNAME or whatever is needed
+
+# DONE
 - parsea date
