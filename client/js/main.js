@@ -59,6 +59,7 @@ $(function() {
   ws.onopen = function() { console.log("ws opened!");}
 
   setInterval(fetch_nr_sockets, 60000);
+  setInterval(remove_some_items, 90000);
 });
 
 // Here for debug reasons mainly.
@@ -67,5 +68,9 @@ function fetch_nr_sockets() {
   $.getJSON('/sockets', function(data) {
     $('.glyphicon-cloud-download').attr('title', data);
   });
+}
+
+function remove_some_items() {
+  $("#pings li:gt(50)").remove()
 }
 
