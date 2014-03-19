@@ -57,7 +57,7 @@ app.post('/subscriptions/callback/', function(req, res) {
     instagram.fetch_new_geo_media(object_id, 1, function(data) {
         for(var i in clients) {
           clients[i].send(data, function(err) {
-            console.log("err happened => ", err);
+            if(err) { console.log("err happened => ", err); }
           });
         }
     });
