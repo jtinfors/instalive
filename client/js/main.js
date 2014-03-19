@@ -7,8 +7,14 @@ $(function() {
 
   // Assumes data in form of instagram media updates
   ws.onmessage = function (event) {
-    if(!event.data) {return;}
-    var media = JSON.parse(event.data);
+    if(!event.data) {return;} // TODO: does this ever happen?
+    try { // This can actually happen, not sure why yet..
+      var media = JSON.parse(event.data);
+    } catch (e) {
+      console.log("exception => ", e);
+      console.log("problem parsing data => ", event.data);
+      return;
+    }
     if(media.meta.code == 200 && media.data.length > 0) {
       for(var i=0; i < media.data.length;i++) {
         var item = mustache.render("<li><div class=\"row\">\
