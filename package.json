@@ -25,7 +25,7 @@
     "express": "~3.4.8",
     "ejs-locals": "^1.0.2",
     "ejs": "^0.8.5",
-    "ws": "^0.4.31",
+    "ws": "git://github.com/codingphil/ws.git#AllowFragmentedMessages",
     "shortid": "^2.0.0",
     "underscore": "^1.6.0",
     "moment": "^2.5.1",
