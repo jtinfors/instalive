@@ -8,17 +8,15 @@ Se tout.
 
 ## Setup
 
-Download and Install [Heroku toolbelt](https://toolbelt.heroku.com/)
-
 Install basic dependecies:
 
-Use [homebrew](http://brew.sh/) for Mac OS X: `brew install node git`
+For Mac OS X with [homebrew](http://brew.sh/) do: `brew install node git`
 
 For archlinux do: `pacman -S nodejs git`
 
 Install project dependecies:
 
-    npm install -g gulp mocha
+    [sudo] npm install -g gulp mocha
     npm install
 
 A couple of shell vars are used for the app runtime to talk to the instagram API, set them:
@@ -30,13 +28,17 @@ A couple of shell vars are used for the app runtime to talk to the instagram API
 
 ## Compile
 
-Client side javascript are located under `./client`.  Browserify is used to utilize npm modules in the browser.
-`gulp [default]` is used to compile our js with dependend npm modules, **it is important to run it before deploying**
+Client side javascript are located under `./client`. [Browserify](http://browserify.org/) is used to utilize npm modules in the browser.
+`gulp [default]` is used to compile our js with dependend npm modules.
+
+**It is important to run gulp before deploying**
 
     gulp
 
 
 ## Deploy to heroku
+
+Download and Install [Heroku toolbelt](https://toolbelt.heroku.com/)
 
 Add heroku as a git remote, see [deploying with Git](https://devcenter.heroku.com/articles/git) for more info.
 If you are a collaborator of the project it should be enough to run:
@@ -52,6 +54,10 @@ Before deploy, set these heroku config vars:
 Now, deploy:
 
     git push heroku master
+
+or, compile, commit and push in one push (pun intended):
+
+    gulp && git commit -a -m '<message>' && git push heroku master
 
 
 ## Test
