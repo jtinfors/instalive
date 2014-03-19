@@ -8,7 +8,7 @@ describe('util', function() {
       fs.readFile('./data/recent_media.json', 'utf8', function(err, data) {
         var parsed = JSON.parse(data);
         var new_data = util.strip_tags(parsed.data[0]);
-        assert.equal("I väntan på musiken @marikaberggrund", new_data.caption.text);
+        assert.equal("I väntan på musiken @marikaberggrund \u2744\u26c4", new_data.caption.text);
         done();
       });
     });
