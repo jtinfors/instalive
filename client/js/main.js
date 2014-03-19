@@ -8,6 +8,7 @@ $(function() {
 
   // Assumes data in form of instagram media updates
   ws.onmessage = function (event) {
+    console.log("event.data => ", event.data);
     var media = JSON.parse(event.data);
     if(!locked && media.meta.code == 200 && media.data.length > 0) {
       locked = true;
