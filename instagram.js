@@ -64,10 +64,14 @@ var subscribe = function(location, callback) {
     res.setEncoding('utf8');
     res.on('data', function(chunk) {
       console.log("chunk => ", chunk);
-      var resp = JSON.parse(chunk);
-      if(resp.meta.code == 200) {
-        for(var i=0;i < resp.data.length;i++) {
-          console.log("item => ", resp.data[i]);
+      var data = JSON.parse(chunk);
+      if(data.meta.code == 200) {
+        if(data.data instanceof Array) {
+          for(var i=0;i < data.data.length;i++) {
+            console.log("subscription item => ", data.data[i]);
+          }
+        } else if(data.data instanceof Object) {
+          console.log("subscription item => ", data.data);
         }
       }
       callback(chunk);
