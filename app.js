@@ -48,7 +48,7 @@ app.get('/subscriptions/callback/', function(req, res) {
 
 // Recieves updates to the subscription we've setup
 app.post('/subscriptions/callback/', function(req, res) {
-  //console.log("POST /subscriptions/callback/ => ", req.body);
+  console.log("POST /subscriptions/callback/ => ", req.body);
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
   if(updates != null && updates.length > 0) {
     var object_id = updates[0].object_id;
