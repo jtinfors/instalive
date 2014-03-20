@@ -3,6 +3,10 @@ var mustache = require('mustache'),
 
 $(function() {
   manange_console();
+  if (!"WebSocket" in window) {
+    document.write("<h1>Your browser is too old for me too handle, buy a new one</h1>");
+    return;
+  }
 
   var host = location.origin.replace(/^http/, 'ws');
   var ws = new WebSocket(host);
@@ -26,17 +30,8 @@ $(function() {
   ws.onerror = function() { console.log("ws errored for some reason..");}
   ws.onopen = function() { console.log("ws opened!");}
 
-  setInterval(fetch_nr_sockets, 60000);
   setInterval(remove_some_items, 90000);
 });
-
-// Here for debug reasons mainly.
-// Sets a title attr on the site logo to easily see the number of connected sockets
-function fetch_nr_sockets() {
-  $.getJSON('/sockets', function(data) {
-    $('.glyphicon-cloud-download').attr('title', data);
-  });
-}
 
 function remove_some_items() {
   $("#pings li:gt(50)").remove()
@@ -87,3 +82,4 @@ function manange_console() {
     console = { log: function() { }, };
   }
 }
+
