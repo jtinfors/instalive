@@ -11,7 +11,7 @@ $(function() {
   ws.onmessage = function (event) {
     if(!event.data) {return;} // TODO: does this ever happen?
     try { // This can actually happen, not sure why yet..
-      var media = JSON.parse(event.data);
+      var media = JSON.parse(event.data.replace(/[\s\0]/g, ' '));
       handle_incoming_media(media);
     } catch (e) {
       console.log("exception => ", e);
