@@ -2,6 +2,8 @@ var mustache = require('mustache'),
     util = require('./util');
 
 $(function() {
+  manange_console();
+
   var host = location.origin.replace(/^http/, 'ws');
   var ws = new WebSocket(host);
 
@@ -10,11 +12,36 @@ $(function() {
     if(!event.data) {return;} // TODO: does this ever happen?
     try { // This can actually happen, not sure why yet..
       var media = JSON.parse(event.data);
+      handle_incoming_media(media);
     } catch (e) {
       console.log("exception => ", e);
       console.log("problem parsing data => ", event.data);
       return;
     }
+
+  };
+
+  ws.onclose = function() { console.log("ws closed for some reason..");}
+  ws.onerror = function() { console.log("ws errored for some reason..");}
+  ws.onopen = function() { console.log("ws opened!");}
+
+  setInterval(fetch_nr_sockets, 60000);
+  setInterval(remove_some_items, 90000);
+});
+
+// Here for debug reasons mainly.
+// Sets a title attr on the site logo to easily see the number of connected sockets
+function fetch_nr_sockets() {
+  $.getJSON('/sockets', function(data) {
+    $('.glyphicon-cloud-download').attr('title', data);
+  });
+}
+
+function remove_some_items() {
+  $("#pings li:gt(50)").remove()
+}
+
+function handle_incoming_media(media) {
     if(media.meta.code == 200 && media.data.length > 0) {
       for(var i=0; i < media.data.length;i++) {
         var item = mustache.render("<li><div class=\"row\">\
@@ -52,25 +79,10 @@ $(function() {
         $(item).prependTo("#pings");
       }
     }
-  };
-
-  ws.onclose = function() { alert("ws closed for some reason..");}
-  ws.onerror = function() { alert("ws errored for some reason..");}
-  ws.onopen = function() { console.log("ws opened!");}
-
-  setInterval(fetch_nr_sockets, 60000);
-  setInterval(remove_some_items, 90000);
-});
-
-// Here for debug reasons mainly.
-// Sets a title attr on the site logo to easily see the number of connected sockets
-function fetch_nr_sockets() {
-  $.getJSON('/sockets', function(data) {
-    $('.glyphicon-cloud-download').attr('title', data);
-  });
 }
 
-function remove_some_items() {
-  $("#pings li:gt(50)").remove()
+function manange_console() {
+  if(typeof console === "undefined") {
+    console = { log: function() { }, };
+  }
 }
-
