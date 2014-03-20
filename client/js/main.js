@@ -2,9 +2,11 @@ var mustache = require('mustache'),
     util = require('./util');
 
 $(function() {
-  var debugging = false; // or true
-  if (typeof console == "undefined") var console = { log: function() {} }; 
-  else if (!debugging || typeof console.log == "undefined") console.log = function() {};
+  if (typeof console == "undefined") {
+    var console = { log: function() {} }
+  } else if (!location.search.match(/debug=true/) || typeof console.log == "undefined") {
+    console.log = function() {};
+  }
 
   if (!"WebSocket" in window) {
     document.write("<h1>Your browser is too old for me too handle, buy a new one</h1>");
