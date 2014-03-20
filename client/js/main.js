@@ -12,7 +12,7 @@ $(function() {
     if(!event.data) {return;} // TODO: does this ever happen?
     try { // This can actually happen, not sure why yet..
       var media = JSON.parse(event.data.replace(/[\s\0]/g, ' '));
-      handle_incoming_media(media);
+      setInterval(handle_incoming_media(media), 10);
     } catch (e) {
       console.log("exception => ", e);
       console.log("problem parsing data => ", event.data);
