@@ -7,10 +7,11 @@ $(function() {
   var host = location.origin.replace(/^http/, 'ws');
   var ws = new WebSocket(host);
 
-  // Assumes data in form of instagram media updates
+  // For now; assumes data in form of instagram media updates
   ws.onmessage = function (event) {
-    if(!event.data) {return;} // TODO: does this ever happen?
-    try { // This can actually happen, not sure why yet..
+    console.log('even', event);
+    if(!event.data) {return;} // TODO: does this ever happen? Are they control frames?
+    try { // sometimes event.data is split in half, not sure why..
       var media = JSON.parse(event.data.replace(/[\s\0]/g, ' '));
       setInterval(handle_incoming_media(media), 10);
     } catch (e) {
