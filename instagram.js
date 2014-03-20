@@ -65,7 +65,7 @@ var subscribe = function(location, callback) {
     res.on('data', function(chunk) {
       console.log("chunk => ", chunk);
       var resp = JSON.parse(chunk);
-      if(resp.meta == 200) {
+      if(resp.meta.code == 200) {
         for(var i=0;i < resp.data.length;i++) {
           console.log("item => ", resp.data[i]);
         }
