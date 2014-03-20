@@ -44,7 +44,7 @@ function remove_some_items() {
 function handle_incoming_media(media) {
     if(media.meta.code == 200 && media.data.length > 0) {
       for(var i=0; i < media.data.length;i++) {
-        if("#{{id}}") { return; }
+        if(document.getElementById(media.data[i].id)) { return; }
         /*jshint multistr: true */
         var item = mustache.render("<li id=\"{{id}}\"><div class=\"row\">\
                    <div class=\"col-md-6 col-lg-6\">\
