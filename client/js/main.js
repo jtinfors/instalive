@@ -2,7 +2,10 @@ var mustache = require('mustache'),
     util = require('./util');
 
 $(function() {
-  manange_console();
+  var debugging = false; // or true
+  if (typeof console == "undefined") var console = { log: function() {} }; 
+  else if (!debugging || typeof console.log == "undefined") console.log = function() {};
+
   if (!"WebSocket" in window) {
     document.write("<h1>Your browser is too old for me too handle, buy a new one</h1>");
     return;
@@ -75,11 +78,5 @@ function handle_incoming_media(media) {
         $(item).prependTo("#pings");
       }
     }
-}
-
-function manange_console() {
-  if(typeof console === "undefined") {
-    console = { log: function() { }, };
-  }
 }
 
