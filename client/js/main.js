@@ -79,7 +79,6 @@ function handle_incoming_media(media) {
                    </div>\
                  </div></li>", util.parse_date(util.strip_tags(media.data[i])));
         $(item).prependTo("#pings");
-        $(item).find("img").hide().slideDown("slow");
       }
     }
 }
