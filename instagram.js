@@ -63,6 +63,7 @@ var subscribe = function(location, callback) {
   var request = https.request(options, function(res) {
     res.setEncoding('utf8');
     res.on('data', function(chunk) {
+      console.log("chunk => ", chunk);
       var resp = JSON.parse(chunk);
       if(resp.meta == 200) {
         for(var i=0;i < resp.data.length;i++) {
