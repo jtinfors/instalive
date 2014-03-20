@@ -30,6 +30,8 @@
     "underscore": "^1.6.0",
     "moment": "^2.5.1",
     "mustache": "^0.8.1",
-    "websocket": "^1.0.8"
+    "websocket": "^1.0.8",
+    "redis": "^0.10.1",
+    "hiredis": "^0.1.16"
   }
 }

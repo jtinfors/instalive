@@ -63,6 +63,12 @@ var subscribe = function(location, callback) {
   var request = https.request(options, function(res) {
     res.setEncoding('utf8');
     res.on('data', function(chunk) {
+      var resp = JSON.parse(chunk);
+      if(resp.meta == 200) {
+        for(var i=0;i < resp.data.length;i++) {
+          console.log("item => ", resp.data[i]);
+        }
+      }
       callback(chunk);
     });
   });
@@ -149,6 +155,7 @@ var delete_all_subscription = function(callback) {
   request.end();
 }
 
+module.exports.locations = locations
 module.exports.generate_post_data = generate_post_data;
 module.exports.generate_subscriptions_options = generate_subscriptions_options;
 module.exports.urlencode = urlencode;

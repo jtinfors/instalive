@@ -24,8 +24,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', routes.index);
 
-app.get('/sthlm', routes.sthlm);
-
 app.get('/sockets', function(req, res) {
   res.json(Object.keys(clients).length);
 });
@@ -78,6 +76,8 @@ app.post('/subscriptions/all/delete', function(req, res) {
     res.send(data);
   });
 });
+
+app.get('/:name', routes.sthlm);
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){

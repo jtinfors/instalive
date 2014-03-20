@@ -7,6 +7,7 @@ module.exports.index = function(req, res) {
 };
 
 module.exports.sthlm = function(req, res) {
+  var location = instagram.locations[req.params.name];
   instagram.subscriptions(function(data) {
     if(JSON.parse(data).data.length > 0) {
       res.render('images', {data: data});
