@@ -52,7 +52,7 @@ app.get('/subscriptions/callback/', function(req, res) {
 app.post('/subscriptions/callback/', function(req, res) {
   //console.log("POST /subscriptions/callback/ => ", req.body);
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
-  if(updates != null && updates.length > 0 && 'development' != process.env.NODE_ENV) {
+  if(updates != null && updates.length > 0) {
     var object_id = updates[0].object_id;
     instagram.fetch_new_geo_media(object_id, 1, function(data) {
         for(var i in clients) {

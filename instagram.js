@@ -72,7 +72,7 @@ var subscribe = function(location, callback) {
 
 var fetch_new_geo_media = function(object_id, count, callback) {
   if('development' == process.env.NODE_ENV) {
-    fs.readFile('./data/subscription_update.json', 'utf-8', function(err, data) {
+    fs.readFile('./data/recent_media.json', 'utf-8', function(err, data) {
       if (err) throw err;
       return callback(data);
     });
