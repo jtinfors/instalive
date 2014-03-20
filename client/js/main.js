@@ -3,14 +3,13 @@ var mustache = require('mustache'),
 
 $(function() {
   if (typeof console == "undefined") {
-    var console = { log: function() {} }
+    var console = { log: function() {} };
   } else if ((window.location.search.indexOf("debug=true") == -1) || typeof console.log == "undefined") {
     console.log = function() {};
   }
 
-  if (!"WebSocket" in window) {
-    document.write("<h1>Your browser is too old for me too handle, buy a new one</h1>");
-    return;
+  if (!("WebSocket" in window)) {
+    return document.write("<h1>Your browser is too old for me too handle, buy a new one</h1>");
   }
 
   var host = location.origin.replace(/^http/, 'ws');
@@ -18,7 +17,7 @@ $(function() {
 
   // For now; assumes data in form of instagram media updates
   ws.onmessage = function (event) {
-    console.log('even', event);
+    console.log('event', event);
     if(!event.data) {return;} // TODO: does this ever happen? Are they control frames?
     try { // sometimes event.data is split in half, not sure why..
       var media = JSON.parse(event.data.replace(/[\s\0]/g, ' '));
@@ -31,21 +30,22 @@ $(function() {
 
   };
 
-  ws.onclose = function() { console.log("ws closed for some reason..");}
-  ws.onerror = function() { console.log("ws errored for some reason..");}
-  ws.onopen = function() { console.log("ws opened!");}
+  ws.onclose = function() { console.log("ws closed for some reason..");};
+  ws.onerror = function() { console.log("ws errored for some reason..");};
+  ws.onopen = function() { console.log("ws opened!");};
 
   setInterval(remove_some_items, 90000);
 });
 
 function remove_some_items() {
-  $("#pings li:gt(50)").remove()
+  $("#pings li:gt(50)").remove();
 }
 
 function handle_incoming_media(media) {
     if(media.meta.code == 200 && media.data.length > 0) {
       for(var i=0; i < media.data.length;i++) {
-        var item = mustache.render("<li><div class=\"row\">\
+        /*jshint multistr: true */
+        var item = mustache.render("<li id=\"{{id}}\"><div class=\"row\">\
                    <div class=\"col-md-6 col-lg-6\">\
                      <a href=\"{{link}}\" target=\"_blank\">\
                      <img title=\"{{{caption.text}}}\"\
