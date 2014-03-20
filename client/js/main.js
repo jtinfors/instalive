@@ -53,7 +53,8 @@ function handle_incoming_media(media) {
                           src=\"{{{images.standard_resolution.url}}}\"\
                           class=\"img-responsive img-rounded\"\
                           height=\"{{images.standard_resolution.height}}\"\
-                          width=\"{{images.standard_resolution.width}}\"/>\
+                          width=\"{{images.standard_resolution.width}}\"\
+                          style=\"display:none;\"/>\
                      </a>\
                    </div>\
                    <div class=\"col-md-6 col-lg-6\">\
@@ -78,7 +79,8 @@ function handle_incoming_media(media) {
                      {{/datetime}}\
                    </div>\
                  </div></li>", util.parse_date(util.strip_tags(media.data[i])));
-        $(item).hide().prependTo("#pings").fadeIn("slow");
+        $(item).prependTo("#pings");
+        $(item).find("img").slideDown("slow");
       }
     }
 }
