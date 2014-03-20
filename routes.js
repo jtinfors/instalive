@@ -3,7 +3,7 @@ var _ = require('underscore'),
     https = require('https');
 
 module.exports.index = function(req, res) {
-  res.render('index')
+  res.redirect('/sthlm');
 };
 
 module.exports.sthlm = function(req, res) {
