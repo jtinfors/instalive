@@ -4,7 +4,7 @@ var mustache = require('mustache'),
 $(function() {
   if (typeof console == "undefined") {
     var console = { log: function() {} }
-  } else if (!location.search.match(/debug=true/) || typeof console.log == "undefined") {
+  } else if ((window.location.search.indexOf("debug=true") == -1) || typeof console.log == "undefined") {
     console.log = function() {};
   }
 
