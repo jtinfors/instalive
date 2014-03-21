@@ -94,7 +94,7 @@ server.listen(app.get('port'), function(){
 
 var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
-  console.log("connection! => ", ws);
+  console.log("connection! => ");
   wss.on('message', function(message) {
     var mess = JSON.parse(message);
     console.log("incoming message => ", mess);
