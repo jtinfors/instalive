@@ -2,6 +2,7 @@ var https = require('https'),
     util = require('util'),
     fs = require('fs'),
     _ = require('underscore'),
+    bl = require('bl'),
     querystring = require('querystring');
 
 var instagram_client_id = process.env.INSTAGRAM_CLIENT_ID;
@@ -96,9 +97,14 @@ var fetch_new_geo_media = function(object_id, count, callback) {
       res.setEncoding('utf8');
       // TODO: sometimes messages are chopped in half.
       // Probably cause data below is a chunk, not complete message, use pipe and bl!
-      res.on('data', function(data) {
-        callback(data);
-      });
+      res.pipe(bl(function(err, data) {
+        var item = data.toString();
+        console.log(item);
+        callback(item);
+      }));
+      // res.on('data', function(data) {
+      //   callback(data);
+      // });
     });
     req.end();
     req.on('error', function(e) {
