@@ -111,10 +111,11 @@ wss.on('connection', function(ws) {
             console.log("err => ", err);
             ws.send(JSON.stringify({type: "message", message: err.message}));
           } else {
-            console.log("prolly success, data => ", data);
-            subscriptions[mess.location] = data.data.object_id;
+            var json_data = JSON.parse(data);
+            console.log("prolly success, data => ", json_data);
+            subscriptions[mess.location] = json_data.data.object_id;
             console.log("subscriptions now contains => ", subscriptions);
-            ws.location = data.data.object_id;
+            ws.location = json_data.data.object_id;
             console.log("This ws subscries to => ", ws.location);
             clients.push(ws);
             ws.send(JSON.stringify({type: "message", message: "Subscription created"}));

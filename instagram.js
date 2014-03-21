@@ -67,7 +67,6 @@ var subscribe = function(location, callback) {
     res.setEncoding('utf8');
     res.on('data', function(chunk) {
       // console.log("chunk => ", chunk);
-      var data = JSON.parse(chunk);
       callback(null, chunk);
     });
   });
