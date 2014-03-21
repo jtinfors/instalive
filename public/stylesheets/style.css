@@ -1,5 +1,15 @@
 .page-header {
   margin: 20px 0 10px;
+  padding-bottom: 0;
+}
+
+.page-header h1 {
+  margin-bottom: 0;
+}
+
+.page-header h1 svg {
+  width: 60px;
+  height: 60px;
 }
 
 #pings li {

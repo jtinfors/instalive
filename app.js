@@ -22,7 +22,7 @@ app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
-  res.redirect('/sthlm');
+  res.render('index');
 });
 
 app.get('/sockets', function(req, res) {
