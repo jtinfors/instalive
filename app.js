@@ -49,7 +49,7 @@ app.get('/subscriptions/callback/', function(req, res) {
 
 // Recieves updates to the subscription we've setup
 app.post('/subscriptions/callback/', function(req, res) {
-  console.log("POST /subscriptions/callback/ => ", req.body);
+  // console.log("POST /subscriptions/callback/ => ", req.body);
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
   if(updates !== null && updates.length > 0) {
     var object_id = updates[0].object_id;
@@ -112,9 +112,10 @@ wss.on('connection', function(ws) {
             ws.send(JSON.stringify({type: "message", message: err.message}));
           } else {
             console.log("prolly success, data => ", data);
-            subscriptions[mess.location] = data.object_id;
+            subscriptions[mess.location] = data.data.object_id;
             console.log("subscriptions now contains => ", subscriptions);
-            ws.location = data.object_id;
+            ws.location = data.data.object_id;
+            console.log("This ws subscries to => ", ws.location);
             clients.push(ws);
             ws.send(JSON.stringify({type: "message", message: "Subscription created"}));
           }
