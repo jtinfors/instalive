@@ -25,3 +25,8 @@
   font-weight: 0.5em;
   margin-left: 100px;
 }
+
+#pings li .media img {
+  height: 60px;
+  width: 60px;
+}
