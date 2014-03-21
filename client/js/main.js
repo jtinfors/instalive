@@ -56,7 +56,7 @@ function show_flash(message) {
   $(".page-header h1 .flash")
   .text(message)
   .fadeIn("slow")
-  .delay(1000)
+  .delay(3000)
   .fadeOut("slow");
 }
 

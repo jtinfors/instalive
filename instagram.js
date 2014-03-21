@@ -64,17 +64,16 @@ var generate_subscriptions_options = function(content_length) {
 // Create a subscription to a geographical location as per =>
 // http://instagram.com/developer/realtime/#geography-subscriptions
 var subscribe = function(location, callback) {
-  if(locations[location] === null) {
+  if(!locations[location]) {
     return callback(new Error("Unknown location. :("), null);
   }
-  //console.log("Creating new subscription!");
   var data = generate_post_data({location: location, path: '/subscriptions/callback/'});
   var content_length = Buffer.byteLength(querystring.stringify(data));
   var options = generate_subscriptions_options(content_length);
   var request = https.request(options, function(res) {
     res.setEncoding('utf8');
     res.on('data', function(chunk) {
-      // console.log("chunk => ", chunk);
+      // TODO: Use bl to handle the chunked response
       callback(null, chunk);
     });
   });
@@ -95,16 +94,11 @@ var fetch_new_geo_media = function(object_id, count, callback) {
       path: path
     }, function(res) {
       res.setEncoding('utf8');
-      // TODO: sometimes messages are chopped in half.
-      // Probably cause data below is a chunk, not complete message, use pipe and bl!
       res.pipe(bl(function(err, data) {
         var item = data.toString();
         console.log(item);
         callback(item);
       }));
-      // res.on('data', function(data) {
-      //   callback(data);
-      // });
     });
     req.end();
     req.on('error', function(e) {
@@ -125,6 +119,7 @@ var subscriptions = function(callback) {
       path: util.format('/v1/subscriptions?client_secret=%s&client_id=%s', instagram_client_secret, instagram_client_id)
     }, function(res) {
       res.setEncoding('utf8');
+      // TODO: Use bl to handle the chunked response
       res.on('data', function(data) {
         //console.log("[subscriptions] Recieved data => ", data, " sending it to callback");
         callback(data);
@@ -145,6 +140,7 @@ var delete_subscription = function(id, callback) {
     method: 'DELETE'
   }, function(res) {
     res.setEncoding('utf8');
+      // TODO: Use bl to handle the chunked response
     res.on('data', function(chunk) {
       callback(chunk);
     });
@@ -160,6 +156,7 @@ var delete_all_subscription = function(callback) {
     method: 'DELETE'
   }, function(res) {
     res.setEncoding('utf8');
+      // TODO: Use bl to handle the chunked response
     res.on('data', function(chunk) {
       callback(chunk);
     });

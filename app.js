@@ -62,7 +62,6 @@ app.post('/subscriptions/callback/', function(req, res) {
         return;
       }
       var subset = _.where(clients, {location : object_id});
-      console.log("subset length => ", subset.length);
       for(var i in subset) {
         subset[i].send(
           JSON.stringify({type: "update", message: item}),
@@ -101,31 +100,30 @@ server.listen(app.get('port'), function(){
 
 var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
-  console.log("connection! => ");
   ws.on('message', function(message) {
     var mess = JSON.parse(message);
     console.log("incoming message => ", mess);
     if(mess.type == "subscribe") {
-      console.log(subscriptions[mess.location]);
       if(subscriptions[mess.location]) {
-        console.log("We have a known subscription, all is good!");
         ws.location = subscriptions[mess.location];
         clients.push(ws);
       } else {
-        console.log("No subscription for " + mess.location + ", creating new");
         instagram.subscribe(mess.location, function(err, data) {
           if(err) {
-            console.log("err => ", err);
+            console.log("problem creating new subscription => ", err);
             ws.send(JSON.stringify({type: "message", message: err.message}));
           } else {
             var json_data = JSON.parse(data);
-            console.log("prolly success, data => ", json_data);
-            subscriptions[mess.location] = json_data.data.object_id;
-            console.log("subscriptions now contains => ", subscriptions);
-            ws.location = json_data.data.object_id;
-            console.log("This ws subscries to => ", ws.location);
-            clients.push(ws);
-            ws.send(JSON.stringify({type: "message", message: "Subscription created"}));
+            if(json_data.meta.code === 200) {
+              subscriptions[mess.location] = json_data.data.object_id;
+              ws.location = json_data.data.object_id;
+              clients.push(ws);
+              ws.send(JSON.stringify({type: "message", message: "Subscription created"}));
+            } else {
+              ws.send(JSON.stringify({
+                type: "message",
+                message: [obj.meta.code, obj.meta.error_type, obj.meta.error_message].join(", ") }));
+            }
           }
         });
       }
