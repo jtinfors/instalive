@@ -77,7 +77,7 @@ function handle_incoming_media(media) {
                    </div>\
                    <div class=\"meta col-md-6 col-lg-6\">\
                      <div class=\"media\">\
-                       <a href=\"http://instagram.com/{{user.username}}\" class=\"pull-left\">\
+                       <a href=\"http://instagram.com/{{user.username}}\" class=\"pull-left\" target=\"_blank\">\
                          <img class=\"media-object\" src=\"{{user.profile_picture}}\"/>\
                        </a>\
                        <div class=\"media-body\">\
