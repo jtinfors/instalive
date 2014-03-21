@@ -5,3 +5,13 @@
 #pings li {
   margin-bottom: 20px;
 }
+
+#pings .meta .label {
+  line-height: 2.2;
+}
+
+.page-header h1 .flash {
+  display: none;
+  font-weight: 0.5em;
+  margin-left: 100px;
+}

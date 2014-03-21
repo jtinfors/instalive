@@ -6,9 +6,8 @@ var express = require('express'),
     WebSocketServer = require('ws').Server,
     http = require('http'),
     _ = require('underscore'),
-    shortId = require('shortid'),
-    routes = require('./routes'),
-    clients = [];
+    clients = [],
+    subscriptions = [];
 
 app = express();
 module.exports = app; // To make it available to tests
@@ -22,7 +21,9 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', routes.index);
+app.get('/', function(req, res) {
+  res.redirect('/sthlm');
+});
 
 app.get('/sockets', function(req, res) {
   res.json(Object.keys(clients).length);
@@ -37,7 +38,7 @@ app.get('/subscriptions/?', function(req, res) {
 app.get('/subscriptions/callback/', function(req, res) {
   //console.log("GET /subscriptions/callback/ => ", req.query);
   var parsedRequest = url.parse(req.url, true);
-  if('subscribe' === parsedRequest['query']['hub.mode'] && parsedRequest['query']['hub.challenge'] != null) {
+  if('subscribe' === parsedRequest['query']['hub.mode'] && parsedRequest['query']['hub.challenge'] !== null) {
     //console.log("sending back hub_challange => ", parsedRequest['query']['hub.challenge']);
     res.send(parsedRequest['query']['hub.challenge']);
   } else {
@@ -50,14 +51,19 @@ app.get('/subscriptions/callback/', function(req, res) {
 app.post('/subscriptions/callback/', function(req, res) {
   console.log("POST /subscriptions/callback/ => ", req.body);
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
-  if(updates != null && updates.length > 0) {
+  if(updates !== null && updates.length > 0) {
     var object_id = updates[0].object_id;
     instagram.fetch_new_geo_media(object_id, 1, function(data) {
-        for(var i in clients) {
-          clients[i].send(data, function(err) {
-            if(err) { console.log("err happened => ", err); }
+      var subset = _.where(clients, {object_id: object_id});
+      console.log("subset length => ", subset.length);
+      for(var i in subset) {
+        subset[i].send(
+          JSON.stringify({type: "update", message: JSON.parse(data)}),
+          /*jshint -W083 */
+          function(err) {
+            if(err) { console.log("failed to send update to client => ", err); }
           });
-        }
+      }
     });
   }
   res.send("ok");
@@ -77,7 +83,9 @@ app.post('/subscriptions/all/delete', function(req, res) {
   });
 });
 
-app.get('/:name', routes.sthlm);
+app.get('/:name', function(req, res) {
+  res.render("images");
+});
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
@@ -86,12 +94,36 @@ server.listen(app.get('port'), function(){
 
 var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
-  ws.id = shortId.generate();
-  clients[ws.id] = ws;
-  //console.log(Object.keys(clients).length);
+  wss.on('message', function(message) {
+    var mess = JSON.parse(message);
+    if(mess.type == "subscribe") {
+      if(subscriptions[mess.location]) {
+        console.log("We have a known subscription, all is good!");
+        ws.location = subscriptions[mess.location];
+        clients.push(ws);
+      } else {
+        console.log("No subscription for " + mess.location + ", creating new");
+        instagram.subscribe(mess.location, function(err, data) {
+          if(err) {
+            console.log("err => ", err);
+            ws.send(JSON.stringify({type: "message", message: err.message}));
+          } else {
+            console.log("Probably success, data => ", data);
+            subscriptions[mess.location] = data.object_id;
+            ws.location = data.object_id;
+            clients.push(ws);
+            ws.send(JSON.stringify({type: "message", message: "Subscription created"}));
+            // TODO: clean up route.sthlm
+            // TODO: add tests :-O
+            // TODO: branch and deploy to instalive-test
+          }
+        });
+      }
+    }
+  });
   ws.on('close', function() {
-    delete clients[ws.id];
-    //console.log(Object.keys(clients).length);
+    console.log("client " + ws + " decieded to disconnect");
+    clients.splice(clients.indexOf(ws), clients.indexOf(ws)+1);
   });
 });
 
