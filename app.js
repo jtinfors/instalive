@@ -54,11 +54,18 @@ app.post('/subscriptions/callback/', function(req, res) {
   if(updates !== null && updates.length > 0) {
     var object_id = updates[0].object_id;
     instagram.fetch_new_geo_media(object_id, 1, function(data) {
+      try {
+        var item = JSON.parse(data);
+      } catch (e) {
+        console.log("exception => ", e);
+        console.log("problem parsing data => ", data);
+        return;
+      }
       var subset = _.where(clients, {location : object_id});
       console.log("subset length => ", subset.length);
       for(var i in subset) {
         subset[i].send(
-          JSON.stringify({type: "update", message: JSON.parse(data)}),
+          JSON.stringify({type: "update", message: item}),
           /*jshint -W083 */
           function(err) {
             if(err) { console.log("failed to send update to client => ", err); }

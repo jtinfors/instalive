@@ -12,7 +12,14 @@ var locations = {
     lat: '59.32536',
     lng: '18.071197',
   },
-  gbg: { }
+  gbg: {
+    lat: '57.706944',
+    lng: '11.966389'
+  },
+  orebro: {
+    lat: '59.273944',
+    lng: '15.213361'
+  }
 };
 
 var generate_post_data = function(options) {
@@ -87,6 +94,8 @@ var fetch_new_geo_media = function(object_id, count, callback) {
       path: path
     }, function(res) {
       res.setEncoding('utf8');
+      // TODO: sometimes messages are chopped in half.
+      // Probably cause data below is a chunk, not complete message, use pipe and bl!
       res.on('data', function(data) {
         callback(data);
       });
