@@ -17,8 +17,8 @@ var locations = {
 
 var generate_post_data = function(options) {
   var location = options.location;
-  var radius = options.radius !== null ? options.radius : 4000;
-  var path = options.path !== null ? options.path : '/subscriptions/callback/';
+  var radius = options.radius ? options.radius : 4000;
+  var path = options.path ? options.path : '/subscriptions/callback/';
 
   var lat_lng = locations[location];
 
