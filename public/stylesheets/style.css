@@ -1,7 +1,27 @@
 .page-header {
   margin: 20px 0 10px;
+  padding-bottom: 0;
+}
+
+.page-header h1 {
+  margin-bottom: 0;
+}
+
+.page-header h1 svg {
+  width: 60px;
+  height: 60px;
 }
 
 #pings li {
   margin-bottom: 20px;
+}
+
+#pings .meta .label {
+  line-height: 2.2;
+}
+
+.page-header h1 .flash {
+  display: none;
+  font-weight: 0.5em;
+  margin-left: 100px;
 }

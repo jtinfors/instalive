@@ -34,6 +34,14 @@ describe('instagram', function() {
     });
   });
 
+  describe('#subscribe', function() {
+    it('should fail when location is unknown', function() {
+      instagram.subscribe("pennybridge", function(err, data) {
+        assert.ok(err);
+      });
+    });
+  });
+
   describe('#subscriptions', function() {
     it('should return data', function(done) {
       instagram.subscriptions(function(data) {
@@ -47,7 +55,7 @@ describe('instagram', function() {
     it('should return proper data', function(done) {
       instagram.fetch_new_geo_media(123, 1, function(data) {
         var result = JSON.parse(data);
-        assert.ok(result.length == 2);
+        assert.ok(result.meta.code == 200);
         done();
       })
     });

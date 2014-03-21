@@ -45,6 +45,10 @@ If you are a collaborator of the project it should be enough to run:
 
     heroku git:remote -a instalive
 
+Add WebSocket support to your app:
+
+    heroku labs:enable websockets --app <app_name>
+
 Before deploy, set these heroku config vars:
 
     heroku config:set INSTALIVE_DOMAINNAME=<fqdn>

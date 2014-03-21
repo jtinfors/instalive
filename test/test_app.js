@@ -1,6 +1,5 @@
 var assert = require("assert"),
     fs = require('fs'),
-    routes = require('../routes'),
     request = require('supertest'),
     app = require('../app'),
     _ = require('underscore');
