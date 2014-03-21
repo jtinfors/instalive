@@ -12,9 +12,12 @@ $(function() {
   var ws = new WebSocket(host);
 
   ws.onopen = function(event) {
+    console.log("onopen!");
     var location = window.location.pathname.substring(1);
     if(location) {
-      ws.send(JSON.stringify({type: "subscribe", location: location}));
+      var message = JSON.stringify({type: "subscribe", location: location});
+      console.log("sending subscribe message to server => ", message);
+      ws.send(message);
     }
   };
 

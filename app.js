@@ -94,8 +94,10 @@ server.listen(app.get('port'), function(){
 
 var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
+  console.log("connection! => ", ws);
   wss.on('message', function(message) {
     var mess = JSON.parse(message);
+    console.log("incoming message => ", mess);
     if(mess.type == "subscribe") {
       if(subscriptions[mess.location]) {
         console.log("We have a known subscription, all is good!");
