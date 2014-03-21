@@ -7,7 +7,7 @@ var express = require('express'),
     http = require('http'),
     _ = require('underscore'),
     clients = [],
-    subscriptions = [];
+    subscriptions = {};
 
 app = express();
 module.exports = app; // To make it available to tests
@@ -99,6 +99,7 @@ wss.on('connection', function(ws) {
     var mess = JSON.parse(message);
     console.log("incoming message => ", mess);
     if(mess.type == "subscribe") {
+      console.log(subscriptions[mess.location]);
       if(subscriptions[mess.location]) {
         console.log("We have a known subscription, all is good!");
         ws.location = subscriptions[mess.location];
@@ -112,6 +113,7 @@ wss.on('connection', function(ws) {
           } else {
             console.log("prolly success, data => ", data);
             subscriptions[mess.location] = data.object_id;
+            console.log("subscriptions now contains => ", subscriptions);
             ws.location = data.object_id;
             clients.push(ws);
             ws.send(JSON.stringify({type: "message", message: "Subscription created"}));
