@@ -96,7 +96,6 @@ var fetch_new_geo_media = function(object_id, count, callback) {
       res.setEncoding('utf8');
       res.pipe(bl(function(err, data) {
         var item = data.toString();
-        console.log(item);
         callback(item);
       }));
     });
