@@ -83,12 +83,12 @@ function handle_incoming_media(media) {
                        <div class=\"media-body\">\
                            <h4 class=\"media-heading\">{{user.full_name}}</h4>\
                        </div>\
-                     </div>\
                      {{#caption}}\
                        {{#text}}\
                          <p>{{caption.text}}</p>\
                        {{/text}}\
                      {{/caption}}\
+                     </div>\
                      {{#tags}}\
                        <span title=\"Tag\" class=\"label label-default\">{{.}}</span>\
                      {{/tags}}\
