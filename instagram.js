@@ -68,7 +68,7 @@ var subscribe = function(location, callback) {
     res.on('data', function(chunk) {
       console.log("chunk => ", chunk);
       var data = JSON.parse(chunk);
-      callback(chunk);
+      callback(null, chunk);
     });
   });
   request.write(querystring.stringify(data));

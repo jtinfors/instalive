@@ -52,7 +52,7 @@ function remove_some_items() {
   $("#pings li:gt(50)").remove();
 }
 
-function show_flash(media) {
+function show_flash(message) {
   $(".page-header h1 .flash")
   .text(message)
   .fadeIn("slow")

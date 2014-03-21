@@ -110,14 +110,11 @@ wss.on('connection', function(ws) {
             console.log("err => ", err);
             ws.send(JSON.stringify({type: "message", message: err.message}));
           } else {
-            console.log("Probably success, data => ", data);
+            console.log("prolly success, data => ", data);
             subscriptions[mess.location] = data.object_id;
             ws.location = data.object_id;
             clients.push(ws);
             ws.send(JSON.stringify({type: "message", message: "Subscription created"}));
-            // TODO: clean up route.sthlm
-            // TODO: add tests :-O
-            // TODO: branch and deploy to instalive-test
           }
         });
       }
