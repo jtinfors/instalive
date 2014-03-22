@@ -131,8 +131,8 @@ wss.on('connection', function(ws) {
     }
   });
   ws.on('close', function() {
-    console.log("client " + ws + " decieded to disconnect");
-    clients.splice(clients.indexOf(ws), clients.indexOf(ws)+1);
+    console.log("client " + ws + " decided to disconnect");
+    clients.splice(clients.indexOf(ws), 1);
   });
 });
 
