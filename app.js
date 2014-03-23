@@ -69,6 +69,7 @@ app.post('/subscriptions/callback/', function(req, res) {
           /*jshint -W083 */
           function(err) {
             if(err) { console.log("failed to send update to client => ", err); }
+            if(err.message === "not opened") { deallocate_socket(subset[i]) }
           });
       }
     });
@@ -112,18 +113,30 @@ wss.on('connection', function(ws) {
         instagram.subscribe(mess.location, function(err, data) {
           if(err) {
             console.log("problem creating new subscription => ", err);
-            ws.send(JSON.stringify({type: "message", message: err.message}));
+            ws.send(JSON.stringify({type: "message", message: err.message}),
+                function(err) {
+                  if(err) { console.log("failed to send message to client => ", err); }
+                  if(err.message === "not opened") { deallocate_socket(ws) }
+                });
           } else {
             var json_data = JSON.parse(data);
             if(json_data.meta.code === 200) {
               subscriptions[mess.location] = json_data.data.object_id;
               ws.location = json_data.data.object_id;
               clients.push(ws);
-              ws.send(JSON.stringify({type: "message", message: "Subscription created"}));
+              ws.send(JSON.stringify({type: "message", message: "Subscription created"}),
+                function(err) {
+                  if(err) { console.log("failed to send message to client => ", err); }
+                  if(err.message === "not opened") { deallocate_socket(ws) }
+                });
             } else {
               ws.send(JSON.stringify({
                 type: "message",
-                message: [obj.meta.code, obj.meta.error_type, obj.meta.error_message].join(", ") }));
+                message: [obj.meta.code, obj.meta.error_type, obj.meta.error_message].join(", ") }),
+                function(err) {
+                  if(err) { console.log("failed to send message to client => ", err); }
+                  if(err.message === "not opened") { deallocate_socket(ws) }
+                });
             }
           }
         });
@@ -132,7 +145,14 @@ wss.on('connection', function(ws) {
   });
   ws.on('close', function() {
     console.log("client " + ws + " decided to disconnect");
-    clients.splice(clients.indexOf(ws), 1);
+    deallocate_socket(ws)
   });
 });
 
+function deallocate_socket(ws) {
+  console.log("In deallocate_socket");
+  if(clients.indexOf(ws) !== -1) {
+    console.log("deallocating, " + ws);
+    clients.splice(clients.indexOf(ws), 1);
+  }
+}

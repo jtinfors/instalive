@@ -22,8 +22,8 @@
 
 .page-header h1 .flash {
   display: none;
-  font-weight: 0.5em;
-  margin-left: 100px;
+  vertical-align: top;
+  color: green;
 }
 
 #pings li .media {
