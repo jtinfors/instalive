@@ -85,7 +85,7 @@ app.post('/subscriptions/callback/', function(req, res) {
           console.log("exception => ", e + "\nproblem parsing data => ", data);
           return;
         }
-        update_clients(_.where(clients, {subscription_id : updates[0].subscription_id}));
+        update_clients(_.where(clients, {subscription_id : updates[0].subscription_id}), item);
       }
     });
   }
