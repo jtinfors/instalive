@@ -72,10 +72,10 @@ var subscribe = function(location, callback) {
   var options = generate_subscriptions_options(content_length);
   var request = https.request(options, function(res) {
     res.setEncoding('utf8');
-    res.on('data', function(chunk) {
-      // TODO: Use bl to handle the chunked response
-      callback(null, chunk);
-    });
+    res.pipe(bl(function(err, data) {
+      var item = data.toString();
+      callback(item);
+    }));
   });
   request.write(querystring.stringify(data));
   request.end();
@@ -101,7 +101,7 @@ var fetch_new_geo_media = function(object_id, count, callback) {
     });
     req.end();
     req.on('error', function(e) {
-      //console.error("error when fetching new media => ", e);
+      console.error("error when fetching new media => ", e);
     });
   }
 };
@@ -118,11 +118,10 @@ var subscriptions = function(callback) {
       path: util.format('/v1/subscriptions?client_secret=%s&client_id=%s', instagram_client_secret, instagram_client_id)
     }, function(res) {
       res.setEncoding('utf8');
-      // TODO: Use bl to handle the chunked response
-      res.on('data', function(data) {
-        //console.log("[subscriptions] Recieved data => ", data, " sending it to callback");
-        callback(data);
-      });
+      res.pipe(bl(function(err, data) {
+        var item = data.toString();
+        callback(item);
+      }));
     });
     req.end();
     req.on('error', function(e) {
@@ -139,10 +138,10 @@ var delete_subscription = function(id, callback) {
     method: 'DELETE'
   }, function(res) {
     res.setEncoding('utf8');
-      // TODO: Use bl to handle the chunked response
-    res.on('data', function(chunk) {
-      callback(chunk);
-    });
+    res.pipe(bl(function(err, data) {
+        var item = data.toString();
+        callback(err, item);
+    }));
   });
   request.end();
 };
@@ -155,10 +154,10 @@ var delete_all_subscription = function(callback) {
     method: 'DELETE'
   }, function(res) {
     res.setEncoding('utf8');
-      // TODO: Use bl to handle the chunked response
-    res.on('data', function(chunk) {
-      callback(chunk);
-    });
+    res.pipe(bl(function(err, data) {
+      var item = data.toString();
+      callback(item);
+    }));
   });
   request.end();
 };

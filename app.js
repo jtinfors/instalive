@@ -164,11 +164,17 @@ function deallocate_socket(ws) {
     clients.splice(clients.indexOf(ws), 1);
     var remaining_clients = _.where(clients, {location: ws.location});
     if(remaining_clients.length === 0) {
-      instagram.delete_subscription(ws.location, function(data) {
-        console.log("Successfully unsubscribed from ", ws.location);
-        var logical_location = _.invert(subscriptions)[ws.location];
-        if(logical_location) {
-          delete subscriptions[logical_location];
+      instagram.delete_subscription(ws.location, function(err, data) {
+        if(err) {
+          console.log("Could not unsubscribe from ", ws.location);
+          console.log("", err);
+        } else {
+          console.log("Successfully unsubscribed from ", ws.location);
+          console.log("data => ", data)
+          var logical_location = _.invert(subscriptions)[ws.location];
+          if(logical_location) {
+            delete subscriptions[logical_location];
+          }
         }
       });
     }
