@@ -76,20 +76,21 @@ app.post('/subscriptions/callback/', function(req, res) {
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
   if(updates !== null && updates.length > 0) {
     for(var i=0;i < updates.length;i++) {
-      instagram.fetch_new_geo_media(updates[i].object_id, 1, function(err, data) {
-        if(err) {
-          console.log("problem fetching new geo_media => ", err);
-        } else {
-          try {
-            var item = JSON.parse(data);
-          } catch (e) {
-            console.log("exception => ", e + "\nproblem parsing data => ", data);
-            return;
+      (function(value) {
+        instagram.fetch_new_geo_media(updates[value].object_id, 1, function(err, data) {
+          if(err) {
+            console.log("problem fetching new geo_media => ", err);
+          } else {
+            try {
+              var item = JSON.parse(data);
+            } catch (e) {
+              console.log("exception => ", e + "\nproblem parsing data => ", data);
+              return;
+            }
+            update_clients(_.where(clients, {subscription_id : updates[value].subscription_id}), item);
           }
-          update_clients(_.where(clients, {subscription_id : updates[i].subscription_id}), item);
-        }
-      });
-
+        });
+      })(i);
     }
   }
   res.send("ok");
