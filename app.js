@@ -30,6 +30,10 @@ app.get('/sockets', function(req, res) {
   res.json(Object.keys(clients).length);
 });
 
+app.get('/stored_subscriptions/?', function(req, res) {
+  res.send(subscriptions);
+});
+
 app.get('/subscriptions/?', function(req, res) {
   instagram.subscriptions(function(err, data) {
     if(err) {
@@ -146,7 +150,7 @@ wss.on('connection', function(ws) {
           } else {
             var json_data = JSON.parse(data);
             if(json_data.meta.code === 200) {
-              subscriptions[mess.location] = json_data.data.id;
+              subscriptions[mess.location] = parseInt(json_data.data.id, 10);
               ws.subscription_id = json_data.data.id;
               clients.push(ws);
               ws.send(JSON.stringify({type: "message", message: "Subscription created"}),
