@@ -23,7 +23,6 @@ $(function() {
 
   // For now; assumes data in form of instagram media updates
   ws.onmessage = function (event) {
-    console.log('event', event);
     if(!event.data) {return;} // TODO: does this ever happen? Do we ever recieve empty messages? control frames?
     try { // sometimes event.data is split in half, not sure why.. but catch and move on!
       var media = JSON.parse(event.data.replace(/[\s\0]/g, ' '));
