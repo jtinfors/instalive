@@ -74,7 +74,7 @@ var subscribe = function(location, callback) {
     res.setEncoding('utf8');
     res.pipe(bl(function(err, data) {
       var item = data.toString();
-      callback(item);
+      callback(err, item);
     }));
   });
   request.write(querystring.stringify(data));
@@ -96,7 +96,7 @@ var fetch_new_geo_media = function(object_id, count, callback) {
       res.setEncoding('utf8');
       res.pipe(bl(function(err, data) {
         var item = data.toString();
-        callback(item);
+        callback(err, item);
       }));
     });
     req.end();
@@ -156,7 +156,7 @@ var delete_all_subscription = function(callback) {
     res.setEncoding('utf8');
     res.pipe(bl(function(err, data) {
       var item = data.toString();
-      callback(item);
+      callback(err, item);
     }));
   });
   request.end();

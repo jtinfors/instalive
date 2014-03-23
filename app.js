@@ -32,7 +32,11 @@ app.get('/sockets', function(req, res) {
 
 app.get('/subscriptions/?', function(req, res) {
   instagram.subscriptions(function(data) {
-    res.send(data);
+    if(err) {
+      res.send(err);
+    } else {
+      res.send(data);
+    }
   });
 });
 
@@ -54,25 +58,28 @@ app.post('/subscriptions/callback/', function(req, res) {
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
   if(updates !== null && updates.length > 0) {
     var object_id = updates[0].object_id;
-    instagram.fetch_new_geo_media(object_id, 1, function(data) {
-      try {
-        var item = JSON.parse(data);
-      } catch (e) {
-        console.log("exception => ", e);
-        console.log("problem parsing data => ", data);
-        return;
-      }
-      var subset = _.where(clients, {location : object_id});
-      for(var i in subset) {
-        subset[i].send(
-          JSON.stringify({type: "update", message: item}),
-          /*jshint -W083 */
-          function(err) {
-            if(err) {
-              console.log("failed to send update to client => ", err);
-              if(err.message === "not opened") { deallocate_socket(subset[i]) }
-            }
-          });
+    instagram.fetch_new_geo_media(object_id, 1, function(err, data) {
+      if(err) {
+        console.log("problem fetching new geo_media => ", err);
+      } else {
+        try {
+          var item = JSON.parse(data);
+        } catch (e) {
+          console.log("exception => ", e + "\nproblem parsing data => ", data);
+          return;
+        }
+        var subset = _.where(clients, {location : object_id});
+        for(var i in subset) {
+          subset[i].send(
+            JSON.stringify({type: "update", message: item}),
+            /*jshint -W083 */
+            function(err) {
+              if(err) {
+                console.log("failed to send update to client => ", err);
+                if(err.message === "not opened") { deallocate_socket(subset[i]) }
+              }
+            });
+        }
       }
     });
   }
@@ -88,8 +95,12 @@ app.post('/subscriptions/:id(\\d+)/delete', function(req, res) {
 
 app.post('/subscriptions/all/delete', function(req, res) {
   //console.log("POST /subscriptions/all/delete => ", req.params);
-  instagram.delete_all_subscription(function(data) {
-    res.send(data);
+  instagram.delete_all_subscription(function(err, data) {
+    if(err) {
+      res.send(err);
+    } else {
+      res.send(data);
+    }
   });
 });
 
