@@ -1,3 +1,4 @@
+require('newrelic');
 var express = require('express'),
     url = require('url'),
     instagram = require('./instagram'),
