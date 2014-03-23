@@ -68,8 +68,10 @@ app.post('/subscriptions/callback/', function(req, res) {
           JSON.stringify({type: "update", message: item}),
           /*jshint -W083 */
           function(err) {
-            if(err) { console.log("failed to send update to client => ", err); }
-            if(err.message === "not opened") { deallocate_socket(subset[i]) }
+            if(err) {
+              console.log("failed to send update to client => ", err);
+              if(err.message === "not opened") { deallocate_socket(subset[i]) }
+            }
           });
       }
     });
@@ -115,8 +117,10 @@ wss.on('connection', function(ws) {
             console.log("problem creating new subscription => ", err);
             ws.send(JSON.stringify({type: "message", message: err.message}),
                 function(err) {
-                  if(err) { console.log("failed to send message to client => ", err); }
-                  if(err.message === "not opened") { deallocate_socket(ws) }
+                  if(err) {
+                    console.log("failed to send message to client => ", err);
+                    if(err.message === "not opened") { deallocate_socket(ws) }
+                  }
                 });
           } else {
             var json_data = JSON.parse(data);
@@ -126,16 +130,20 @@ wss.on('connection', function(ws) {
               clients.push(ws);
               ws.send(JSON.stringify({type: "message", message: "Subscription created"}),
                 function(err) {
-                  if(err) { console.log("failed to send message to client => ", err); }
-                  if(err.message === "not opened") { deallocate_socket(ws) }
+                  if(err) {
+                    console.log("failed to send message to client => ", err);
+                    if(err.message === "not opened") { deallocate_socket(ws) }
+                  }
                 });
             } else {
               ws.send(JSON.stringify({
                 type: "message",
                 message: [obj.meta.code, obj.meta.error_type, obj.meta.error_message].join(", ") }),
                 function(err) {
-                  if(err) { console.log("failed to send message to client => ", err); }
-                  if(err.message === "not opened") { deallocate_socket(ws) }
+                  if(err) {
+                    console.log("failed to send message to client => ", err);
+                    if(err.message === "not opened") { deallocate_socket(ws) }
+                  }
                 });
             }
           }
