@@ -56,7 +56,7 @@ app.get('/subscriptions/callback/', function(req, res) {
   }
 });
 
-function update_clients(clients) {
+function update_clients(clients, item) {
   for(var i in clients) {
     clients[i].send(
       JSON.stringify({type: "update", message: item}),
