@@ -151,7 +151,7 @@ wss.on('connection', function(ws) {
             var json_data = JSON.parse(data);
             if(json_data.meta.code === 200) {
               subscriptions[mess.location] = parseInt(json_data.data.id, 10);
-              ws.subscription_id = json_data.data.id;
+              ws.subscription_id = parseInt(json_data.data.id, 10);
               clients.push(ws);
               ws.send(JSON.stringify({type: "message", message: "Subscription created"}),
                 function(err) {
