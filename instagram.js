@@ -85,7 +85,7 @@ var fetch_new_geo_media = function(object_id, count, callback) {
   if('development' == process.env.NODE_ENV) {
     fs.readFile('./data/recent_media.json', 'utf-8', function(err, data) {
       if (err) throw err;
-      return callback(data);
+      return callback(null, data);
     });
   } else {
     var path = util.format('/v1/geographies/%s/media/recent?client_id=%s&count=%d', object_id, instagram_client_id, count);
@@ -110,7 +110,7 @@ var subscriptions = function(callback) {
   if ('development' == process.env.NODE_ENV) {
     fs.readFile('./data/list_subscriptions.json', 'utf-8', function(err, data) {
       if (err) throw err;
-      return callback(data);
+      return callback(null, data);
     });
   } else {
     var req = https.request({
@@ -120,7 +120,7 @@ var subscriptions = function(callback) {
       res.setEncoding('utf8');
       res.pipe(bl(function(err, data) {
         var item = data.toString();
-        callback(item);
+        callback(err, item);
       }));
     });
     req.end();

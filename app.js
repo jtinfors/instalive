@@ -31,7 +31,7 @@ app.get('/sockets', function(req, res) {
 });
 
 app.get('/subscriptions/?', function(req, res) {
-  instagram.subscriptions(function(data) {
+  instagram.subscriptions(function(err, data) {
     if(err) {
       res.send(err);
     } else {
@@ -88,8 +88,12 @@ app.post('/subscriptions/callback/', function(req, res) {
 
 app.post('/subscriptions/:id(\\d+)/delete', function(req, res) {
   //console.log("POST /subscriptions/:id/delete => ", req.params);
-  instagram.delete_subscription(req.params.id, function(data) {
-    res.send(data);
+  instagram.delete_subscription(req.params.id, function(err, data) {
+    if(err) {
+      res.send(err);
+    } else {
+      res.send(data);
+    }
   });
 });
 
