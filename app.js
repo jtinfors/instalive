@@ -57,8 +57,7 @@ app.post('/subscriptions/callback/', function(req, res) {
   // console.log("POST /subscriptions/callback/ => ", req.body);
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
   if(updates !== null && updates.length > 0) {
-    var object_id = updates[0].object_id;
-    instagram.fetch_new_geo_media(object_id, 1, function(err, data) {
+    instagram.fetch_new_geo_media(updates[0].object_id, 1, function(err, data) {
       if(err) {
         console.log("problem fetching new geo_media => ", err);
       } else {
@@ -68,7 +67,7 @@ app.post('/subscriptions/callback/', function(req, res) {
           console.log("exception => ", e + "\nproblem parsing data => ", data);
           return;
         }
-        var subset = _.where(clients, {location : object_id});
+        var subset = _.where(clients, {subscription_id : updates[0].id});
         for(var i in subset) {
           subset[i].send(
             JSON.stringify({type: "update", message: item}),
@@ -124,7 +123,7 @@ wss.on('connection', function(ws) {
     console.log("incoming message => ", mess);
     if(mess.type == "subscribe") {
       if(subscriptions[mess.location]) {
-        ws.location = subscriptions[mess.location];
+        ws.subscription_id = subscriptions[mess.location];
         clients.push(ws);
       } else {
         instagram.subscribe(mess.location, function(err, data) {
@@ -140,8 +139,8 @@ wss.on('connection', function(ws) {
           } else {
             var json_data = JSON.parse(data);
             if(json_data.meta.code === 200) {
-              subscriptions[mess.location] = json_data.data.object_id;
-              ws.location = json_data.data.object_id;
+              subscriptions[mess.location] = json_data.data.id;
+              ws.subscription_id = json_data.data.id;
               clients.push(ws);
               ws.send(JSON.stringify({type: "message", message: "Subscription created"}),
                 function(err) {
@@ -177,16 +176,16 @@ function deallocate_socket(ws) {
   if(clients.indexOf(ws) !== -1) {
     console.log("deallocating, " + ws);
     clients.splice(clients.indexOf(ws), 1);
-    var remaining_clients = _.where(clients, {location: ws.location});
+    var remaining_clients = _.where(clients, {subscription_id: ws.subscription_id});
     if(remaining_clients.length === 0) {
-      instagram.delete_subscription(ws.location, function(err, data) {
+      instagram.delete_subscription(ws.subscription_id, function(err, data) {
         if(err) {
-          console.log("Could not unsubscribe from ", ws.location);
+          console.log("Could not unsubscribe from ", ws.subscription_id);
           console.log("", err);
         } else {
-          console.log("Successfully unsubscribed from ", ws.location);
+          console.log("Successfully unsubscribed from ", ws.subscription_id);
           console.log("data => ", data)
-          var logical_location = _.invert(subscriptions)[ws.location];
+          var logical_location = _.invert(subscriptions)[ws.subscription_id];
           if(logical_location) {
             delete subscriptions[logical_location];
           }

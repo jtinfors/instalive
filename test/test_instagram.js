@@ -44,7 +44,7 @@ describe('instagram', function() {
 
   describe('#subscriptions', function() {
     it('should return data', function(done) {
-      instagram.subscriptions(function(data) {
+      instagram.subscriptions(function(err, data) {
         assert.ok(JSON.parse(data).data != null);
         done();
       });
@@ -53,7 +53,7 @@ describe('instagram', function() {
 
   describe('#fetch_new_geo_media', function() {
     it('should return proper data', function(done) {
-      instagram.fetch_new_geo_media(123, 1, function(data) {
+      instagram.fetch_new_geo_media(123, 1, function(err, data) {
         var result = JSON.parse(data);
         assert.ok(result.meta.code == 200);
         done();
