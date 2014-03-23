@@ -1,4 +1,4 @@
-# Instalive
+# ![](public/img/twittercard.png?raw=true) Instalive
 
 Displays a constant flow of instagram images from a given geographic location.
 Images are pushed to connected browsers over websockets.
