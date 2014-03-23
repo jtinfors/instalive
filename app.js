@@ -56,17 +56,12 @@ app.get('/subscriptions/callback/', function(req, res) {
   }
 });
 
-// Recieves updates to the subscription we've setup
+// Recieves updates from Instagram to our subscriptions
 app.post('/subscriptions/callback/', function(req, res) {
-  console.log("POST /subscriptions/callback/ => ", req.body);
+  // console.log("POST /subscriptions/callback/ => ", req.body);
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
   if(updates !== null && updates.length > 0) {
-  var object_id = updates[0].object_id;
-  var subscription_id = updates[0].subscription_id;
-  console.log("updates => ", updates);
-  console.log("subscription_id => ", subscription_id);
-  console.log("object_id => ", object_id);
-    instagram.fetch_new_geo_media(object_id, 1, function(err, data) {
+    instagram.fetch_new_geo_media(updates[0].object_id, 1, function(err, data) {
       if(err) {
         console.log("problem fetching new geo_media => ", err);
       } else {
@@ -76,9 +71,7 @@ app.post('/subscriptions/callback/', function(req, res) {
           console.log("exception => ", e + "\nproblem parsing data => ", data);
           return;
         }
-        var subset = _.where(clients, {subscription_id : subscription_id});
-        console.log("clients => ", clients);
-        console.log("subset => ", subset);
+        var subset = _.where(clients, {subscription_id : updates[0].subscription_id});
         for(var i in subset) {
           subset[i].send(
             JSON.stringify({type: "update", message: item}),
