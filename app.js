@@ -56,6 +56,20 @@ app.get('/subscriptions/callback/', function(req, res) {
   }
 });
 
+function update_clients(clients) {
+  for(var i in clients) {
+    clients[i].send(
+      JSON.stringify({type: "update", message: item}),
+      /*jshint -W083 */
+      function(err) {
+        if(err) {
+          console.log("failed to send update to client => ", err);
+          if(err.message === "not opened") { deallocate_socket(clients[i]) }
+        }
+      });
+  }
+}
+
 // Recieves updates from Instagram to our subscriptions
 app.post('/subscriptions/callback/', function(req, res) {
   // console.log("POST /subscriptions/callback/ => ", req.body);
@@ -71,18 +85,7 @@ app.post('/subscriptions/callback/', function(req, res) {
           console.log("exception => ", e + "\nproblem parsing data => ", data);
           return;
         }
-        var subset = _.where(clients, {subscription_id : updates[0].subscription_id});
-        for(var i in subset) {
-          subset[i].send(
-            JSON.stringify({type: "update", message: item}),
-            /*jshint -W083 */
-            function(err) {
-              if(err) {
-                console.log("failed to send update to client => ", err);
-                if(err.message === "not opened") { deallocate_socket(subset[i]) }
-              }
-            });
-        }
+        update_clients(_.where(clients, {subscription_id : updates[0].subscription_id}));
       }
     });
   }
