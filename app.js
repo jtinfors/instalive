@@ -67,7 +67,7 @@ app.post('/subscriptions/callback/', function(req, res) {
           console.log("exception => ", e + "\nproblem parsing data => ", data);
           return;
         }
-        var subset = _.where(clients, {subscription_id : updates[0].id});
+        var subset = _.where(clients, {subscription_id : updates[0].subscription_id});
         for(var i in subset) {
           subset[i].send(
             JSON.stringify({type: "update", message: item}),
