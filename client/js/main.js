@@ -57,7 +57,7 @@ function remove_some_items() {
 function display_alert(media) {
   var alert = mustache.render("<div id=\"message\" class=\"alert alert-warning fade in\">\
                                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>\
-                                <strong>Holy guacamole!</strong> {{message}}\
+                                <strong>Holy guacamole!</strong> {{media.message}}\
                               </div>", media.message);
   $(alert).prependTo("#main");
   setTimeout(function() { $(item).remove();}, 90000);
