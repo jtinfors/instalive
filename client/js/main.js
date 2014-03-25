@@ -30,8 +30,11 @@ $(function() {
         case "update":
           handle_incoming_media(media.message);
           break;
+        case "alert":
+          display_alert(media);
+          break;
         case "message":
-          show_flash(media.message);
+          console.log(media.message)
           break;
       }
     } catch (e) {
@@ -41,8 +44,8 @@ $(function() {
     }
   };
 
-  ws.onclose = function() { show_flash("websocket closed.. sad sad thing. Reload page for more pics!");};
-  ws.onerror = function() { show_flash("websocket errored on us :( Reload page for more pics!");};
+  ws.onclose = function() { display_alert({message: "End of stream.. Reload page for more instagrams!"}); };
+  ws.onerror = function() { display_alert({message: "End of stream.. Reload page for more instagrams!"}); };
 
   setInterval(remove_some_items, 90000);
 });
@@ -51,12 +54,13 @@ function remove_some_items() {
   $("#pings li:gt(50)").remove();
 }
 
-function show_flash(message) {
-  $(".page-header h1 .flash")
-  .text(message)
-  .fadeIn("slow")
-  .delay(3000)
-  .fadeOut("slow");
+function display_alert(media) {
+  var alert = mustache.render("<div id=\"message\" class=\"alert alert-warning fade in\">\
+                                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>\
+                                <strong>Holy guacamole!</strong> {{message}}\
+                              </div>", media.message);
+  $(alert).prependTo("#main");
+  setTimeout(function() { $(item).remove();}, 90000);
 }
 
 function handle_incoming_media(media) {
