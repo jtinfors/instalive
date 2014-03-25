@@ -17,6 +17,10 @@ var locations = {
     lat: '57.706944',
     lng: '11.966389'
   },
+  malmo: {
+    lat: '55.605833',
+    lng: '13.0025'
+  },
   orebro: {
     lat: '59.273944',
     lng: '15.213361'
@@ -67,7 +71,10 @@ var subscribe = function(location, callback) {
   if(!locations[location]) {
     return callback(new Error("Unknown location. :("), null);
   }
-  var data = generate_post_data({location: location, path: '/subscriptions/callback/'});
+  var data = generate_post_data({
+    radius: location === 'sthlm' ? 4000 : 5000,
+    location: location,
+    path: '/subscriptions/callback/'});
   var content_length = Buffer.byteLength(querystring.stringify(data));
   var options = generate_subscriptions_options(content_length);
   var request = https.request(options, function(res) {
