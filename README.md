@@ -1,4 +1,4 @@
-# Instalive
+# ![](public/img/twittercard.png?raw=true) Instalive
 
 Displays a constant flow of instagram images from a given geographic location.
 Images are pushed to connected browsers over websockets.
@@ -45,7 +45,7 @@ If you are a collaborator of the project it should be enough to run:
 
     heroku git:remote -a instalive
 
-Add WebSocket support to your app:
+If you've forked this or is not a collaborator and wants to deploy on heroku; Make sure you run on their 'Cedar' stack and to add WebSocket support to your app:
 
     heroku labs:enable websockets --app <app_name>
 
