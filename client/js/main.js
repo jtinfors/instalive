@@ -44,8 +44,8 @@ $(function() {
     }
   };
 
-  ws.onclose = function() { display_alert({message: "End of stream.. Reload page for more instagrams!"}); };
-  ws.onerror = function() { display_alert({message: "End of stream.. Reload page for more instagrams!"}); };
+  ws.onclose = function() { display_alert({message: "Tappade Anslutningen. Ladda om sidan för fler Instagrams"}); };
+  ws.onerror = function() { display_alert({message: "Tappade Anslutningen. Ladda om sidan för fler Instagrams"}); };
 
   setInterval(remove_some_items, 90000);
 });
@@ -60,8 +60,12 @@ function display_alert(media) {
                                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>\
                                 <strong>{{message}}</strong>\
                               </div>", media);
-  $(alert).prependTo("#main");
-  setTimeout(function() { $(item).remove();}, 90000);
+  $(alert).prependTo("#content");
+  setTimeout(function() {
+    (function(alert) {
+      $(alert).remove();
+    })(alert);
+  }, 90000);
 }
 
 function handle_incoming_media(media) {
