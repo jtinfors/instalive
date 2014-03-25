@@ -141,7 +141,7 @@ wss.on('connection', function(ws) {
         instagram.subscribe(mess.location, function(err, data) {
           if(err) {
             console.log("problem creating new subscription => ", err);
-            ws.send(JSON.stringify({type: "alert", message: "Kunde inte ansluta till Instagram (" + err.message + ")"}),
+            ws.send(JSON.stringify({type: "alert", heading: "Fel vid anslutning", message: "Kunde inte ansluta till Instagram (" + err.message + ")"}),
                 function(err) {
                   if(err) {
                     console.log("failed to send message to client => ", err);
@@ -164,7 +164,8 @@ wss.on('connection', function(ws) {
             } else {
               ws.send(JSON.stringify({
                 type: "alert",
-                message: "Problem vid anslutning till Instagram (" + [obj.meta.code, obj.meta.error_type, obj.meta.error_message].join(", ") + ")" }),
+                heading: "Problem vid anslutning till Instagram",
+                message: [obj.meta.code, obj.meta.error_type, obj.meta.error_message].join(", ")}),
                 function(err) {
                   if(err) {
                     console.log("failed to send message to client => ", err);

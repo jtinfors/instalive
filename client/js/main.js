@@ -44,8 +44,8 @@ $(function() {
     }
   };
 
-  ws.onclose = function() { display_alert({message: "Tappade Anslutningen. Ladda om sidan för fler Instagrams"}); };
-  ws.onerror = function() { display_alert({message: "Tappade Anslutningen. Ladda om sidan för fler Instagrams"}); };
+  ws.onclose = function() { display_alert({heading: "Tappade Anslutningen", message: "Ladda om sidan för fler Instagrams"}); };
+  ws.onerror = function() { display_alert({heading: "Tappade Anslutningen", message: "Ladda om sidan för fler Instagrams"}); };
 
   setInterval(remove_some_items, 90000);
 });
@@ -56,16 +56,11 @@ function remove_some_items() {
 
 function display_alert(media) {
   console.log(media.message);
-  var alert = mustache.render("<div id=\"message\" class=\"alert alert-warning fade in\">\
+  var alert = mustache.render("<div id=\"message\" class=\"alert alert-danger fade in\">\
                                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>\
-                                <strong>{{message}}</strong>\
+                                <strong>{{heading}}</strong> {{message}}\
                               </div>", media);
   $(alert).prependTo("#content");
-  setTimeout(function() {
-    (function(alert) {
-      $(alert).remove();
-    })(alert);
-  }, 90000);
 }
 
 function handle_incoming_media(media) {
