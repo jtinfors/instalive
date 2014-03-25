@@ -19,6 +19,10 @@ $(function() {
       console.log("sending subscribe message to server => ", message);
       ws.send(message);
     }
+
+    setInterval(function() {
+      ws.send(JSON.stringify({ type: "ping" }));
+    }, 50000);
   };
 
   // For now; assumes data in form of instagram media updates
@@ -35,6 +39,9 @@ $(function() {
           break;
         case "message":
           console.log(media.message)
+          break;
+        case "pong":
+          console.log("received pong");
           break;
       }
     } catch (e) {

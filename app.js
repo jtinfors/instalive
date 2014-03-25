@@ -133,50 +133,57 @@ wss.on('connection', function(ws) {
   ws.on('message', function(message) {
     var mess = JSON.parse(message);
     console.log("incoming message => ", mess);
-    if(mess.type == "subscribe") {
-      if(subscriptions[mess.location]) {
-        ws.subscription_id = subscriptions[mess.location];
-        clients.push(ws);
-      } else {
-        instagram.subscribe(mess.location, function(err, data) {
-          if(err) {
-            console.log("problem creating new subscription => ", err);
-            ws.send(JSON.stringify({type: "alert", heading: "Fel vid anslutning", message: "Kunde inte ansluta till Instagram (" + err.message + ")"}),
-                function(err) {
-                  if(err) {
-                    console.log("failed to send message to client => ", err);
-                    if(err.message === "not opened") { deallocate_socket(ws) }
-                  }
-                });
-          } else {
-            var json_data = JSON.parse(data);
-            if(json_data.meta.code === 200) {
-              subscriptions[mess.location] = parseInt(json_data.data.id, 10);
-              ws.subscription_id = parseInt(json_data.data.id, 10);
-              clients.push(ws);
-              ws.send(JSON.stringify({type: "message", message: "Ansluten"}),
-                function(err) {
-                  if(err) {
-                    console.log("failed to send message to client => ", err);
-                    if(err.message === "not opened") { deallocate_socket(ws) }
-                  }
-                });
+
+    switch(mess.type) {
+      case "subscribe":
+        if(subscriptions[mess.location]) {
+          ws.subscription_id = subscriptions[mess.location];
+          clients.push(ws);
+        } else {
+          instagram.subscribe(mess.location, function(err, data) {
+            if(err) {
+              console.log("problem creating new subscription => ", err);
+              ws.send(JSON.stringify({type: "alert", heading: "Fel vid anslutning", message: "Kunde inte ansluta till Instagram (" + err.message + ")"}),
+                  function(err) {
+                    if(err) {
+                      console.log("failed to send message to client => ", err);
+                      if(err.message === "not opened") { deallocate_socket(ws) }
+                    }
+                  });
             } else {
-              ws.send(JSON.stringify({
-                type: "alert",
-                heading: "Problem vid anslutning till Instagram",
-                message: [obj.meta.code, obj.meta.error_type, obj.meta.error_message].join(", ")}),
-                function(err) {
-                  if(err) {
-                    console.log("failed to send message to client => ", err);
-                    if(err.message === "not opened") { deallocate_socket(ws) }
-                  }
-                });
+              var json_data = JSON.parse(data);
+              if(json_data.meta.code === 200) {
+                subscriptions[mess.location] = parseInt(json_data.data.id, 10);
+                ws.subscription_id = parseInt(json_data.data.id, 10);
+                clients.push(ws);
+                ws.send(JSON.stringify({type: "message", message: "Ansluten"}),
+                  function(err) {
+                    if(err) {
+                      console.log("failed to send message to client => ", err);
+                      if(err.message === "not opened") { deallocate_socket(ws) }
+                    }
+                  });
+              } else {
+                ws.send(JSON.stringify({
+                  type: "alert",
+                  heading: "Problem vid anslutning till Instagram",
+                  message: [obj.meta.code, obj.meta.error_type, obj.meta.error_message].join(", ")}),
+                  function(err) {
+                    if(err) {
+                      console.log("failed to send message to client => ", err);
+                      if(err.message === "not opened") { deallocate_socket(ws) }
+                    }
+                  });
+              }
             }
-          }
-        });
-      }
+          });
+        }
+        break;
+      case "ping":
+        ws.send(JSON.stringify({type: "pong"}));
+        break;
     }
+
   });
   ws.on('close', function() {
     console.log("client " + ws + " decided to disconnect");
