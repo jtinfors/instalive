@@ -31,6 +31,10 @@
   text-align: center;
 }
 
+.navs .btn {
+  margin: 5px;
+}
+
 .page-header {
   margin: 10px 0 10px;
   padding-bottom: 0;
@@ -44,6 +48,11 @@
 .page-header h1 svg {
   width: 60px;
   height: 60px;
+}
+
+.container .row {
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 #pings li {
@@ -81,7 +90,12 @@
   }
 }
 @media (max-width: 750px) {
-  .headline { margin-top: 10px; }
+  .fb_iframe_widget.fb-like, .twitter-share-button {
+    top: 5px;
+    right: 5px;
+    position: absolute;
+  }
+  .headline { margin-top: 30px; }
   .headline .logo-wrapper {
     font: 900 50px/100px "Helvetica Neue", Helvetica, Arial, sans-serif;
     letter-spacing: -2px;
@@ -98,3 +112,6 @@
 }
 
 
+.typeform-wrapper iframe {
+  overflow-y: hidden;
+}
