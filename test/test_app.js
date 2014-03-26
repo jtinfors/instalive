@@ -26,4 +26,32 @@ describe('app', function() {
       });
     });
   });
+
+  describe('deallocate_socket', function() {
+    it('should handle unsubscribe', function() {
+      app.instagram.delete_subscription = function(id, callback) {
+        return callback(null, "");
+      };
+      ws = {};
+      subscription = {
+        "aspect": "media",
+        "callback_url": "http://www.instalive.se/subscriptions/callback/",
+        "id": "4462330",
+        "object": "geography",
+        "object_id": "4807619",
+        "type": "subscription"
+      };
+      ws.subscription_id = subscription.id;
+      ws.object_id = subscription.object_id;
+
+      app.clients.push(ws);
+      app.subscriptions['sthlm'] = {
+        object_id: subscription.object_id,
+        subscription_id: subscription.subscription_id
+      };
+
+      app.deallocate_socket(ws);
+      assert.ok(Object.keys(app.subscriptions).length === 0);
+    });
+  });
 });

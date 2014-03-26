@@ -77,21 +77,21 @@ app.post('/subscriptions/callback/', function(req, res) {
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
   if(updates !== null && updates.length > 0) {
     for(var i=0;i < updates.length;i++) {
-      (function(value) {
-        instagram.fetch_new_geo_media(updates[value].object_id, 1, function(err, data) {
+      (function(subscription) {
+        instagram.fetch_new_geo_media(subscription.object_id, 1, function(err, data) {
           if(err) {
             console.log("problem fetching new geo_media => ", err);
           } else {
-            try {
+            try { // TODO: Most likely we will not get broken json at this stage. remove suspenders
               var item = JSON.parse(data);
             } catch (e) {
               console.log("exception => ", e + "\nproblem parsing data => ", data);
               return;
             }
-            update_clients(_.where(clients, {subscription_id : updates[value].subscription_id}), item);
+            update_clients(_.where(clients, {object_id: subscription.object_id}), item);
           }
         });
-      })(i);
+      })(updates[i]);
     }
   }
   res.send("ok");
@@ -132,13 +132,21 @@ var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
   ws.on('message', function(message) {
     var mess = JSON.parse(message);
-    console.log("incoming message => ", mess);
-
     switch(mess.type) {
       case "subscribe":
         if(subscriptions[mess.location]) {
-          ws.subscription_id = subscriptions[mess.location];
+          ws.subscription_id = subscriptions[mess.location].subscription_id;
+          ws.object_id = subscriptions[mess.location].object_id;
           clients.push(ws);
+          fetch_som_pics(mess.location, function(err, data) {
+            if(!err) {
+              var json_data = JSON.parse(data);
+              json_data.data.reverse();
+              ws.send(JSON.stringify({type: "update", message: json_data}), function(err){
+                console.log("oh noes => ", err);
+              });
+            }
+          });
         } else {
           instagram.subscribe(mess.location, function(err, data) {
             if(err) {
@@ -153,27 +161,34 @@ wss.on('connection', function(ws) {
             } else {
               var json_data = JSON.parse(data);
               if(json_data.meta.code === 200) {
-                subscriptions[mess.location] = parseInt(json_data.data.id, 10);
-                ws.subscription_id = parseInt(json_data.data.id, 10);
+                console.log("adding ", json_data.data, " to subscriptions => ", mess.location);
+                subscriptions[mess.location] = { object_id: json_data.data.object_id, subscription_id: json_data.data.id };
+                ws.subscription_id = json_data.data.id;
+                ws.object_id = json_data.data.object_id;
                 clients.push(ws);
                 ws.send(JSON.stringify({type: "message", message: "Ansluten"}),
-                  function(err) {
-                    if(err) {
-                      console.log("failed to send message to client => ", err);
-                      if(err.message === "not opened") { deallocate_socket(ws) }
-                    }
-                  });
+                        function(err) {
+                          if(err) { if(err.message === "not opened") { deallocate_socket(ws) } }
+                        });
+                fetch_som_pics(mess.location, function(err, data) {
+                  if(!err) {
+                    var json_data = JSON.parse(data);
+                    json_data.data.reverse();
+                    ws.send(JSON.stringify({type: "update", message: json_data}), function(err){
+                      console.log("oh noes => ", err);
+                    });
+                  }
+                });
               } else {
                 ws.send(JSON.stringify({
                   type: "alert",
                   heading: "Problem vid anslutning till Instagram",
                   message: [obj.meta.code, obj.meta.error_type, obj.meta.error_message].join(", ")}),
                   function(err) {
-                    if(err) {
-                      console.log("failed to send message to client => ", err);
+                    if(err) { console.log("failed to send message to client => ", err);
                       if(err.message === "not opened") { deallocate_socket(ws) }
                     }
-                  });
+                });
               }
             }
           });
@@ -191,21 +206,24 @@ wss.on('connection', function(ws) {
   });
 });
 
+// TODO: Refactor to use http://instagram.com/developer/endpoints/media/ search API
+function fetch_som_pics(location, callback) {
+  instagram.search_media(location, callback);
+}
+
 function deallocate_socket(ws) {
-  console.log("In deallocate_socket");
   if(clients.indexOf(ws) !== -1) {
-    console.log("deallocating, " + ws);
     clients.splice(clients.indexOf(ws), 1);
     var remaining_clients = _.where(clients, {subscription_id: ws.subscription_id});
     if(remaining_clients.length === 0) {
       instagram.delete_subscription(ws.subscription_id, function(err, data) {
         if(err) {
-          console.log("Could not unsubscribe from ", ws.subscription_id);
-          console.log("", err);
+          console.log("Could not unsubscribe from ", ws.subscription_id, err);
         } else {
-          console.log("Successfully unsubscribed from ", ws.subscription_id);
-          console.log("data => ", data)
-          var logical_location = _.invert(subscriptions)[ws.subscription_id];
+          var logical_location = _.invert(subscriptions)[{
+            subscription_id: ws.subscription_id,
+            object_id: ws.object_id
+          }];
           if(logical_location) {
             delete subscriptions[logical_location];
           }
@@ -215,3 +233,9 @@ function deallocate_socket(ws) {
   }
 }
 
+// All these are exported for testing purposes only
+// TODO: find a better way
+module.exports.deallocate_socket = deallocate_socket;
+module.exports.instagram = instagram;
+module.exports.clients = clients;
+module.exports.subscriptions = subscriptions;

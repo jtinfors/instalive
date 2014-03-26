@@ -88,6 +88,31 @@ var subscribe = function(location, callback) {
   request.end();
 };
 
+var search_media = function(location, callback) {
+  if('development' == process.env.NODE_ENV) {
+    fs.readFile('./data/media_search.json', 'utf-8', function(err, data) {
+      if (err) throw err;
+      return callback(null, data);
+    });
+  } else {
+    var path = util.format('/v1/media/search/?client_id=%s&lat=%d&lng=%d',instagram_client_id, locations[location].lat, locations[location].lng);
+    var req = https.request({
+      hostname: 'api.instagram.com',
+      path: path
+    }, function(res) {
+      res.setEncoding('utf8');
+      res.pipe(bl(function(err, data) {
+        var item = data.toString();
+        callback(err, item);
+      }));
+    });
+    req.end();
+    req.on('error', function(e) {
+      console.error("error when fetching searching recent media => ", e);
+    });
+  }
+}
+
 var fetch_new_geo_media = function(object_id, count, callback) {
   if('development' == process.env.NODE_ENV) {
     fs.readFile('./data/recent_media.json', 'utf-8', function(err, data) {
@@ -176,6 +201,7 @@ module.exports.urlencode = urlencode;
 module.exports.subscriptions = subscriptions;
 module.exports.subscribe = subscribe;
 module.exports.fetch_new_geo_media = fetch_new_geo_media;
+module.exports.search_media = search_media;
 module.exports.delete_subscription = delete_subscription;
 module.exports.delete_all_subscription = delete_all_subscription;
 
