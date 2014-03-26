@@ -78,24 +78,13 @@
   width: 60px;
 }
 
-.fb_iframe_widget.fb-like, .twitter-share-button {
-  top: 10px;
-  right: 10px;
-  position: absolute;
-}
-
 @media (max-width: 970px) {
   .meta .media {
     margin-top: 6px;
   }
 }
 @media (max-width: 750px) {
-  .fb_iframe_widget.fb-like, .twitter-share-button {
-    top: 5px;
-    right: 5px;
-    position: absolute;
-  }
-  .headline { margin-top: 30px; }
+  .headline { margin-top: 10px; }
   .headline .logo-wrapper {
     font: 900 50px/100px "Helvetica Neue", Helvetica, Arial, sans-serif;
     letter-spacing: -2px;
