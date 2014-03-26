@@ -27,6 +27,10 @@ app.get('/', function(req, res) {
   res.render('index');
 });
 
+app.get('/om', function(req, res) {
+  res.render('about');
+});
+
 app.get('/sockets', function(req, res) {
   res.json(Object.keys(clients).length);
 });
