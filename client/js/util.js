@@ -1,13 +1,17 @@
-var moment = require('moment');
+var moment = require('moment'),
+    _ = require('underscore');
 
 // Strips tags from the caption.text part of an update
 module.exports.strip_tags = function(item) {
-  if(item.caption && item.caption.text) {
-    var stripped = item.caption.text.replace(/\s?#[A-Za-z1-9]+/g, '');
+  if(item.caption && item.caption.text && ~item.caption.text.indexOf('#')) {
+    var stripped = _.filter(item.caption.text.split(' '),
+                            function(item) {
+                              return item.indexOf('#');
+                            }).join(' ');
     item.caption.text = stripped;
   }
   return item;
-}
+};
 
 module.exports.parse_date = function(item) {
   if(item.created_time) {
@@ -16,4 +20,4 @@ module.exports.parse_date = function(item) {
     item.relative_time = moment(item.created_time * 1000).fromNow();
   }
   return item;
-}
+};
