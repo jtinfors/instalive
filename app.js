@@ -145,10 +145,12 @@ wss.on('connection', function(ws) {
           fetch_som_pics(mess.location, function(err, data) {
             if(!err) {
               var json_data = JSON.parse(data);
-              json_data.data.reverse();
-              ws.send(JSON.stringify({type: "update", message: json_data}), function(err){
-                console.log("oh noes => ", err);
-              });
+              if(json_data !== undefined && json_data.data !== undefined) {
+                json_data.data.reverse();
+                ws.send(JSON.stringify({type: "update", message: json_data}), function(err){
+                  console.log("oh noes => ", err);
+                });
+              }
             }
           });
         } else {
@@ -164,25 +166,27 @@ wss.on('connection', function(ws) {
                   });
             } else {
               var json_data = JSON.parse(data);
-              if(json_data.meta.code === 200) {
-                console.log("adding ", json_data.data, " to subscriptions => ", mess.location);
-                subscriptions[mess.location] = { object_id: json_data.data.object_id, subscription_id: json_data.data.id };
-                ws.subscription_id = json_data.data.id;
-                ws.object_id = json_data.data.object_id;
-                clients.push(ws);
-                ws.send(JSON.stringify({type: "message", message: "Ansluten"}),
-                        function(err) {
-                          if(err) { if(err.message === "not opened") { deallocate_socket(ws) } }
-                        });
-                fetch_som_pics(mess.location, function(err, data) {
-                  if(!err) {
-                    var json_data = JSON.parse(data);
-                    json_data.data.reverse();
-                    ws.send(JSON.stringify({type: "update", message: json_data}), function(err){
-                      console.log("oh noes => ", err);
-                    });
-                  }
-                });
+              if(json_data !== undefined && json_data.data !== undefined) {
+                if(json_data.meta.code === 200) {
+                  console.log("adding ", json_data.data, " to subscriptions => ", mess.location);
+                  subscriptions[mess.location] = { object_id: json_data.data.object_id, subscription_id: json_data.data.id };
+                  ws.subscription_id = json_data.data.id;
+                  ws.object_id = json_data.data.object_id;
+                  clients.push(ws);
+                  ws.send(JSON.stringify({type: "message", message: "Ansluten"}),
+                          function(err) {
+                            if(err) { if(err.message === "not opened") { deallocate_socket(ws) } }
+                          });
+                          fetch_som_pics(mess.location, function(err, data) {
+                            if(!err) {
+                              var json_data = JSON.parse(data);
+                              json_data.data.reverse();
+                              ws.send(JSON.stringify({type: "update", message: json_data}), function(err){
+                                console.log("oh noes => ", err);
+                              });
+                            }
+                          });
+                }
               } else {
                 ws.send(JSON.stringify({
                   type: "alert",
