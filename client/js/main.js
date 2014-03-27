@@ -51,8 +51,8 @@ $(function() {
     }
   };
 
-  ws.onclose = function() { display_alert({heading: "Tappade Anslutningen", message: "Ladda om sidan för fler Instagrams"}); };
-  ws.onerror = function() { display_alert({heading: "Tappade Anslutningen", message: "Ladda om sidan för fler Instagrams"}); };
+  ws.onclose = function() { display_alert({heading: "Tappade anslutningen", message: "Ladda om sidan för fler Instagrams"}); };
+  ws.onerror = function() { display_alert({heading: "Tappade anslutningen", message: "Ladda om sidan för fler Instagrams"}); };
 
   setInterval(remove_some_items, 90000);
 });
