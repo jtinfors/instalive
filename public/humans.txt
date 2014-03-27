@@ -1,0 +1,21 @@
+/* TEAM */
+  Collaborator: Jens Tinfors
+  Contact: first.last [at] gmail.com
+  Twitter: @jensa
+  From: Stockholm, Sweden
+
+  Collaborator: Gunnar R Johansson
+  Contact: hello [at] gunnar.se
+  Twitter: @gunnarr
+  From: Stockholm, Sweden
+
+  Collaborator: Johan Kuno
+  Contact: who [at] knows
+  Twitter: @jkuno
+  From: Stockholm, Sweden
+
+/* SITE */
+  Last update: 2014/04/01
+  Standards: HTML
+  Components: Only the best!
+  Software: Strictly hipster!

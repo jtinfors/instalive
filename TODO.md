@@ -1,14 +1,9 @@
 # TODO
 
-- Fix broken regex for caption.text
-- Add support for emoji
+- Animate pics as they arrive
 - 'garbage collect' no longer used subscriptions
 - Add link to github repo
-- Add humans.txt
-- [refactor] Add error handling to all http(s) method calls and handle errors accordingly
 - [refactor] mustache template to something sane
-- [refactor] abstract away all interactions with instagram
-- Animate pics as they arrive
 
 # DONE
 - parsea date
@@ -20,3 +15,8 @@
 - Add Facebook like
 - Add Twitter link
 - Display user.
+- Fix broken regex for caption.text
+- Add support for emoji
+- Add humans.txt
+- [refactor] Add error handling to all http(s) method calls and handle errors accordingly
+- [refactor] abstract away all interactions with instagram
