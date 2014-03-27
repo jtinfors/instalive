@@ -1,20 +1,32 @@
 <% layout('layout') -%>
 
-    <p class="">
-      <a href="https://twitter.com/gunnarr">@gunnarr</a> Kläckte idéen,
-      <a href="https://twitter.com/jensa">@jensa</a> byggde den,
-      <a href="https://twitter.com/jkuno">@jkuno</a> ritade ikon.
-    <p/>
-    <p class="">
-      Tanken är enkel. Direktsända strömmar av Instagram-bilder från geografiska platser vi i
-      realtid hämtar från <a href="http://instagram.com/developer/">Instagram's
-      API</a>.<br />
-      Tekniskt funkar det så att <a href="/">www.instalive.se</a> prenumerar på
-      bilder från de platser ni surfar till. Den första besökaren att surfa till
-      en ort öppnar prenumerationen, den sista avslutar den.
-      Nya bilder pushas till webbläsare via websockets så länge fönstret är
-      öppet.<br/>
-    </p>
+    <div class="description col-md-6 col-lg-6">
+      <h3>Om</h3>
+      <p class="">
+        <a href="https://twitter.com/gunnarr">@gunnarr</a> Kläckte idéen,
+        <a href="https://twitter.com/jensa">@jensa</a> byggde den,
+        <a href="https://twitter.com/jkuno">@jkuno</a> ritade ikon.
+      </p>
+      <p class="">
+        Tanken är enkel. Vi ger er realtids-strömmar av geo-taggade <a href="http://instagram.com/">Instagram</a> -bilder från olika platser.
+        Så länge ni tar bilder så håller vi flödet vid liv!
+      </p>
+      <p>
+        Du behöver en stund över och en hyffsat modern webbläsare med stöd för <a href="http://caniuse.com/#feat=websockets">websockets</a>.
+      </p>
+    </div>
+
+    <div class="description col-md-6 col-lg-6">
+      <h3>FAQ</h3>
+        <em>Vilka bilder kommer med i flödet?</em>
+        <blockquote>
+          Alla Instagram-bilder ni plåtar där ni väljer <a href="http://help.instagram.com/375744095836923?locale=sv_SE">"Lägg till på fotokarta"</a> i Instagram appen kommer med.
+        </blockquote>
+        <em>ok, visar ni även upp mina privata bilder?</em>
+        <blockquote>Nej, det gör vi inte. Vi visar bara upp publika bilder som Instagram publicerar via sitt <a href="http://instagram.com/developer/">API</a></blockquote>
+    </div>
+
+    <h3>Feedback</h3>
 
 <div id="wufoo-z1uchz0h1up5wgt">
 Fill out my <a href="https://instalive.wufoo.com/forms/z1uchz0h1up5wgt">online
