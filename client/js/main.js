@@ -18,6 +18,7 @@ $(function() {
       var message = JSON.stringify({type: "subscribe", location: location});
       console.log("sending subscribe message to server => ", message);
       ws.send(message);
+      document.getElementById('location').innerHTML = location;
     }
 
     setInterval(function() {

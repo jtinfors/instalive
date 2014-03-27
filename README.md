@@ -49,7 +49,7 @@ If you've forked this or is not a collaborator and wants to deploy on heroku; Ma
 
     heroku labs:enable websockets --app <app_name>
 
-Before deploy, set these heroku config vars:
+Before deploy, a couple of  heroku config vars must be set. If the deployment target is already up and running they most likely are already set, check with `heroku config:get INSTALIVE_DOMAINNAME`. If that command returns empty you must set them, like so:
 
     heroku config:set INSTALIVE_DOMAINNAME=<fqdn>
     heroku config:set INSTAGRAM_CLIENT_ID=<INSTAGRAM_CLIENT_ID>
