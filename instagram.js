@@ -88,6 +88,26 @@ var locations = {
   halmstad: {
     lat: '56.666667',
     lng: '12.85'
+  },
+    sundsvall: {
+    lat: '62.390833',
+    lng: '17.306944'
+  },
+    lulea: {
+    lat: '65.584444',
+    lng: '22.153889'
+  },
+    trollhattan: {
+    lat: '58.283333',
+    lng: '12.283333'
+  },
+    ostersund: {
+    lat: '63.178889',
+    lng: '14.636389'
+  },
+    borlange: {
+    lat: '60.482778',
+    lng: '15.436389'
   }
 };
 
