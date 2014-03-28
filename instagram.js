@@ -21,6 +21,10 @@ var locations = {
     lat: '55.605833',
     lng: '13.0025'
   },
+   uppsala: {
+    lat: '59.858333',
+    lng: '17.65'
+  },
   orebro: {
     lat: '59.273944',
     lng: '15.213361'
