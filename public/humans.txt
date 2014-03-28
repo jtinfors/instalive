@@ -5,12 +5,12 @@
   From: Stockholm, Sweden
 
   Collaborator: Gunnar R Johansson
-  Contact: hello [at] gunnar.se
+  Contact: gunnar@gunnar.se
   Twitter: @gunnarr
   From: Stockholm, Sweden
 
-  Collaborator: Johan Kuno
-  Contact: who [at] knows
+  Icon: Johan Kuno
+  Contact: kuno@kuno.nu
   Twitter: @jkuno
   From: Stockholm, Sweden
 
