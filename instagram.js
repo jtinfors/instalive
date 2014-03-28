@@ -32,7 +32,7 @@ var locations = {
   orebro: {
     lat: '59.273944',
     lng: '15.213361'
-  }
+  },
   linkoping: {
     lat: '58.410833',
     lng: '15.621389'
@@ -175,7 +175,7 @@ var search_media = function(location, callback) {
       console.error("error when fetching searching recent media => ", e);
     });
   }
-}
+};
 
 var fetch_new_geo_media = function(object_id, count, callback) {
   if('development' == process.env.NODE_ENV) {
