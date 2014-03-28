@@ -41,51 +41,51 @@ var locations = {
     lat: '56.049722',
     lng: '12.699722'
   },
-    jonkoping: {
+  jonkoping: {
     lat: '57.782778',
     lng: '14.160556'
   },
-    norrkoping: {
+  norrkoping: {
     lat: '58.591944',
     lng: '16.185556'
   },
-    lund: {
+  lund: {
     lat: '55.7',
     lng: '13.2'
   },
-    umea: {
+  umea: {
     lat: '63.825556',
     lng: '20.263611'
   },
-    gavle: {
+  gavle: {
     lat: '60.683333',
     lng: '17.166667'
   },
-    boras: {
+  boras: {
     lat: '57.716667',
     lng: '12.933333'
   },
-    eskilstuna: {
+  eskilstuna: {
     lat: '59.370556',
     lng: '16.512778'
   },
-    sodertalje: {
+  sodertalje: {
     lat: '59.183333',
     lng: '17.633333'
   },
-     karlstad: {
+  karlstad: {
     lat: '59.383333',
     lng: '13.533333'
   },
-      taby: {
+  taby: {
     lat: '59.433333',
     lng: '18.083333'
   },
-      vaxjo: {
+  vaxjo: {
     lat: '56.878333',
     lng: '14.809167'
   },
-      halmstad: {
+  halmstad: {
     lat: '56.666667',
     lng: '12.85'
   }
