@@ -39,7 +39,7 @@ $(function() {
           display_alert(media);
           break;
         case "message":
-          console.log(media.message)
+          console.log(media.message);
           break;
         case "pong":
           console.log("received pong");
@@ -63,7 +63,6 @@ function remove_some_items() {
 }
 
 function display_alert(media) {
-  console.log(media.message);
   var tmpl = document.getElementById('mustache_alert').innerHTML;
   var alert = mustache.render(tmpl, media);
   $(alert).prependTo("#content");
@@ -77,9 +76,12 @@ function handle_incoming_media(media) {
       if(document.getElementById("image_"+media.data[i].id)) {
         return;
       }
-
       var item = mustache.render(tmpl, util.parse_date(util.strip_tags(media.data[i])));
-      $(item).prependTo("#pings");
+      $(item).find('.image > a > img').on('load', (function(item) {
+        return function() {
+          $(item).hide().prependTo("#pings").slideDown();
+        };
+      })(item));
     }
   }
 }
