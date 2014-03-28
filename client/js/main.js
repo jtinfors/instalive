@@ -64,19 +64,21 @@ function remove_some_items() {
 
 function display_alert(media) {
   console.log(media.message);
-  var alert = mustache.render(document.getElementById('mustache_alert').innerHTML, media);
+  var tmpl = document.getElementById('mustache_alert').innerHTML;
+  var alert = mustache.render(tmpl, media);
   $(alert).prependTo("#content");
 }
 
 function handle_incoming_media(media) {
   if(media.meta.code == 200 && media.data.length > 0) {
+    var tmpl = document.getElementById('mustache_post').innerHTML;
+    mustache.parse(tmpl);
     for(var i=0; i < media.data.length;i++) {
-      if(document.getElementById("image_"+media.data[i].id)) { return; }
+      if(document.getElementById("image_"+media.data[i].id)) {
+        return;
+      }
 
-      var item = mustache.render(
-        document.getElementById('mustache_post').innerHTML,
-        util.parse_date(util.strip_tags(media.data[i]))
-      );
+      var item = mustache.render(tmpl, util.parse_date(util.strip_tags(media.data[i])));
       $(item).prependTo("#pings");
     }
   }

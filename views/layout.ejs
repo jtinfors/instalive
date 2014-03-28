@@ -119,7 +119,7 @@
               {{/name}}
             {{/location}}
             {{#datetime}}
-              <span class="label label-primary"><span class="glyphicon glyphicon-time"></span> <date datetime="{{datetime}}">{{relative_time}}</date></span>
+              <span class="label label-primary"><span class="glyphicon glyphicon-time"></span> <date title="{{display_time_long}}" datetime="{{datetime}}">{{display_time_short}}</date></span>
             {{/datetime}}
           </div>
         </div>
