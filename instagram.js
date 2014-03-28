@@ -31,6 +31,7 @@ var locations = {
   }
 };
 
+
 var generate_post_data = function(options) {
   var location = options.location;
   var radius = options.radius ? options.radius : 4000;
