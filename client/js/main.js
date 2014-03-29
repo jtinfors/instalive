@@ -79,9 +79,14 @@ function handle_incoming_media(media) {
       var item = mustache.render(tmpl, util.parse_date(util.strip_tags(media.data[i])));
       $(item).find('.image > a > img').on('load', (function(item, should_animate) {
         return function() {
-          should_animate ? $(item).hide().prependTo("#pings").fadeIn() : $(item).prependTo("#pings");
-          if(window.scrollY > 0) {
-            window.scrollTo(0, window.scrollY + document.getElementById('pings').firstChild.offsetHeight + 20);
+          var current_scroll_position = $(document).scrollTop();
+          if(current_scroll_position) {
+            $(item).prependTo("#pings");
+            $(document).scrollTop(current_scroll_position +
+                                      $('#pings li:last').outerHeight() +
+                                      parseInt($('#pings li:last').css("margin-bottom").slice(0,2), 10));
+          } else {
+            $(item).hide().prependTo("#pings").fadeIn();
           }
         };
       })(item, i === media.data.length - 1));
