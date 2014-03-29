@@ -51,13 +51,8 @@
   margin-right: 0px;
 }
 
-#pings li {
-  margin-bottom: 20px;
-}
-
-  #pings .meta .label {
-    line-height: 2.2;
-  }
+#pings li { margin-bottom: 20px; }
+  #pings .meta .label { line-height: 2.2; }
 
   .page-header h1 .flash {
     display: none;
@@ -65,13 +60,8 @@
     color: green;
   }
 
-  #pings li .image {
-    padding: 0;
-  }
-
-  #pings li .media {
-    margin-bottom: 6px;
-  }
+  #pings li .image { padding: 0; }
+  #pings li .media { margin-bottom: 6px; }
 
     #pings li .media img {
       height: 60px;
@@ -79,11 +69,13 @@
     }
 
 @media (max-width: 970px) {
-  .meta .media {
-    margin-top: 6px;
-  }
+  .meta .media { margin-top: 6px; }
 }
 @media (max-width: 750px) {
+  #main {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
   .headline { margin-top: 10px; }
   .headline .logo-wrapper {
     font: 900 50px/100px "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -95,11 +87,7 @@
     height: 136px;
     width: 136px;
   }
-  .headline .logo-wrapper small {
-    font-size: 18px;
-  }
-  #pings li .meta {
-    padding-left: 0;
-  }
+  .headline .logo-wrapper small { font-size: 18px; }
+  #pings li .meta { padding-left: 0; }
 }
 
