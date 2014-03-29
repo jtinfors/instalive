@@ -77,11 +77,14 @@ function handle_incoming_media(media) {
         return;
       }
       var item = mustache.render(tmpl, util.parse_date(util.strip_tags(media.data[i])));
-      $(item).find('.image > a > img').on('load', (function(item) {
+      $(item).find('.image > a > img').on('load', (function(item, should_animate) {
         return function() {
-          $(item).hide().prependTo("#pings").slideDown();
+          should_animate ? $(item).hide().prependTo("#pings").fadeIn() : $(item).prependTo("#pings");
+          if(window.scrollY > 0) {
+            window.scrollTo(0, window.scrollY + document.getElementById('pings').firstChild.offsetHeight + 20);
+          }
         };
-      })(item));
+      })(item, i === media.data.length - 1));
     }
   }
 }
