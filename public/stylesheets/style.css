@@ -39,7 +39,7 @@
     margin-top: 10px;
     margin-bottom: 0;
   }
-  
+
     .page-header h1 #location { vertical-align: top; }
     .page-header h1 svg {
       width: 60px;
@@ -63,6 +63,10 @@
     display: none;
     vertical-align: top;
     color: green;
+  }
+
+  #pings li .image {
+    padding: 0;
   }
 
   #pings li .media {
@@ -93,6 +97,9 @@
   }
   .headline .logo-wrapper small {
     font-size: 18px;
+  }
+  #pings li .meta {
+    padding-left: 0;
   }
 }
 
