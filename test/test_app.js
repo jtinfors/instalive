@@ -54,4 +54,26 @@ describe('app', function() {
       assert.ok(Object.keys(app.subscriptions).length === 0);
     });
   });
+
+  describe('map_subscriptions', function() {
+    it('should work', function() {
+      subscriptions = {
+        gbg: {
+          object_id: "4824258",
+          subscription_id: "4517047"
+
+        },
+        sthlm: {
+          object_id: "4824597",
+          subscription_id: "4518013"
+
+        }
+      }
+      var ws = { object_id: "4824258", subscription_id: "4517047" }
+      app.subscriptions['gbg']  = subscriptions['gbg'];
+      app.clients.push(ws)
+      var result = app.map_subscriptions();
+      assert.ok(result['gbg'] == 1);
+    })
+  })
 });

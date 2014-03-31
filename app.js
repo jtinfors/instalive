@@ -32,7 +32,8 @@ app.get('/om', function(req, res) {
 });
 
 app.get('/sockets', function(req, res) {
-  res.json(Object.keys(clients).length);
+  res.json(map_subscriptions);
+  // res.json(Object.keys(clients).length);
 });
 
 app.get('/stored_subscriptions/?', function(req, res) {
@@ -241,9 +242,19 @@ function deallocate_socket(ws) {
   }
 }
 
+function map_subscriptions() {
+  var keys = _.keys(subscriptions);
+  var result = {};
+  for(var i=0;i<keys.length;i++) {
+    result[keys[i]] = _.where(clients, subscriptions[keys[i]]).length;
+  }
+  return result;
+}
+
 // All these are exported for testing purposes only
 // TODO: find a better way
 module.exports.deallocate_socket = deallocate_socket;
 module.exports.instagram = instagram;
 module.exports.clients = clients;
 module.exports.subscriptions = subscriptions;
+module.exports.map_subscriptions = map_subscriptions;
