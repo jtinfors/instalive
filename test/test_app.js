@@ -73,7 +73,8 @@ describe('app', function() {
       app.subscriptions['gbg']  = subscriptions['gbg'];
       app.clients.push(ws)
       var result = app.map_subscriptions();
-      assert.ok(result['gbg'] == 1);
+      assert.ok(result[0].location == 'gbg');
+      assert.ok(result[0].num == 1);
     })
   })
 });
