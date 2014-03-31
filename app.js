@@ -32,7 +32,7 @@ app.get('/om', function(req, res) {
 });
 
 app.get('/sockets', function(req, res) {
-  res.json(map_subscriptions);
+  res.json(map_subscriptions());
   // res.json(Object.keys(clients).length);
 });
 
