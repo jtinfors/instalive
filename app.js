@@ -191,7 +191,7 @@ wss.on('connection', function(ws) {
                 ws.send(JSON.stringify({
                   type: "alert",
                   heading: "Problem vid anslutning till Instagram",
-                  message: [obj.meta.code, obj.meta.error_type, obj.meta.error_message].join(", ")}),
+                  message: [json_data.meta.code, json_data.meta.error_type, json_data.meta.error_message].join(", ")}),
                   function(err) {
                     if(err) { console.log("failed to send message to client => ", err);
                       if(err.message === "not opened") { deallocate_socket(ws) }
