@@ -3,8 +3,8 @@ var mustache = require('mustache'),
 
 $(function() {
 
-  if (!("WebSocket" in window)) {
-    $(".page-header h1").text("Your browser is too old for me too handle, buy a new one, with WebSocket support and come back later.");
+  if (!('WebSocket' in window)) {
+    $('.page-header h1').text('Your browser is too old for me too handle, buy a new one, with WebSocket support and come back later.');
     return;
   }
 
@@ -12,17 +12,17 @@ $(function() {
   var ws = new WebSocket(host);
 
   ws.onopen = function(event) {
-    console.log("onopen!");
+    console.log('onopen!');
     var location = window.location.pathname.substring(1);
     if(location) {
-      var message = JSON.stringify({type: "subscribe", location: location});
-      console.log("sending subscribe message to server => ", message);
+      var message = JSON.stringify({type: 'subscribe', location: location});
+      console.log('sending subscribe message to server => ', message);
       ws.send(message);
       document.getElementById('location').innerHTML = location;
     }
 
     setInterval(function() {
-      ws.send(JSON.stringify({ type: "ping" }));
+      ws.send(JSON.stringify({ type: 'ping' }));
     }, 50000);
   };
 
@@ -32,64 +32,60 @@ $(function() {
     try { // sometimes event.data is split in half, not sure why.. but catch and move on!
       var media = JSON.parse(event.data.replace(/[\s\0]/g, ' '));
       switch(media.type) {
-        case "update":
+        case 'update':
           handle_incoming_media(media.message);
           break;
-        case "alert":
+        case 'alert':
           display_alert(media);
           break;
-        case "message":
+        case 'message':
           console.log(media.message);
           break;
-        case "pong":
-          console.log("received pong");
+        case 'pong':
+          console.log('received pong');
           break;
       }
     } catch (e) {
-      console.log("exception => ", e);
-      console.log("problem parsing data => ", event.data);
+      console.log('exception => ', e);
+      console.log('problem parsing data => ', event.data);
       return;
     }
   };
 
-  ws.onclose = function() { display_alert({heading: "Tappade anslutningen", message: "Ladda om sidan för fler Instagrams"}); };
-  ws.onerror = function() { display_alert({heading: "Tappade anslutningen", message: "Ladda om sidan för fler Instagrams"}); };
+  ws.onclose = function() { display_alert({heading: 'Tappade anslutningen', message: 'Ladda om sidan för fler Instagrams'}); };
+  ws.onerror = function() { display_alert({heading: 'Tappade anslutningen', message: 'Ladda om sidan för fler Instagrams'}); };
 
   setInterval(remove_some_items, 90000);
 });
 
 function remove_some_items() {
-  $("#pings li:gt(50)").remove();
+  $('#pings li:gt(50)').remove();
 }
 
 function display_alert(media) {
   var tmpl = document.getElementById('mustache_alert').innerHTML;
   var alert = mustache.render(tmpl, media);
-  $(alert).prependTo("#content");
+  $(alert).prependTo('#content');
 }
 
 function handle_incoming_media(media) {
   if(media.meta.code == 200 && media.data.length > 0) {
     var tmpl = document.getElementById('mustache_post').innerHTML;
     mustache.parse(tmpl);
+
     for(var i=0; i < media.data.length;i++) {
-      if(document.getElementById("image_"+media.data[i].id)) {
-        return;
+      if(document.getElementById('image_'+media.data[i].id)) {
+        return; // To avoid duplicates
       }
       var item = mustache.render(tmpl, util.parse_date(util.strip_tags(media.data[i])));
-      $(item).find('.image > a > img').on('load', (function(item, should_animate) {
-        return function() {
-          var current_scroll_position = $(document).scrollTop();
-          if(current_scroll_position) {
-            $(item).prependTo("#pings");
-            $(document).scrollTop(current_scroll_position +
-                                      $('#pings li:last').outerHeight() +
-                                      parseInt($('#pings li:last').css("margin-bottom").slice(0,2), 10));
-          } else {
-            $(item).hide().prependTo("#pings").fadeIn();
-          }
-        };
-      })(item, i === media.data.length - 1));
+
+      var current_scroll_position = $(document).scrollTop();
+      if(current_scroll_position > 80) {
+        $(item).hide().prependTo('#pings').fadeIn('slow');
+        $('html, body').animate({ scrollTop: (current_scroll_position + $('#pings li:last').outerHeight(true))});
+      } else {
+        $(item).hide().prependTo('#pings').fadeIn('slow');
+      }
     }
   }
 }
