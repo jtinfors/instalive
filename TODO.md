@@ -2,8 +2,6 @@
 
 - Animate pics as they arrive
 - 'garbage collect' no longer used subscriptions
-- Add link to github repo
-- [refactor] mustache template to something sane
 
 # DONE
 - parsea date
@@ -20,3 +18,5 @@
 - Add humans.txt
 - [refactor] Add error handling to all http(s) method calls and handle errors accordingly
 - [refactor] abstract away all interactions with instagram
+- [refactor] mustache template to something sane
+- Add link to github repo
