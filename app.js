@@ -1,9 +1,13 @@
 require('newrelic');
 var express = require('express'),
+    morgan         = require('morgan'),
+    bodyParser     = require('body-parser'),
+    methodOverride = require('method-override'),
+    favicon = require('static-favicon'),
+    hbs = require('hbs'),
     url = require('url'),
     instagram = require('./instagram'),
     path = require('path'),
-    engine = require('ejs-locals'),
     WebSocketServer = require('ws').Server,
     http = require('http'),
     _ = require('underscore'),
@@ -13,14 +17,33 @@ var express = require('express'),
 app = express();
 module.exports = app; // To make it available to tests
 
-app.set('port', process.env.PORT || 3000);
-app.engine('ejs', engine);
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.use(morgan('dev'));           // log every request to the console
+app.use(bodyParser());            // pull information from html in POST
+app.use(methodOverride());
 
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.favicon(__dirname + '/public/img/favicon.ico'));
+app.set('port', process.env.PORT || 3000);
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
+hbs.registerPartials(__dirname + '/views/partials');
+
+var blocks = {};
+
+hbs.registerHelper('extend', function(name, context) {
+  var block = blocks[name];
+  if (!block) {
+    block = blocks[name] = [];
+  }
+  block.push(context.fn(this));
+});
+
+hbs.registerHelper('block', function(name) {
+  var val = (blocks[name] || []).join('\n');
+  // clear the block
+  blocks[name] = [];
+  return val;
+});
+
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
@@ -50,13 +73,10 @@ app.get('/subscriptions/?', function(req, res) {
 });
 
 app.get('/subscriptions/callback/', function(req, res) {
-  //console.log("GET /subscriptions/callback/ => ", req.query);
   var parsedRequest = url.parse(req.url, true);
   if('subscribe' === parsedRequest['query']['hub.mode'] && parsedRequest['query']['hub.challenge'] !== null) {
-    //console.log("sending back hub_challange => ", parsedRequest['query']['hub.challenge']);
     res.send(parsedRequest['query']['hub.challenge']);
   } else {
-    //console.log("sending back nok => ");
     res.send(400, "nok");
   }
 });

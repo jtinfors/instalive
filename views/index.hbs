@@ -1,5 +1,4 @@
-<% layout('bare_layout') -%>
-
+<div id="content" class="row">
   <div class="headline">
     <h1 class="logo-wrapper">
       <div class="logo"></div>
@@ -38,3 +37,10 @@
 <a href="http://blogg.instalive.se" class="btn btn-success btn-lg" role="button">Blogg</a>
   </p>
   </div>
+</div>
+
+{{#extend "scripts"}}
+<script>
+document.write('foo bar!');
+</script>
+{{/extend}}
