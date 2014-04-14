@@ -12,11 +12,9 @@ $(function() {
   var ws = new WebSocket(host);
 
   ws.onopen = function(event) {
-    console.log('onopen!');
     var location = window.location.pathname.substring(1);
     if(location) {
       var message = JSON.stringify({type: 'subscribe', location: location});
-      console.log('sending subscribe message to server => ', message);
       ws.send(message);
       document.getElementById('location').innerHTML = location;
     }
@@ -39,15 +37,11 @@ $(function() {
           display_alert(media);
           break;
         case 'message':
-          console.log(media.message);
           break;
         case 'pong':
-          console.log('received pong');
           break;
       }
     } catch (e) {
-      console.log('exception => ', e);
-      console.log('problem parsing data => ', event.data);
       return;
     }
   };
