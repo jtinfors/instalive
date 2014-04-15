@@ -1,5 +1,5 @@
 var gulp = require('gulp'),
-    uglify = require('gulp-uglify');;
+    uglify = require('gulp-uglify');
 
 var browserify = require('gulp-browserify');
 
@@ -9,6 +9,6 @@ gulp.task('default', function() {
     debug : !gulp.env.production
   }))
   .pipe(uglify({outSourceMap: true}))
-  .pipe(gulp.dest('./public/js'))
+  .pipe(gulp.dest('./public/js'));
 });
 

@@ -11,6 +11,8 @@ $(function() {
   var mustache_post, mustache_alert;
   $.get('/tmpl/post.mustache', function(payload) { mustache_post = payload; mustache.parse(mustache_post); });
   $.get('/tmpl/alert.mustache', function(payload) { mustache_alert = payload; mustache.parse(mustache_alert); });
+  console.log('mustache_post => ', mustache_post);
+
   var host = location.origin.replace(/^http/, 'ws');
   var ws = new WebSocket(host);
 
