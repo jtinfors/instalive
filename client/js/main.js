@@ -61,7 +61,7 @@ function remove_some_items() {
 }
 
 function display_alert(media) {
-  var mustache_alert = document.getElementById('mustache_alert').innerHTML;
+  // var tmpl = document.getElementById('mustache_alert').innerHTML;
   var alert = mustache.render(mustache_alert, media);
   $(alert).prependTo('#content');
 }
