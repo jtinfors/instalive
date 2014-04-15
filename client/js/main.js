@@ -8,6 +8,10 @@ $(function() {
     return;
   }
 
+  var mustache_post;
+  var mustache_alert;
+  $.get('/tmpl/post.mustache', function(payload) { mustache_post = mustache.parse(payload); });
+  $.get('/tmpl/alert.mustache', function(payload) { mustache_alert = mustache.parse(payload); });
   var host = location.origin.replace(/^http/, 'ws');
   var ws = new WebSocket(host);
 
@@ -57,21 +61,21 @@ function remove_some_items() {
 }
 
 function display_alert(media) {
-  var tmpl = document.getElementById('mustache_alert').innerHTML;
-  var alert = mustache.render(tmpl, media);
+  var mustache_alert = document.getElementById('mustache_alert').innerHTML;
+  var alert = mustache.render(mustache_alert, media);
   $(alert).prependTo('#content');
 }
 
 function handle_incoming_media(media) {
   if(media.meta.code == 200 && media.data.length > 0) {
-    var tmpl = document.getElementById('mustache_post').innerHTML;
-    mustache.parse(tmpl);
+    // var tmpl = document.getElementById('mustache_post').innerHTML;
+    // mustache.parse(tmpl);
 
     for(var i=0; i < media.data.length;i++) {
       if(document.getElementById('image_'+media.data[i].id)) {
         return; // To avoid duplicates
       }
-      var item = mustache.render(tmpl, util.parse_date(util.strip_tags(media.data[i])));
+      var item = mustache.render(mustache_post, util.parse_date(util.strip_tags(media.data[i])));
 
       var current_scroll_position = $(document).scrollTop();
       if(current_scroll_position > 80) {
