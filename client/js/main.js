@@ -11,11 +11,10 @@ $(function() {
   var mustache_post;
   var mustache_alert;
   $.get('/tmpl/post.mustache', function(payload) {
-    console.log('payload => ', payload);
-    mustache_post = mustache.parse(payload);
-    console.log('mustache_post => ', mustache_post);
+    mustache_post = payload;
+    mustache.parse(payload);
   });
-  $.get('/tmpl/alert.mustache', function(payload) { mustache_alert = mustache.parse(payload); });
+  $.get('/tmpl/alert.mustache', function(payload) { mustache_alert = payload; mustache.parse(payload);});
   var host = location.origin.replace(/^http/, 'ws');
   var ws = new WebSocket(host);
 
