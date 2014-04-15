@@ -66,16 +66,13 @@ function display_alert(media) {
 }
 
 function handle_incoming_media(media) {
-  console.log('handle_incoming_media => ', media);
   if(media.meta.code == 200 && media.data.length > 0) {
     var tmpl = document.getElementById('mustache_post').innerHTML;
     mustache.parse(tmpl);
     for(var i=0; i < media.data.length;i++) {
       if(document.getElementById('image_'+media.data[i].id)) {
-        console.log('has already seen it', media);
         return; // To avoid duplicates
       }
-      console.log('mustache_post => ', mustache_post);
       var item = mustache.render(tmpl, util.parse_date(util.strip_tags(media.data[i])));
 
       var current_scroll_position = $(document).scrollTop();
