@@ -60,7 +60,8 @@ function remove_some_items() {
 }
 
 function display_alert(media) {
-  var alert = mustache.render(mustache_alert, media);
+  var tmpl = document.getElementById('mustache_alert').innerHTML;
+  var alert = mustache.render(tmpl, media);
   $(alert).prependTo('#content');
 }
 
@@ -75,7 +76,7 @@ function handle_incoming_media(media) {
         return; // To avoid duplicates
       }
       console.log('mustache_post => ', mustache_post);
-      var item = mustache.render(mustache_post, util.parse_date(util.strip_tags(media.data[i])));
+      var item = mustache.render(tmpl, util.parse_date(util.strip_tags(media.data[i])));
 
       var current_scroll_position = $(document).scrollTop();
       if(current_scroll_position > 80) {
