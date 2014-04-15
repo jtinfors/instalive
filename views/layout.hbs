@@ -51,55 +51,5 @@
           ga('create', 'UA-41057292-2', 'instalive.se');
           ga('send', 'pageview');
     </script>
-
-    <script id="mustache_alert" type="text/html">
-      <div id="message" class="alert alert-danger fade in">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <strong>{{heading}}</strong> {{message}}
-      </div>"
-    </script>
-
-    <script id="mustache_post" type="text/html">
-      <li id="image_{{id}}">
-        <div class="row">
-          <div class="image col-md-6 col-lg-6">
-            <a href="{{link}}" target="_blank">
-              <img title="{{{caption.text}}}" src="{{{images.standard_resolution.url}}}" class="img-responsive img-rounded" height="{{images.standard_resolution.height}}" width="{{images.standard_resolution.width}}"/>
-            </a>
-          </div>
-          <div class="meta col-md-6 col-lg-6">
-            <div class="media">
-              <a href="http://instagram.com/{{user.username}}" class="pull-left" target="_blank">
-                <img class="media-object img-circle" src="{{user.profile_picture}}"/>
-              </a>
-              <div class="media-body">
-                <a href="http://instagram.com/{{user.username}}" class="pull-left" target="_blank">
-                  <h4 class="media-heading">{{user.full_name}}</h4>
-                </a>
-              </div>
-              {{#caption}}
-                {{#text}}
-                  <p>{{caption.text}}</p>
-                {{/text}}
-              {{/caption}}
-            </div>
-            {{#tags}}
-              <span title="Tag" class="label label-default">{{.}}</span>
-            {{/tags}}
-            {{#filter}}
-              <span title="Filter" class="label label-info"><span class="glyphicon glyphicon-tint"></span> {{.}}</span>
-            {{/filter}}
-            {{#location}}
-              {{#name}}
-                <span title="Location" class="label label-success"><span class="glyphicon glyphicon-cloud-upload"></span> {{.}}</span>
-              {{/name}}
-            {{/location}}
-            {{#datetime}}
-              <span class="label label-primary"><span class="glyphicon glyphicon-time"></span> <date title="{{display_time_long}}" datetime="{{datetime}}">{{display_time_short}}</date></span>
-            {{/datetime}}
-          </div>
-        </div>
-      </li>
-    </script>
   </body>
 </html>
