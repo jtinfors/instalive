@@ -8,10 +8,9 @@ $(function() {
     return;
   }
 
-  var mustache_post;
-  var mustache_alert;
-  $.get('/tmpl/post.mustache', function(payload) { mustache_post = payload; mustache.parse(mustache_post ); });
-  $.get('/tmpl/alert.mustache', function(payload) { mustache_alert = payload; mustache.parse(mustache_alert);});
+  var mustache_post, mustache_alert;
+  $.get('/tmpl/post.mustache', function(payload) { mustache_post = payload; mustache.parse(mustache_post); });
+  $.get('/tmpl/alert.mustache', function(payload) { mustache_alert = payload; mustache.parse(mustache_alert); });
   var host = location.origin.replace(/^http/, 'ws');
   var ws = new WebSocket(host);
 
@@ -70,6 +69,7 @@ function handle_incoming_media(media) {
   if(media.meta.code == 200 && media.data.length > 0) {
     for(var i=0; i < media.data.length;i++) {
       if(document.getElementById('image_'+media.data[i].id)) {
+        console.log('has already seen it', media);
         return; // To avoid duplicates
       }
       console.log('mustache_post => ', mustache_post);
