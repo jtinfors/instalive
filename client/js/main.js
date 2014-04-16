@@ -1,4 +1,4 @@
-var mustache = require('hbs'),
+var mustache = require('mustache'),
     util = require('./util');
 
 $(function() {
