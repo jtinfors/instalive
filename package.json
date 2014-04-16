@@ -8,7 +8,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "NODE_ENV=development mocha"
+    "test": "NODE_ENV=development mocha --reporter dot"
   },
   "repository": {
     "type": "git",

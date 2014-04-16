@@ -89,7 +89,7 @@ function update_clients(clients, item) {
       function(err) {
         if(err) {
           console.log("failed to send update to client => ", err);
-          if(err.message === "not opened") { deallocate_socket(clients[i]) }
+          if(err.message === "not opened") { deallocate_socket(clients[i]); }
         }
       });
   }
@@ -103,11 +103,10 @@ app.post('/subscriptions/callback/', function(req, res) {
     for(var i=0;i < updates.length;i++) {
       (function(subscription) {
         instagram.fetch_new_geo_media(subscription.object_id, 1, function(err, data) {
-          if(err) {
-            console.log("problem fetching new geo_media => ", err);
-          } else {
+          if(!err) {
+            var item;
             try { // TODO: Most likely we will not get broken json at this stage. remove suspenders
-              var item = JSON.parse(data);
+              item = JSON.parse(data);
             } catch (e) {
               console.log("exception => ", e + "\nproblem parsing data => ", data);
               return;
@@ -122,7 +121,6 @@ app.post('/subscriptions/callback/', function(req, res) {
 });
 
 app.post('/subscriptions/:id(\\d+)/delete', function(req, res) {
-  //console.log("POST /subscriptions/:id/delete => ", req.params);
   instagram.delete_subscription(req.params.id, function(err, data) {
     if(err) {
       res.send(err);
@@ -133,7 +131,6 @@ app.post('/subscriptions/:id(\\d+)/delete', function(req, res) {
 });
 
 app.post('/subscriptions/all/delete', function(req, res) {
-  //console.log("POST /subscriptions/all/delete => ", req.params);
   instagram.delete_all_subscription(function(err, data) {
     if(err) {
       res.send(err);
@@ -149,7 +146,6 @@ app.get('/:name', function(req, res) {
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
-  //console.log('Express server listening on port ' + app.get('port'));
 });
 
 var wss = new WebSocketServer({server: server});
@@ -167,8 +163,10 @@ wss.on('connection', function(ws) {
               var json_data = JSON.parse(data);
               if(json_data !== undefined && json_data.data !== undefined) {
                 json_data.data.reverse();
-                ws.send(JSON.stringify({type: "update", message: json_data}), function(err){
-                  console.log("oh noes => ", err);
+                ws.send(JSON.stringify({type: "update", message: json_data}), function(err) {
+                  if(err) {
+                    console.log("Failed to send update to client=> ", err);
+                  }
                 });
               }
             }
@@ -180,7 +178,7 @@ wss.on('connection', function(ws) {
               ws.send(JSON.stringify({type: "alert", heading: "Fel vid anslutning", message: "Kunde inte ansluta till Instagram (" + err.message + ")"}),
                   function(err) {
                     if(err) {
-                      console.log("failed to send message to client => ", err);
+                      console.log("Failed to send message to client => ", err);
                       if(err.message === "not opened") { deallocate_socket(ws) }
                     }
                   });
@@ -188,7 +186,6 @@ wss.on('connection', function(ws) {
               var json_data = JSON.parse(data);
               if(json_data !== undefined && json_data.data !== undefined) {
                 if(json_data.meta.code === 200) {
-                  console.log("adding ", json_data.data, " to subscriptions => ", mess.location);
                   subscriptions[mess.location] = { object_id: json_data.data.object_id, subscription_id: json_data.data.id };
                   ws.subscription_id = json_data.data.id;
                   ws.object_id = json_data.data.object_id;
@@ -202,7 +199,7 @@ wss.on('connection', function(ws) {
                               var json_data = JSON.parse(data);
                               json_data.data.reverse();
                               ws.send(JSON.stringify({type: "update", message: json_data}), function(err){
-                                console.log("oh noes => ", err);
+                                if(err) { console.log("Failed to send update to client=> ", err); }
                               });
                             }
                           });
@@ -213,8 +210,8 @@ wss.on('connection', function(ws) {
                   heading: "Problem vid anslutning till Instagram",
                   message: [json_data.meta.code, json_data.meta.error_type, json_data.meta.error_message].join(", ")}),
                   function(err) {
-                    if(err) { console.log("failed to send message to client => ", err);
-                      if(err.message === "not opened") { deallocate_socket(ws) }
+                    if(err) { console.log("Failed to send message to client => ", err);
+                      if(err.message === "not opened") { deallocate_socket(ws); }
                     }
                 });
               }
@@ -229,8 +226,7 @@ wss.on('connection', function(ws) {
 
   });
   ws.on('close', function() {
-    console.log("client " + ws + " decided to disconnect");
-    deallocate_socket(ws)
+    deallocate_socket(ws);
   });
 });
 
@@ -246,7 +242,7 @@ function deallocate_socket(ws) {
     if(remaining_clients.length === 0) {
       instagram.delete_subscription(ws.subscription_id, function(err, data) {
         if(err) {
-          console.log("Could not unsubscribe from ", ws.subscription_id, err);
+          console.log("Failed to unsubscribe from ", ws.subscription_id, err);
         } else {
           var logical_location = _.invert(subscriptions)[{
             subscription_id: ws.subscription_id,
