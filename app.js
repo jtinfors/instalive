@@ -158,7 +158,7 @@ wss.on('connection', function(ws) {
           ws.subscription_id = subscriptions[mess.location].subscription_id;
           ws.object_id = subscriptions[mess.location].object_id;
           clients.push(ws);
-          fetch_som_pics(mess.location, function(err, data) {
+          fetch_som_pics(mess.location, 5, function(err, data) {
             if(!err) {
               var json_data = JSON.parse(data);
               if(json_data !== undefined && json_data.data !== undefined) {
@@ -194,7 +194,7 @@ wss.on('connection', function(ws) {
                           function(err) {
                             if(err) { if(err.message === "not opened") { deallocate_socket(ws) } }
                           });
-                          fetch_som_pics(mess.location, function(err, data) {
+                          fetch_som_pics(mess.location, 5, function(err, data) {
                             if(!err) {
                               var json_data = JSON.parse(data);
                               json_data.data.reverse();
@@ -231,8 +231,8 @@ wss.on('connection', function(ws) {
 });
 
 // TODO: Refactor to use http://instagram.com/developer/endpoints/media/ search API
-function fetch_som_pics(location, callback) {
-  instagram.search_media(location, callback);
+function fetch_som_pics(location, count, callback) {
+  instagram.search_media(location, count, callback);
 }
 
 function deallocate_socket(ws) {

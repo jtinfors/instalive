@@ -172,14 +172,14 @@ var subscribe = function(location, callback) {
   request.end();
 };
 
-var search_media = function(location, callback) {
+var search_media = function(location, count, callback) {
   if('development' == process.env.NODE_ENV) {
     fs.readFile('./data/media_search.json', 'utf-8', function(err, data) {
       if (err) throw err;
       return callback(null, data);
     });
   } else {
-    var path = util.format('/v1/media/search/?client_id=%s&lat=%d&lng=%d',instagram_client_id, locations[location].lat, locations[location].lng);
+    var path = util.format('/v1/media/search/?client_id=%s&lat=%d&lng=%d&count=%d',instagram_client_id, locations[location].lat, locations[location].lng, count);
     var req = https.request({
       hostname: 'api.instagram.com',
       path: path
