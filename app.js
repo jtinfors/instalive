@@ -17,8 +17,8 @@ var express = require('express'),
 app = express();
 module.exports = app; // To make it available to tests
 
-app.use(morgan('dev'));           // log every request to the console
-app.use(bodyParser());            // pull information from html in POST
+app.use(morgan('default'));
+app.use(bodyParser());
 app.use(methodOverride());
 
 app.set('port', process.env.PORT || 3000);
