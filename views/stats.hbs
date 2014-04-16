@@ -1,6 +1,5 @@
-<% layout('layout') -%>
-
-<% if (items.length > 0) { %>
+{{>header}}
+{{#if items}}
 <div class="table-responsive">
   <table class="table table-hover" id="stats">
     <thead>
@@ -10,17 +9,17 @@
       </tr>
     </thead>
     <tbody>
-      <% items.forEach(function(el, index) { %>
+      {{#each items}}
         <tr>
-          <td><strong><%= el.location %></strong></td>
-          <td><%= el.num %>
+          <td><strong>{{location}}</strong></td>
+          <td>{{num}}
         </tr>
-      <% }); %>
+      {{/each}}
     </tbody>
   </table>
 </div>
-<% } else { %>
+{{else}}
   <div class="jumbotron">
     <h2>Inga anslutna browsers just nu :(</h2>
   </div>
-<% } %>
+{{/if}}

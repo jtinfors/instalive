@@ -8,6 +8,9 @@ $(function() {
     return;
   }
 
+  $('#mustache_post').load('/tmpl/post.mustache');
+  $('#mustache_alert').load('/tmpl/alert.mustache');
+
   var host = location.origin.replace(/^http/, 'ws');
   var ws = new WebSocket(host);
 
@@ -66,7 +69,6 @@ function handle_incoming_media(media) {
   if(media.meta.code == 200 && media.data.length > 0) {
     var tmpl = document.getElementById('mustache_post').innerHTML;
     mustache.parse(tmpl);
-
     for(var i=0; i < media.data.length;i++) {
       if(document.getElementById('image_'+media.data[i].id)) {
         return; // To avoid duplicates
