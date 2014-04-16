@@ -179,7 +179,7 @@ wss.on('connection', function(ws) {
                   function(err) {
                     if(err) {
                       console.log("Failed to send message to client => ", err);
-                      if(err.message === "not opened") { deallocate_socket(ws) }
+                      if(err.message === "not opened") { deallocate_socket(ws); }
                     }
                   });
             } else {
@@ -261,9 +261,9 @@ function map_subscriptions() {
   var keys = _.keys(subscriptions);
   var result = [];
   for(var i=0;i<keys.length;i++) {
-    var item = new Object();
+    var item = {};
     item.location = keys[i];
-    item.num = _.where(clients, subscriptions[keys[i]]).length
+    item.num = _.where(clients, subscriptions[keys[i]]).length;
     result.push(item);
   }
   return result;
