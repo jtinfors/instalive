@@ -57,11 +57,11 @@ Before deploy, a couple of  heroku config vars must be set. If the deployment ta
 
 Now, deploy:
 
-    git push heroku master
+    git push instalive master
 
 or, compile, commit and push in one push (pun intended):
 
-    gulp && git commit -a -m '<message>' && git push heroku master
+    gulp && git commit -a -m '<message>' && git push instalive master
 
 
 ## Test
