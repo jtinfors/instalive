@@ -28,30 +28,50 @@ describe('app', function() {
   });
 
   describe('deallocate_socket', function() {
-    it('should handle unsubscribe', function() {
+    it('should unsubscribe if no clients are attached', function() {
       app.instagram.delete_subscription = function(id, callback) {
         return callback(null, "");
       };
-      ws = {};
-      subscription = {
+      ws_sthlm = {};
+      ws_gbg = {};
+      subscription_sthlm = {
         "aspect": "media",
         "callback_url": "http://www.instalive.se/subscriptions/callback/",
-        "id": "4462330",
+        "id": "200",
         "object": "geography",
-        "object_id": "4807619",
+        "object_id": "201",
         "type": "subscription"
       };
-      ws.subscription_id = subscription.id;
-      ws.object_id = subscription.object_id;
+      subscription_gbg = {
+        "aspect": "media",
+        "callback_url": "http://www.instalive.se/subscriptions/callback/",
+        "id": "300",
+        "object": "geography",
+        "object_id": "301",
+        "type": "subscription"
+      };
+      ws_gbg.subscription_id = subscription_gbg.id;
+      ws_gbg.object_id = subscription_gbg.object_id;
+      ws_gbg.location = 'gbg';
+      ws_sthlm.subscription_id = subscription_sthlm.id;
+      ws_sthlm.object_id = subscription_sthlm.object_id;
+      ws_sthlm.location = 'sthlm';
 
-      app.clients.push(ws);
-      app.subscriptions['sthlm'] = {
-        object_id: subscription.object_id,
-        subscription_id: subscription.subscription_id
+      app.clients.push(ws_gbg);
+      app.clients.push(ws_sthlm);
+
+      app.subscriptions.sthlm = {
+        object_id: subscription_sthlm.object_id,
+        subscription_id: subscription_sthlm.id
+      };
+      app.subscriptions.gbg = {
+        object_id: subscription_gbg.object_id,
+        subscription_id: subscription_gbg.id
       };
 
-      app.deallocate_socket(ws);
-      assert.ok(Object.keys(app.subscriptions).length === 0);
+      app.deallocate_socket(ws_sthlm);
+      assert.equal(Object.keys(app.subscriptions).length, 1);
+      assert.equal(Object.keys(app.clients).length, 1);
     });
   });
 

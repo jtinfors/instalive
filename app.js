@@ -160,6 +160,7 @@ io.on('connection', function(ws) {
         if(subscriptions[mess.location]) {
           ws.subscription_id = subscriptions[mess.location].subscription_id;
           ws.object_id = subscriptions[mess.location].object_id;
+          ws.location = mess.location;
           clients.push(ws);
           fetch_som_pics(mess.location, 5, function(err, data) {
             if(!err) {
@@ -192,6 +193,7 @@ io.on('connection', function(ws) {
                   subscriptions[mess.location] = { object_id: json_data.data.object_id, subscription_id: json_data.data.id };
                   ws.subscription_id = json_data.data.id;
                   ws.object_id = json_data.data.object_id;
+                  ws.location = mess.location;
                   clients.push(ws);
                   ws.send(JSON.stringify({type: "message", message: "Ansluten"}),
                     function(err) {
@@ -236,24 +238,16 @@ function fetch_som_pics(location, count, callback) {
 }
 
 function deallocate_socket(ws) {
-  if(clients.indexOf(ws) !== -1) {
-    clients.splice(clients.indexOf(ws), 1);
-    var remaining_clients = _.where(clients, {subscription_id: ws.subscription_id});
-    if(remaining_clients.length === 0) {
-      instagram.delete_subscription(ws.subscription_id, function(err, data) {
-        if(err) {
-          console.log("Failed to unsubscribe from ", ws.subscription_id, err);
-        } else {
-          var logical_location = _.invert(subscriptions)[{
-            subscription_id: ws.subscription_id,
-            object_id: ws.object_id
-          }];
-          if(logical_location) {
-            delete subscriptions[logical_location];
-          }
-        }
-      });
-    }
+  var remaining_clients = _.where(clients, {subscription_id: ws.subscription_id});
+  if(remaining_clients.length === 1) {
+    instagram.delete_subscription(ws.subscription_id, function(err, data) {
+      if(err) {
+        console.log("Failed to unsubscribe from ", ws.subscription_id, err);
+      } else {
+        delete subscriptions[ws.location];
+        clients.pop(ws);
+      }
+    });
   }
 }
 
