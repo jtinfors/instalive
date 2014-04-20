@@ -1,18 +1,18 @@
 require('newrelic');
-var express = require('express'),
-    morgan         = require('morgan'),
-    bodyParser     = require('body-parser'),
-    methodOverride = require('method-override'),
-    favicon = require('static-favicon'),
-    hbs = require('hbs'),
-    url = require('url'),
-    instagram = require('./instagram'),
-    path = require('path'),
+var express         = require('express'),
+    http            = require('http'),
+    morgan          = require('morgan'),
+    bodyParser      = require('body-parser'),
+    methodOverride  = require('method-override'),
+    favicon         = require('static-favicon'),
+    hbs             = require('hbs'),
+    url             = require('url'),
+    instagram       = require('./instagram'),
+    path            = require('path'),
     WebSocketServer = require('ws').Server,
-    http = require('http'),
-    _ = require('underscore'),
-    clients = [],
-    subscriptions = {};
+    _               = require('underscore'),
+    clients         = [],
+    subscriptions   = {};
 
 app = express();
 module.exports = app; // To make it available to tests
@@ -74,6 +74,7 @@ app.get('/subscriptions/?', function(req, res) {
 
 app.get('/subscriptions/callback/', function(req, res) {
   var parsedRequest = url.parse(req.url, true);
+  /*jshint sub: true */
   if('subscribe' === parsedRequest['query']['hub.mode'] && parsedRequest['query']['hub.challenge'] !== null) {
     res.send(parsedRequest['query']['hub.challenge']);
   } else {
@@ -100,6 +101,7 @@ app.post('/subscriptions/callback/', function(req, res) {
   // console.log("POST /subscriptions/callback/ => ", req.body);
   var updates = _.where(req.body, {changed_aspect: "media", object: 'geography'});
   if(updates !== null && updates.length > 0) {
+    /* jshint -W083 */ // TODO: http://jslinterrors.com/dont-make-functions-within-a-loop/
     for(var i=0;i < updates.length;i++) {
       (function(subscription) {
         instagram.fetch_new_geo_media(subscription.object_id, 1, function(err, data) {
@@ -145,11 +147,12 @@ app.get('/:name', function(req, res) {
 });
 
 var server = http.createServer(app);
-server.listen(app.get('port'), function(){
-});
+server.listen(app.get('port'));
 
-var wss = new WebSocketServer({server: server});
-wss.on('connection', function(ws) {
+// var wss = new WebSocketServer({server: server}); olden
+
+var io = require('socket.io').listen(server);
+io.on('connection', function(ws) {
   ws.on('message', function(message) {
     var mess = JSON.parse(message);
     switch(mess.type) {
@@ -191,18 +194,18 @@ wss.on('connection', function(ws) {
                   ws.object_id = json_data.data.object_id;
                   clients.push(ws);
                   ws.send(JSON.stringify({type: "message", message: "Ansluten"}),
-                          function(err) {
-                            if(err) { if(err.message === "not opened") { deallocate_socket(ws) } }
-                          });
-                          fetch_som_pics(mess.location, 5, function(err, data) {
-                            if(!err) {
-                              var json_data = JSON.parse(data);
-                              json_data.data.reverse();
-                              ws.send(JSON.stringify({type: "update", message: json_data}), function(err){
-                                if(err) { console.log("Failed to send update to client=> ", err); }
-                              });
-                            }
-                          });
+                    function(err) {
+                      if(err) { if(err.message === "not opened") { deallocate_socket(ws); } }
+                    });
+                  fetch_som_pics(mess.location, 5, function(err, data) {
+                    if(!err) {
+                      var json_data = JSON.parse(data);
+                      json_data.data.reverse();
+                      ws.send(JSON.stringify({type: "update", message: json_data}), function(err){
+                        if(err) { console.log("Failed to send update to client=> ", err); }
+                      });
+                    }
+                  });
                 }
               } else {
                 ws.send(JSON.stringify({
@@ -219,18 +222,15 @@ wss.on('connection', function(ws) {
           });
         }
         break;
-      case "ping":
-        ws.send(JSON.stringify({type: "pong"}));
-        break;
     }
 
   });
-  ws.on('close', function() {
+  ws.on('disconnect', function() {
+    console.log('client decided do disconnect');
     deallocate_socket(ws);
   });
 });
 
-// TODO: Refactor to use http://instagram.com/developer/endpoints/media/ search API
 function fetch_som_pics(location, count, callback) {
   instagram.search_media(location, count, callback);
 }

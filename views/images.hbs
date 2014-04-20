@@ -1,6 +1,10 @@
 {{>header}}
-<ul class="list-unstyled" id="pings"></ul>
 
-{{#extend "scripts"}}
-  <script type="text/javascript" src="/js/main.js"/>
-{{/extend}}
+<div id="content" class="row">
+  <ul class="list-unstyled" id="pings"></ul>
+
+  {{#extend "scripts"}}
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/main.js"/>
+  {{/extend}}
+</div>
