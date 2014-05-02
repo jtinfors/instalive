@@ -7,13 +7,14 @@ var express         = require('express'),
     favicon         = require('static-favicon'),
     hbs             = require('hbs'),
     url             = require('url'),
-    instagram       = require('./lib/instagram'),
+    Instagram       = require('./lib/instagram'),
     path            = require('path'),
     WebSocketServer = require('ws').Server,
     _               = require('underscore'),
     clients         = [],
     subscriptions   = {};
 
+var instagram = new Instagram();
 app = express();
 module.exports = app; // To make it available to tests
 
@@ -133,12 +134,8 @@ app.post('/subscriptions/:id(\\d+)/delete', function(req, res) {
 });
 
 app.post('/subscriptions/all/delete', function(req, res) {
-  instagram.delete_all_subscription(function(err, data) {
-    if(err) {
-      res.send(err);
-    } else {
-      res.send(data);
-    }
+  instagram.delete_each_subscription(function(result) {
+    res.send(result);
   });
 });
 
@@ -148,8 +145,6 @@ app.get('/:name', function(req, res) {
 
 var server = http.createServer(app);
 server.listen(app.get('port'));
-
-// var wss = new WebSocketServer({server: server}); olden
 
 var io = require('socket.io').listen(server);
 io.on('connection', function(ws) {
