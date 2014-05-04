@@ -14,6 +14,8 @@ For Mac OS X with [homebrew](http://brew.sh/) do: `brew install node git`
 
 For archlinux do: `pacman -S nodejs git`
 
+For Ubuntu follow [these instructions](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager)
+
 Install project dependecies:
 
     [sudo] npm install -g gulp mocha

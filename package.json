@@ -27,7 +27,6 @@
     "morgan": "~1.0.0",
     "body-parser": "~1.0.0",
     "method-override": "~1.0.0",
-    "ws": "^0.4.31",
     "underscore": "^1.6.0",
     "moment": "^2.5.1",
     "mustache": "^0.8.1",
