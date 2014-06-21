@@ -4,7 +4,7 @@ var gulp = require('gulp'),
 var browserify = require('gulp-browserify');
 
 gulp.task('default', function() {
-  gulp.src('client/js/main.js').pipe(browserify({
+  gulp.src('client/js/image_client.js').pipe(browserify({
     insertGlobals : true,
     debug : !gulp.env.production
   }))

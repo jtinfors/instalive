@@ -1,15 +1,24 @@
+footer, body.index {
+  background: #6aa49a;
+}
+
+footer a {
+  color: #fff;
+}
+
 .headline {
   margin: 70px 0;
   text-align: center;
 }
 
   .headline .logo-wrapper {
+    color: #fff;
     font: 900 90px/100px "Helvetica Neue", Helvetica, Arial, sans-serif;
     letter-spacing: -2px;
   }
 
     .headline .logo-wrapper .logo {
-      background: url('/img/instalive.svg') center 0 no-repeat;
+      background: url('/img/instalive_green.svg') center 0 no-repeat;
       background-size: 236px 236px;
       height: 236px;
       width: 236px;
@@ -19,16 +28,13 @@
     }
 
     .headline .logo-wrapper small {
-      color: rgba(52, 73, 94, 0.30000000000000004);
+      color: #34495E;
       display: block;
       font-size: 22px;
       font-weight: 700;
       letter-spacing: 0;
       padding-top: 5px;
     }
-
-.navs { text-align: center; }
-  .navs .btn { margin: 5px; }
 
 .page-header {
   margin: 10px 0 10px;
@@ -49,6 +55,10 @@
 .container .row {
   margin-left: 0px;
   margin-right: 0px;
+}
+
+.btn-group.select.select-block .btn {
+  background: #99d6cb;
 }
 
 #pings li { margin-bottom: 20px; }

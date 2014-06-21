@@ -9,8 +9,8 @@ var express         = require('express'),
     url             = require('url'),
     Instagram       = require('./lib/instagram'),
     path            = require('path'),
-    WebSocketServer = require('ws').Server,
     _               = require('underscore'),
+    locations       = require('./config/locations'),
     clients         = [],
     subscriptions   = {};
 
@@ -48,7 +48,11 @@ app.use(favicon(__dirname + '/public/img/favicon.ico'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
-  res.render('index');
+  res.render('index', {
+    page_type: 'index',
+    domain: process.env.INSTALIVE_DOMAINNAME,
+    locations: locations
+  });
 });
 
 app.get('/om', function(req, res) {
