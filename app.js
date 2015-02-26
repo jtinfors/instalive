@@ -9,12 +9,17 @@ var express         = require('express'),
     url             = require('url'),
     Instagram       = require('./lib/instagram'),
     path            = require('path'),
-    WebSocketServer = require('ws').Server,
     _               = require('underscore'),
     clients         = [],
     subscriptions   = {};
 
-var instagram = new Instagram();
+var instagram;
+if (process.env.NODE_ENV === 'development') {
+	console.log('dev env!');
+	instagram = require('./lib/offline_instagram');
+} else {
+	instagram = new Instagram();
+}
 app = express();
 module.exports = app; // To make it available to tests
 
@@ -61,6 +66,14 @@ app.get('/stats/?', function(req, res) {
 
 app.get('/stored_subscriptions/?', function(req, res) {
   res.send(subscriptions);
+});
+
+app.get('/media/recent/?', function(req, res) {
+	instagram.search_media('sthlm', 10, function(err, payload) {
+		console.log('payload', payload);
+		console.log('err', err);
+		res.send(payload);
+	})
 });
 
 app.get('/subscriptions/?', function(req, res) {
@@ -190,6 +203,7 @@ io.on('connection', function(ws) {
                   ws.object_id = json_data.data.object_id;
                   ws.location = mess.location;
                   clients.push(ws);
+									console.log('data => ', data);
                   ws.send(JSON.stringify({type: "message", message: "Ansluten"}),
                     function(err) {
                       if(err) { if(err.message === "not opened") { deallocate_socket(ws); } }
