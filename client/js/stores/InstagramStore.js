@@ -21,14 +21,10 @@ var _instagrams = [];
 
 function update(updates) {
 	console.log('old instagrams => ', _instagrams);
-	console.log('updates!! => ', updates);
+	console.log('new instagrams => ', updates);
 
-	var ids = _instagrams.map(function(item) {
-		return 'image_' + item.id;
-	});
-	console.log('ids => ', ids);
 	var newItems = updates.filter(function(item) {
-		return ids.indexOf(item.id) != -1;
+		return _instagrams.indexOf(item) != -1;
 	});
 
 	_instagrams = _instagrams.concat(newItems);
