@@ -12,11 +12,19 @@ function update(updates) {
 	console.log('old instagrams => ', _instagrams);
 	console.log('new instagrams => ', updates);
 
-	var newItems = updates.every(function(newItem) {
+	/*
+	 *var newItems = updates.every(function(newItem) {
+	 *  return _instagrams.some(function(existingItem) {
+	 *    return newItem.id === existingItem.id;
+	 *  });
+	 *});
+	 */
+
+	var newItems.filter(function(newItem) {
 		return _instagrams.some(function(existingItem) {
 			return newItem.id === existingItem.id;
 		});
-	});
+	})
 
 	console.log('items to be added => ', newItems);
 
