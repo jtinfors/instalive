@@ -13,7 +13,7 @@ function update(updates) {
 	console.log('new instagrams => ', updates);
 
 	var newItems = updates.filter(function(item) {
-		return _instagrams.indexOf(item) != -1;
+		return _instagrams.indexOf(item) === -1;
 	});
 
 	console.log('items to be added => ', newItems);
