@@ -153,7 +153,8 @@ app.post('/subscriptions/all/delete', function(req, res) {
 });
 
 app.get('/:name', function(req, res) {
-  res.render("images");
+	var bundle = process.env['NODE_ENV'] === 'development' ? '/js/bundle.js' : '/js/bundle.min.js';
+  res.render("images", { bundle: bundle });
 });
 
 var server = http.createServer(app);

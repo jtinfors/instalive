@@ -4,9 +4,15 @@ var request = require('request');
 
 var InstagramActions = {
 
+	fetchRandom: function(data) {
+		AppDispatcher.dispatch({
+			actionType: InstagramConstants.FETCH_RANDOM
+		});
+	},
+
 	update: function(data) {
 		AppDispatcher.dispatch({
-			actionType: InstagramConstants.UPDATE,
+			actionType: InstagramConstants.INSTAGRAM_UPDATE,
 			data: data
 		});
 	}

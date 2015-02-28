@@ -22,6 +22,15 @@ var _instagrams = [];
 function update(updates) {
 	console.log('old instagrams => ', _instagrams);
 	console.log('updates!! => ', updates);
+
+	var ids = _instagrams.map(function(item) {
+		return 'image_' + item.id;
+	});
+	console.log('ids => ', ids);
+	var newItems = _instagrams.filter(function(item) {
+		return ids.indexOf(item.id) != -1;
+	});
+
 	_instagrams = _instagrams.concat(updates);
 	// _instagrams[id] = assign({}, _instagrams[id], updates);
 }
@@ -55,14 +64,12 @@ var InstagramStore = assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function(action) {
-	switch(action.actionTypel) {
-		case InstagramConstants.UPDATE:
+	console.log('action.actionType => ', action.actionType);
+	switch(action.actionType) {
+		case InstagramConstants.INSTAGRAM_UPDATE:
 			update(action.data);
 			InstagramStore.emitChange();
 			break;
-		case InstagramConstants.RECENT_MEDIA:
-			setData({ data: action.data });
-			InstagramStore.emitChange();
 		default:
 	}
 });

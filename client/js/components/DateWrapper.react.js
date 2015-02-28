@@ -11,7 +11,7 @@ var DateWrapper = React.createClass({
 		return (
 			<span className="label label-primary">
 				<span className="glyphicon glyphicon-time"></span>
-				<time title={display_time_long} datetime={datetime}>{display_time_short}</time>
+				<time title={display_time_long} dateTime={datetime}>{display_time_short}</time>
 			</span>
 		);
 	}

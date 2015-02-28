@@ -3,9 +3,12 @@ var InstagramActions = require('../actions/InstagramActions');
 
 // TODO: One could argue that this should trigger an action...
 module.exports.fetchRecentMedia = function(callback) {
-	request.get('http://localhost:3000/media/recent/', function(err, resp, payload) {
+	request.get('http://' + window.location.host + '/media/recent/', function(err, resp, payload) {
+		console.log('[fetchRecentMedia] payload => ', JSON.parse(payload).data);
 		InstagramActions.update(JSON.parse(payload).data);
-		callback(err, JSON.parse(payload).data);
+		if (callback) {
+			callback(err, JSON.parse(payload).data);
+		}
 	});
 };
 

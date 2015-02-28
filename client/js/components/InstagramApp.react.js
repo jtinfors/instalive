@@ -12,6 +12,10 @@ function getInstagrams() {
 
 var InstagramApp = React.createClass({
 
+	getInitialState: function() {
+		return getInstagrams();
+	},
+
 	componentDidMount: function() {
 		InstagramStore.addChangeListener(this._onChange);
 	},
@@ -21,8 +25,8 @@ var InstagramApp = React.createClass({
 	},
 
 	render: function() {
-		var items = this.props.instagrams.map(function(item) {
-			return <Instagram key={item.id} item={item} />
+		var items = this.state.instagrams.map(function(item) {
+			return <Instagram key={item.id + Math.floor(Math.random(123) * (100 - 0))} item={item} />
 		});
 		return (
 			<ul id="pings" className="list-unstyled">

@@ -1,6 +1,7 @@
 var React = require('react');
 var Api = require('./api/Api');
 var InstagramApp = require('./components/InstagramApp.react');
+var InstagramActions = require('./actions/InstagramActions');
 
 Api.fetchRecentMedia(function(err, payload) {
 	// TODO: errorHandling and empty response
@@ -12,3 +13,8 @@ Api.fetchRecentMedia(function(err, payload) {
 	Api.setupSubscription();
 });
 
+$('body').keypress(function(event) {
+	if (event.keyCode === 99) {
+		Api.fetchRecentMedia();
+	}
+});
