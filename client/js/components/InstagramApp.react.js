@@ -25,9 +25,9 @@ var InstagramApp = React.createClass({
 	},
 
 	render: function() {
-		if (Object.keys.(this.state.instagrams).length < 1) {
+		if (Object.keys(this.state.instagrams).length < 1) {
 			return null;
-		}
+		};
 
 		var items = this.state.instagrams.map(function(item) {
 			return <Instagram key={item.id} item={item} />
