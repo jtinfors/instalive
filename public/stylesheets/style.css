@@ -52,6 +52,18 @@
 }
 
 #pings li { margin-bottom: 20px; }
+	#pings .instagrams-enter {
+		opacity: 0.01;
+		transition: opacity .5s ease-in;
+	}
+	#pings .instagrams-enter.instagrams-enter-active { opacity: 1; }
+	#pings .instagrams-leave {
+		opacity: 1;
+		transition: opacity .5s ease-in;
+	}
+	#pings .instagrams-leave.instagrams-leave-active { opacity: 0.01; }
+
+
   #pings .meta .label {
 		line-height: 2.2;
 		margin-right: 3px;
