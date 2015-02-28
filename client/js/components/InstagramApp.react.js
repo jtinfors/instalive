@@ -1,5 +1,4 @@
 var React = require('react/addons');
-var Main = require('./Main.react');
 var Instagram = require('./Instagram.react');
 var InstagramStore = require('../stores/InstagramStore');
 var InstagramActions = require('../actions/InstagramActions');

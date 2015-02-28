@@ -15,7 +15,7 @@ function update(updates) {
 		});
 	});
 
-	_instagrams = newItems.concat(_instagrams);
+	_instagrams = newItems.concat(_instagrams).slice(0, 20);
 }
 
 function setData(options) {
