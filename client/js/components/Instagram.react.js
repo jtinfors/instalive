@@ -9,7 +9,7 @@ var DateWrapper = require('./DateWrapper.react');
 var Instagram = React.createClass({
 
 	render: function() {
-		var id = "image_" + this.props.item.id + 1;
+		var id = "image_" + this.props.item.id;
 		var userLink = "http://instagram.com/" + this.props.item.user.username;
 		var tags = this.props.item.tags.map(function(tag, index) {
 			return <Tag key={index} tag={tag}/>

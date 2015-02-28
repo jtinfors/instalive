@@ -25,18 +25,18 @@ var InstagramApp = React.createClass({
 	},
 
 	render: function() {
-		var items = this.state.instagrams.map(function(item) {
-			return <Instagram key={item.id + Math.floor(Math.random(123) * (100 - 0))} item={item} />
-		});
-		if (items.length > 0) {
-			return (
-				<ul id="pings" className="list-unstyled">
-					{items}
-				</ul>
-			);
-		} else {
+		if (Object.keys.(this.state.instagrams).length < 1) {
 			return null;
 		}
+
+		var items = this.state.instagrams.map(function(item) {
+			return <Instagram key={item.id} item={item} />
+		});
+		return (
+			<ul id="pings" className="list-unstyled">
+				{items}
+			</ul>
+		);
 	},
 
 	_onChange: function() {
