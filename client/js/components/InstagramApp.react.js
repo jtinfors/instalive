@@ -40,10 +40,7 @@ var InstagramApp = React.createClass({
 	},
 
 	_onChange: function() {
-		var instagramObjects = getInstagrams();
-		var ids = instagramObjects.map(function(item) { return item.id; });
-		console.log('State change!! Items => ', ids);
-		this.setState(instagramObjects);
+		this.setState(getInstagrams());
 	}
 });
 
