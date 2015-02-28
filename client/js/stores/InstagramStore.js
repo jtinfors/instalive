@@ -8,17 +8,6 @@ var CHANGE_EVENT = 'change';
 
 var _instagrams = [];
 
-/*
- *[ (+new Date() + Math.floor(Math.random() * 999999)).toString(36),
- *(+new Date() + Math.floor(Math.random() * 999999)).toString(36),
- *(+new Date() + Math.floor(Math.random() * 999999)).toString(36) ].forEach(function(id) {
- *  _instagrams[id] = {
- *    text: 'yadda' + id,
- *    id: id
- *  }
- *});
- */
-
 function update(updates) {
 	console.log('old instagrams => ', _instagrams);
 	console.log('new instagrams => ', updates);
@@ -27,8 +16,9 @@ function update(updates) {
 		return _instagrams.indexOf(item) != -1;
 	});
 
+	console.log('items to be added => ', newItems);
+
 	_instagrams = _instagrams.concat(newItems);
-	// _instagrams[id] = assign({}, _instagrams[id], updates);
 }
 
 function setData(options) {
