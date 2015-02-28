@@ -22,7 +22,6 @@ var Instagram = React.createClass({
 		return (
 			<li id={id} key={this.props.item.id}>
         <div className="row">
-
           <div className="image col-md-6 col-lg-6">
             <a href={this.props.item.link} target="_blank">
               <img title={captionText} src={this.props.item.images.standard_resolution.url} className="img-responsive img-rounded" height={this.props.item.images.standard_resolution.height} width={this.props.item.images.standard_resolution.width}/>
