@@ -27,11 +27,11 @@ function update(updates) {
 		return 'image_' + item.id;
 	});
 	console.log('ids => ', ids);
-	var newItems = _instagrams.filter(function(item) {
+	var newItems = updates.filter(function(item) {
 		return ids.indexOf(item.id) != -1;
 	});
 
-	_instagrams = _instagrams.concat(updates);
+	_instagrams = _instagrams.concat(newItems);
 	// _instagrams[id] = assign({}, _instagrams[id], updates);
 }
 
