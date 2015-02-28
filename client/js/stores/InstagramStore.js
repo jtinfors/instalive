@@ -18,8 +18,10 @@ function update(updates) {
 		});
 	});
 
-	console.log('items to be added => ', newItems.map(function(item) { return item.id; }));
-	_instagrams.unshift(newItems);
+	console.log('items to be added => ', newItems);
+	console.log('item ids to be added => ', newItems.map(function(item) { return item.id; }));
+	// _instagrams.unshift(newItems);
+	_instagrams = _instagrams.concat(newItems);
 }
 
 function setData(options) {
