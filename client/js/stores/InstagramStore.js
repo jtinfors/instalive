@@ -12,14 +12,6 @@ function update(updates) {
 	console.log('old instagrams => ', _instagrams.map(function(item) { return item.id; }));
 	console.log('new instagrams => ', updates.map(function(item) { return item.id; }));
 
-	/*
-	 *var newItems = updates.every(function(newItem) {
-	 *  return _instagrams.some(function(existingItem) {
-	 *    return newItem.id === existingItem.id;
-	 *  });
-	 *});
-	 */
-
 	var newItems = updates.filter(function(newItem) {
 		return _instagrams.every(function(existingItem) {
 			return newItem.id != existingItem.id;
@@ -27,8 +19,7 @@ function update(updates) {
 	});
 
 	console.log('items to be added => ', newItems.map(function(item) { return item.id; }));
-
-	_instagrams = _instagrams.concat(newItems);
+	_instagrams.unshift(newItems);
 }
 
 function setData(options) {
