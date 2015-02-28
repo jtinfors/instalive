@@ -52,7 +52,10 @@
 }
 
 #pings li { margin-bottom: 20px; }
-  #pings .meta .label { line-height: 2.2; }
+  #pings .meta .label {
+		line-height: 2.2;
+		margin-right: 3px;
+	}
 
   .page-header h1 .flash {
     display: none;

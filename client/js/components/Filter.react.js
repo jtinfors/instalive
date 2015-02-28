@@ -7,7 +7,7 @@ var Filter = React.createClass({
 			<span title="Filter" className="label label-info">
 				<span className="glyphicon glyphicon-tint">
 					{this.props.filter}
-				</span>
+				</span>&nbsp;
 			</span>
 		);
 	}
