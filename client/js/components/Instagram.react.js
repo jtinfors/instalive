@@ -5,6 +5,7 @@ var Tag = require('./Tag.react');
 var Filter = require('./Filter.react');
 var Location = require('./Location.react');
 var DateWrapper = require('./DateWrapper.react');
+var ImageCarousel = require('./ImageCarousel.react');
 
 var Instagram = React.createClass({
 
@@ -24,7 +25,7 @@ var Instagram = React.createClass({
         <div className="row">
           <div className="image col-md-6 col-lg-6">
             <a href={this.props.item.link} target="_blank">
-              <img title={captionText} src={this.props.item.images.standard_resolution.url} className="img-responsive img-rounded" height={this.props.item.images.standard_resolution.height} width={this.props.item.images.standard_resolution.width}/>
+							<ImageCarousel imageSrc={this.props.item.images.standard_resolution.url} />
             </a>
 					</div>
 
