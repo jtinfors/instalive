@@ -20,8 +20,9 @@ function update(updates) {
 
 	console.log('items to be added => ', newItems);
 	console.log('item ids to be added => ', newItems.map(function(item) { return item.id; }));
+	// TODO: Why does not unshift work here?
 	// _instagrams.unshift(newItems);
-	_instagrams = _instagrams.concat(newItems);
+	_instagrams = newItems.concat(_instagrams);
 }
 
 function setData(options) {
