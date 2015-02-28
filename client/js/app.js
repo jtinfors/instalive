@@ -15,6 +15,7 @@ Api.fetchRecentMedia(function(err, payload) {
 
 $('body').keypress(function(event) {
 	if (event.keyCode === 99) {
+		// TODO: just fetch one random image instead of a bunch of recent
 		Api.fetchRecentMedia();
 	}
 });

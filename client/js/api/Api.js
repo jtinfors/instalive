@@ -35,7 +35,8 @@ module.exports.setupSubscription = function() {
         //handle_incoming_media(media.message);
         break;
       case 'alert':
-        display_alert(media);
+				console.log('alert! ', media.message);
+        // display_alert(media);
         break;
       case 'message':
 				console.log('message => ', media.message);
@@ -44,10 +45,12 @@ module.exports.setupSubscription = function() {
   });
 
   socket.on('disconnect', function() {
-    display_alert({heading: 'Tappade anslutningen', message: 'Ladda om sidan för fler Instagrams'});
+		console.log('socket disconnect');
+    // display_alert({heading: 'Tappade anslutningen', message: 'Ladda om sidan för fler Instagrams'});
   });
   socket.on('error', function() {
-    display_alert({heading: 'Tappade anslutningen', message: 'Ladda om sidan för fler Instagrams'});
+		console.log('socket error');
+    // display_alert({heading: 'Tappade anslutningen', message: 'Ladda om sidan för fler Instagrams'});
   });
 
 };
