@@ -4,7 +4,7 @@ var Tag = React.createClass({
 
 	render: function() {
 		return (
-			<span title="Tag" className="label label-default">{this.props.tag}</span>
+			<span title="Tag" className="label label-default"> {this.props.tag}</span>
 		);
 	}
 
