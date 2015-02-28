@@ -1,1 +1,1 @@
-console.error("ReactifyError: /home/jens/projects/instalive/client/js/stores/InstagramStore.js: Parse Error: Line 23: Unexpected token . while parsing file: /home/jens/projects/instalive/client/js/stores/InstagramStore.js")
+console.error("ReactifyError: /home/jens/projects/instalive/client/js/stores/InstagramStore.js: Parse Error: Line 23: Unexpected identifier while parsing file: /home/jens/projects/instalive/client/js/stores/InstagramStore.js")
