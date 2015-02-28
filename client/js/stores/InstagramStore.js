@@ -9,8 +9,8 @@ var CHANGE_EVENT = 'change';
 var _instagrams = [];
 
 function update(updates) {
-	console.log('old instagrams => ', _instagrams);
-	console.log('new instagrams => ', updates);
+	console.log('old instagrams => ', _instagrams.map(function(item) { return item.id; }));
+	console.log('new instagrams => ', updates.map(function(item) { return item.id; }));
 
 	/*
 	 *var newItems = updates.every(function(newItem) {
@@ -26,7 +26,7 @@ function update(updates) {
 		});
 	});
 
-	console.log('items to be added => ', newItems);
+	console.log('items to be added => ', newItems.map(function(item) { return item.id; }));
 
 	_instagrams = _instagrams.concat(newItems);
 }
