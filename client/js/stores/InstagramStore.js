@@ -21,10 +21,10 @@ function update(updates) {
 	 */
 
 	var newItems = updates.filter(function(newItem) {
-		return _instagrams.some(function(existingItem) {
-			return newItem.id !== existingItem.id;
+		return _instagrams.every(function(existingItem) {
+			return newItem.id != existingItem.id;
 		});
-	})
+	});
 
 	console.log('items to be added => ', newItems);
 
