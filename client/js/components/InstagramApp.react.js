@@ -1,8 +1,9 @@
-var React = require('react');
+var React = require('react/addons');
 var Main = require('./Main.react');
 var Instagram = require('./Instagram.react');
 var InstagramStore = require('../stores/InstagramStore');
 var InstagramActions = require('../actions/InstagramActions');
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 function getInstagrams() {
 	return {
@@ -34,7 +35,9 @@ var InstagramApp = React.createClass({
 		});
 		return (
 			<ul id="pings" className="list-unstyled">
-				{items}
+				<ReactCSSTransitionGroup transitionName="instagrams">
+					{items}
+				</ReactCSSTransitionGroup>
 			</ul>
 		);
 	},
