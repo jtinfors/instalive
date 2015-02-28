@@ -20,7 +20,7 @@ function update(updates) {
 	 *});
 	 */
 
-	var newItems updates.filter(function(newItem) {
+	var newItems = updates.filter(function(newItem) {
 		return _instagrams.some(function(existingItem) {
 			return newItem.id === existingItem.id;
 		});
