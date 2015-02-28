@@ -1,10 +1,8 @@
 var request = require('request');
 var InstagramActions = require('../actions/InstagramActions');
 
-// TODO: One could argue that this should trigger an action...
 module.exports.fetchRecentMedia = function(callback) {
 	request.get('http://' + window.location.host + '/media/recent/', function(err, resp, payload) {
-		console.log('[fetchRecentMedia] payload => ', JSON.parse(payload).data);
 		InstagramActions.update(JSON.parse(payload).data);
 		if (callback) {
 			callback(err, JSON.parse(payload).data);
@@ -32,7 +30,6 @@ module.exports.setupSubscription = function() {
       case 'update':
 				console.log('media.message => ', media.message);
 				InstagramActions.update(media.message.data);
-        //handle_incoming_media(media.message);
         break;
       case 'alert':
 				console.log('alert! ', media.message);

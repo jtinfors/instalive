@@ -41,7 +41,6 @@ var InstagramApp = React.createClass({
 
 	_onChange: function() {
 		var items = getInstagrams();
-		console.log('our items => ', items);
 		this.setState(items);
 	}
 });

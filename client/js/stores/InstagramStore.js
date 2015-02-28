@@ -9,19 +9,12 @@ var CHANGE_EVENT = 'change';
 var _instagrams = [];
 
 function update(updates) {
-	console.log('old instagrams => ', _instagrams.map(function(item) { return item.id; }));
-	console.log('new instagrams => ', updates.map(function(item) { return item.id; }));
-
 	var newItems = updates.filter(function(newItem) {
 		return _instagrams.every(function(existingItem) {
 			return newItem.id != existingItem.id;
 		});
 	});
 
-	console.log('items to be added => ', newItems);
-	console.log('item ids to be added => ', newItems.map(function(item) { return item.id; }));
-	// TODO: Why does not unshift work here?
-	// _instagrams.unshift(newItems);
 	_instagrams = newItems.concat(_instagrams);
 }
 
@@ -54,7 +47,6 @@ var InstagramStore = assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function(action) {
-	console.log('action.actionType => ', action.actionType);
 	switch(action.actionType) {
 		case InstagramConstants.INSTAGRAM_UPDATE:
 			update(action.data);
