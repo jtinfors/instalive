@@ -68,7 +68,7 @@ or, compile, commit and push in one push (pun intended):
 
 ## Test
 
-Tests are built using [mocha](http://visionmedia.github.io/mocha/), they are located under `./test`. Run them like so:
+Tests are built using [mocha](http://mochajs.org/), they are located under `./test`. Run them like so:
 
     NODE_ENV=development mocha
 
